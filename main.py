@@ -34,7 +34,6 @@ if __name__ == '__main__':
 	pygame.init()
 	pygame.display.set_caption("Game Title")
 	SCREEN = pygame.display.set_mode((800, 600))
-	pygame.display.toggle_fullscreen()
 	
 	game = Game(SCREEN)
 	game.start()
