@@ -49,23 +49,39 @@ class Game:
 
 				if event.key == K_1:
 					print 'T_1'
-					self.select_T = Tower()
+					if self.select_T == None:
+						self.select_T = Tower()
+					else:
+						self.select_T = None
 
 				if event.key == K_2:
 					print 'T_2'
-					self.select_T = Tower(2,2)
+					if self.select_T == None:
+						self.select_T = Tower(2,2)
+					else:
+						self.select_T = None
 
 				if event.key == K_3:
 					print 'T_3'
-					self.select_T = Tower(1,3)
+					if self.select_T == None:
+						self.select_T = Tower(1,3)
+					else:
+						self.select_T = None
 
 				if event.key == K_4:
 					print 'T_4'
-					self.select_T = Tower(2,3)
+					if self.select_T == None:
+						self.select_T = Tower(2,3)
+					else:
+						self.select_T = None
 
 				if event.key == K_5:
 					print 'T_5'
-					self.select_T = Tower(3,3)
+					if self.select_T == None:
+						self.select_T = Tower(3,3)
+					else:
+						self.select_T = None
+
 
 	def start(self):
 		while(self.running):
@@ -77,13 +93,21 @@ class Game:
 			#self.screen.blit(self.bg, (0, 0))
 			#self.grid.draw(30,self.screen)
 
+			#Draws all Towers in Grid
 			for i in self.T_list:
 				i.drawBox(0,0,self.screen)
 
+			#Place Tower in Grid
 			if self.select_T != None:
 				boxContain = self.grid.detect(self.m_pos,self.select_T,self.screen)
 				if self.m_down:
 					overlap = False
+					#Checks if selection is outside of Grid
+					for i in boxContain:
+						if i == False:
+							overlap = True
+
+					#Checks if selection is overlapping an existing Tower
 					for i in self.T_list:
 						for j in i.occupy:
 							for k in boxContain:
@@ -99,8 +123,11 @@ class Game:
 						self.T_list.append(self.select_T)
 						self.select_T = None
 					else:
-						print 'Overlap Error'
+						print 'Overlap/Outside Error'
 
+					self.m_down = False
+			else:
+				if self.m_down:
 					self.m_down = False
 			
 			pygame.display.update()

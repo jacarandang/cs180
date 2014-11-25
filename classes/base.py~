@@ -41,7 +41,10 @@ class Board:
 		for a in range(tower.h):
 			m_xpos = m_pos[0]
 			for b in range(tower.w):
-				listContains.append(self.getIndexDetect((m_xpos,m_ypos), tower, screen))
+				if self.getIndexDetect != False:
+					listContains.append(self.getIndexDetect((m_xpos,m_ypos), tower, screen))
+				else:
+					return False
 				m_xpos += tower.size
 			m_ypos += tower.size
 
@@ -51,6 +54,9 @@ class Board:
 	def getIndexDetect(self, m_pos, tower, screen):
 		x = self.coorToIndex(m_pos, tower.size)[0]
 		y = self.coorToIndex(m_pos, tower.size)[1]
+		
+		if x < 0 or y < 0 or x >= self.w or y >= self.h:
+			return False
 
 		y_1 = self.coor[1]
 		for i in range(self.h):
