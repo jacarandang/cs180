@@ -57,7 +57,10 @@ class Board:
 			x_1 = self.coor[0]
 			for j in range(self.w):
 				if i == y and j == x:
-					pygame.draw.rect(screen, (255,255,51),(x_1, y_1, tower.size, tower.size), 0)	
+					if self.board[j][i] == 0:
+						pygame.draw.rect(screen, (255,255,51),(x_1, y_1, tower.size, tower.size), 0)	
+					else:
+						pygame.draw.rect(screen, (255,0,0),(x_1, y_1, tower.size, tower.size), 0)	
 				x_1 += tower.size				
 			y_1 += tower.size
 

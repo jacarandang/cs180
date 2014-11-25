@@ -16,11 +16,13 @@ class Game:
 		self.bg = self.bg.convert()
 		self.bg.fill((255, 255, 255))
 
-		
+		self.image = pygame.image.load('res/bg1.jpg')
+		self.imageRect = self.image.get_rect()
+
 		self.m_pos = (-10,-10)    #Mouse Coordinates
 		self.m_down = False	#Left Mouse Button Down
 
-		self.grid = Board(20,16,(10,10))  #Board
+		self.grid = Board(22,18,(1,0))  #Board
 		
 		self.select_T = None	#Tower Selected
 
@@ -32,7 +34,7 @@ class Game:
 				self.running = False
 
 			if event.type == MOUSEMOTION:
-				self.m_pos = (event.pos[0]-15, event.pos[1]-10)
+				self.m_pos = (event.pos[0], event.pos[1])
 				#print self.m_pos
 
 			if event.type == MOUSEBUTTONDOWN:
@@ -70,24 +72,36 @@ class Game:
 			self.clock.tick(60)
 			self.checkEvents()
 			
-			self.screen.blit(self.bg, (0, 0))
-			self.grid.draw(30,self.screen)
+			self.screen.blit(self.image, self.imageRect)			
+			#self.screen.blit(self.image, (0,0), (400,300,300,300))
+			#self.screen.blit(self.bg, (0, 0))
+			#self.grid.draw(30,self.screen)
+
+			for i in self.T_list:
+				i.drawBox(0,0,self.screen)
 
 			if self.select_T != None:
 				boxContain = self.grid.detect(self.m_pos,self.select_T,self.screen)
 				if self.m_down:
-					for i in boxContain:
-						self.select_T.occupy.append(i)
+					overlap = False
+					for i in self.T_list:
+						for j in i.occupy:
+							for k in boxContain:
+								if j == k:
+									overlap = True
+					if not overlap:
+						for i in boxContain:
+							self.select_T.occupy.append(i)
 
-					for i in boxContain:
-						self.grid.set(i[0],i[1],1)
+						for i in boxContain:
+							self.grid.set(i[0],i[1],1)
 
-					self.T_list.append(self.select_T)
-					self.select_T = None
+						self.T_list.append(self.select_T)
+						self.select_T = None
+					else:
+						print 'Overlap Error'
+
 					self.m_down = False
-
-			for i in self.T_list:
-				i.drawBox(10,10,self.screen)
 			
 			pygame.display.update()
   
