@@ -21,6 +21,7 @@ class Game:
 
 		self.m_pos = (-10,-10)    #Mouse Coordinates
 		self.m_down = False	#Left Mouse Button Down
+		self.m_pos_down = (-10,-10)  #Mouse Down Coordinates
 
 		self.grid = Board(22,18,(1,0))  #Board
 		
@@ -41,7 +42,7 @@ class Game:
 				if event.button == 1:
 					print 'left mouse button'
 					self.m_down = True
-					
+					self.m_pos_down = (event.pos[0], event.pos[1])
 
 			if event.type == KEYDOWN:
 				if event.key == K_ESCAPE:
@@ -95,8 +96,11 @@ class Game:
 
 			#Draws all Towers in Grid
 			for i in self.T_list:
+				if i.view_atk:
+					i.drawAtk(0,0,self.screen)
 				i.drawBox(0,0,self.screen)
 
+		
 			#Place Tower in Grid
 			if self.select_T != None:
 				boxContain = self.grid.detect(self.m_pos,self.select_T,self.screen)
@@ -114,8 +118,7 @@ class Game:
 								if j == k:
 									overlap = True
 					if not overlap:
-						for i in boxContain:
-							self.select_T.occupy.append(i)
+						self.select_T.setOccupy(boxContain)
 
 						for i in boxContain:
 							self.grid.set(i[0],i[1],1)
@@ -128,6 +131,17 @@ class Game:
 					self.m_down = False
 			else:
 				if self.m_down:
+
+					for i in self.T_list:
+						for j in i.occupy:
+							if j == self.grid.coorToIndex(self.m_pos_down, i.size):
+								if i.view_atk:								
+									i.view_atk = False
+								else:
+									i.view_atk = True								
+								#i.drawAtk(0,0,self.screen)
+								break
+
 					self.m_down = False
 			
 			pygame.display.update()

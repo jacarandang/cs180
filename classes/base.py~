@@ -71,3 +71,6 @@ class Board:
 			y_1 += tower.size
 
 		return (x,y)
+
+	def getIndex(self, m_pos):
+		
