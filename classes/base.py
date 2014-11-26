@@ -71,3 +71,24 @@ class Board:
 			y_1 += tower.size
 
 		return (x,y)
+	
+class VirusBase:
+	
+	def __init__(self, life=10, speed=1, board):
+		self.life = 0
+		self.speed = 1
+		self.board = board
+		self.actionlist = []
+		self.currentAction = 0
+		self.x = 0
+		self.y = 0
+		
+	def getNextAction():
+		self.currentAction += 1
+		if(self.currentAction == len(self.actionlist)) return None
+		return self.actionlist[self.currentAction]
+	
+	def getCurrentAction():
+		return self.actionlist[self.currentAction]
+	
+	
