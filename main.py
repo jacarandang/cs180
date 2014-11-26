@@ -3,6 +3,7 @@ import pygame
 from pygame.locals import *
 from classes.base import *
 from classes.tower import *
+from classes.virus import *
 #import classes
 
 class Game:
@@ -27,6 +28,12 @@ class Game:
 		self.select_T = None	#Tower Selected
 
 		self.T_list = [] #Towers on Grid
+		
+		self.vgroup = pygame.sprite.Group()
+		self.virus = Virus(self.grid)
+		self.vgroup.add(self.virus)
+		self.group1 = VirusGroup([self.virus])
+		self.group1.setActions([(0, 0), (1, 0), (2, 0), (3, 0), (4, 0)])
 		
 	def checkEvents(self):
 		for event in pygame.event.get():
@@ -130,6 +137,8 @@ class Game:
 				if self.m_down:
 					self.m_down = False
 			
+			self.vgroup.update()
+			self.vgroup.draw(self.screen)
 			pygame.display.update()
   
   

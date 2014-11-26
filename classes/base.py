@@ -74,21 +74,41 @@ class Board:
 	
 class VirusBase:
 	
-	def __init__(self, life=10, speed=1, board):
+	def __init__(self, board, life=10, speed=1):
 		self.life = 0
-		self.speed = 1
+		self.speed = speed
 		self.board = board
-		self.actionlist = []
-		self.currentAction = 0
+		self.step = 0
 		self.x = 0
 		self.y = 0
+		self.group = None
 		
-	def getNextAction():
-		self.currentAction += 1
-		if(self.currentAction == len(self.actionlist)) return None
-		return self.actionlist[self.currentAction]
+	def getCurrentAction(self):
+		if self.group is None: return None
+		return self.group.getAction(self.step)
 	
-	def getCurrentAction():
-		return self.actionlist[self.currentAction]
+	def getNextAction(self):
+		if self.group is None: return None
+		return self.group.getAction(self.step + 1)
 	
+	def setNextAction(self):
+		self.step += 1
+		
+class VirusGroup:
 	
+	def __init__(self, viruses = []):
+		self.group = viruses
+		self.actionList = []
+		for v in self.group:
+			v.group = self
+			
+	def add(self, virus):
+		self.group.append(virus)
+		virus.group = self
+		
+	def setActions(self, actions):
+		self.actionList = actions
+		
+	def getAction(self, idx):
+		if(idx >= len(self.actionList)): return None
+		return self.actionList[idx]
