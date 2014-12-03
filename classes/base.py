@@ -84,7 +84,8 @@ class VirusBase:
 		self.group = None
 		
 	def getCurrentAction(self):
-		if self.group is None: return None
+		if self.group is None: 
+			return None
 		return self.group.getAction(self.step)
 	
 	def getNextAction(self):

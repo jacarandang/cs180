@@ -1,4 +1,6 @@
 import pygame
+from pygame.locals import *
+from classes.tower_range import *
 
 class Tower(pygame.sprite.Sprite):
 
@@ -10,15 +12,18 @@ class Tower(pygame.sprite.Sprite):
 		self.size = size
 		self.tower_type = tower_type
 
-		self.image = pygame.Surface([self.w, self.h])
+		self.image = pygame.Surface([self.w*self.size, self.h*self.size])
 		self.image.fill((0,0,0))
 
 		self.rect = self.image.get_rect()
 
 		self.occupy = []
 
-		self.atk_range = (w+2, h+2)
-		self.atk_pos = []
+		self.radius = ((self.w+self.h)/2)*30+15
+		self.tRange = None
+
+		#self.atk_range = (w+2, h+2)
+		#self.atk_pos = []
 
 		self.view_atk = False
 
@@ -26,11 +31,15 @@ class Tower(pygame.sprite.Sprite):
 		for i in boxContain:
 			self.occupy.append(i)
 
+		self.rect.topleft = self.occupy[0][0]*self.size, self.occupy[0][1]*self.size
+		self.tRange = tower_range(self.rect, self.radius)
+		"""
 		y = self.occupy[0][1]-1
 		for i in range(self.atk_range[1]):
 			x = self.occupy[0][0]-1
 			for j in range(self.atk_range[0]):
 				self.atk_pos.append((x+j,y+i))
+		"""
 
 	def drawBox(self, x_o=0, y_o=0, screen=None):
 		y = y_o + self.occupy[0][1]*self.size
@@ -42,6 +51,10 @@ class Tower(pygame.sprite.Sprite):
 			y += self.size
 
 	def drawAtk(self, x_o=0, y_o=0, screen=None):
+		pygame.draw.circle(screen,(0,0,0), (self.rect.center), self.radius)
+		
+	"""
+	def drawAtk(self, x_o=0, y_o=0, screen=None):
 		y = y_o + (self.atk_pos[0][1])*self.size
 		for i in range(self.atk_range[1]):
 			x = x_o + (self.atk_pos[0][0])*self.size
@@ -49,4 +62,6 @@ class Tower(pygame.sprite.Sprite):
 				pygame.draw.rect(screen, (102,0,102), (x,y,self.size, self.size), 0)
 				x += self.size
 			y += self.size
+	"""
+
 

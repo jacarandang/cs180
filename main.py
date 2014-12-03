@@ -103,8 +103,8 @@ class Game:
 
 			#Draws all Towers in Grid
 			for i in self.T_list:
-				if i.view_atk:
-					i.drawAtk(0,0,self.screen)
+				#if i.view_atk:
+				i.drawAtk(0,0,self.screen)
 				i.drawBox(0,0,self.screen)
 
 		
@@ -150,6 +150,11 @@ class Game:
 								break
 
 					self.m_down = False
+
+			for i in self.vgroup:
+				for j in self.T_list:
+					if pygame.sprite.collide_circle(i,j):
+						print 'Collide!'
 			
 			self.vgroup.update()
 			self.vgroup.draw(self.screen)

@@ -14,6 +14,7 @@ class Virus(VirusBase, pygame.sprite.Sprite):
 		pygame.draw.circle(self.image, (255, 0, 0), (15, 15), 15)
 		self.image.set_colorkey((0, 0, 0), RLEACCEL)
 		
+		self.radius = 15
 		self.rect = self.image.get_rect()
 		self.pos = (-self.size, -self.size)
 		self.rect.topleft = self.pos
@@ -30,7 +31,9 @@ class Virus(VirusBase, pygame.sprite.Sprite):
 		if diff >= 1.00/self.speed:
 			self.time = time()
 			self.setNextAction()
-			self.x, self.y = self.getCurrentAction()
+
+			if self.getCurrentAction() != None:
+				self.x, self.y = self.getCurrentAction()
 		else:
 			target = self.getNextAction()
 			if(target == None): return
