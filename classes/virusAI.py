@@ -9,9 +9,9 @@ class Player():
 		self.board = board
 		
 	def getNextGroup(self):
-		v1 = Virus(self.board, 5)
-		v2 = Virus(self.board, 10)
-		v3 = Virus(self.board, 8)
+		v1 = Virus(self.board, 10, 5)
+		v2 = Virus(self.board, 10, 8)
+		v3 = Virus(self.board, 10, 10)
 		group = VirusGroup()
 		group.add(v1, v2, v3)
 		

@@ -1,4 +1,4 @@
-class Stack:
+class Queue:
 
 	def __init__(self):
 		self.list = []
@@ -14,7 +14,7 @@ class Stack:
 			return True
 		return False
 		
-class Queue:
+class Stack:
 
 	def __init__(self):
 		self.list = []
