@@ -4,6 +4,7 @@ from pygame.locals import *
 from classes.base import *
 from classes.tower import *
 from classes.virus import *
+from classes import virusAI
 #import classes
 
 class Game:
@@ -30,11 +31,9 @@ class Game:
 
 		self.T_list = [] #Towers on Grid
 		
-		self.vgroup = pygame.sprite.Group()
-		self.virus = Virus(self.grid)
-		self.vgroup.add(self.virus)
-		self.group1 = VirusGroup([self.virus])
-		self.group1.setActions([(0, 0), (1, 0), (2, 0), (3, 0), (4, 0)])
+		self.vplayer = virusAI.Player(self.grid)
+		
+		self.vgroup = []
 		
 	def checkEvents(self):
 		for event in pygame.event.get():
@@ -89,8 +88,10 @@ class Game:
 						self.select_T = Tower(3,3)
 					else:
 						self.select_T = None
-
-
+				
+				if event.key == K_6:
+					self.vgroup.append(self.vplayer.getNextGroup())
+					
 	def start(self):
 		while(self.running):
 			self.clock.tick(60)
@@ -151,8 +152,10 @@ class Game:
 
 					self.m_down = False
 			
-			self.vgroup.update()
-			self.vgroup.draw(self.screen)
+			for g in self.vgroup:
+				print g.actionList
+				g.update()
+				g.draw(self.screen)
 			pygame.display.update()
   
   

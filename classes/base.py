@@ -94,17 +94,23 @@ class VirusBase:
 	def setNextAction(self):
 		self.step += 1
 		
-class VirusGroup:
+	def __repr__(self):
+		return 'virus'
+		
+class VirusGroupBase:
 	
-	def __init__(self, viruses = []):
-		self.group = viruses
+	def __init__(self, *vrs):
+		self.viruses = []
+		self.add(*vrs)
 		self.actionList = []
-		for v in self.group:
+		for v in self.viruses:
 			v.group = self
+		print self.viruses
 			
-	def add(self, virus):
-		self.group.append(virus)
-		virus.group = self
+	def add(self, *vrs):
+		for virus in vrs:
+			self.viruses.append(virus)
+			virus.group = self
 		
 	def setActions(self, actions):
 		self.actionList = actions

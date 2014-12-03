@@ -14,6 +14,22 @@ class Stack:
 			return True
 		return False
 		
+class Queue:
+
+	def __init__(self):
+		self.list = []
+		
+	def push(self, obj):
+		self.list.append(obj)
+		
+	def pop(self, idx = -1):
+		return self.list.pop(idx)
+		
+	def isEmpty(self):
+		if len(self.list) == 0:
+			return True
+		return False
+		
 class Node:
 
 	def __init__(self, state, parent = None):
@@ -21,10 +37,11 @@ class Node:
 		self.parent = parent
 		
 	def nextNodes(self):
-		return []
+		raise NotImplementedError
 		
 	def isTarget(self):
-		return False
+		raise NotImplementedError
 		
 	def __eq__(self, other):
 		return self.state == other.state
+		
