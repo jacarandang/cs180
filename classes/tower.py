@@ -58,6 +58,7 @@ class Tower(pygame.sprite.Sprite):
 
 	def drawAtk(self, x_o=0, y_o=0, screen=None):
 		#pygame.draw.circle(screen,(0,0,0), (self.rect.center), self.radius)
+		pass
 
 	def Shoot(self, virus, bulletGroup):
 		diff = time() - self.time
