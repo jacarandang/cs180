@@ -4,6 +4,8 @@ from pygame.locals import *
 from classes.base import *
 from classes.tower import *
 from classes.virus import *
+from classes import virusAI
+from classes.UI import *
 #import classes
 
 class Game:
@@ -30,12 +32,10 @@ class Game:
 
 		self.T_list = [] #Towers on Grid
 		
-		self.vgroup = pygame.sprite.Group()
-		self.virus = Virus(self.grid)
-		self.vgroup.add(self.virus)
-		self.group1 = VirusGroup([self.virus])
-		self.group1.setActions([(0, 0), (1, 0), (2, 0), (3, 0), (4, 0)])
 		self.bgroup = pygame.sprite.Group()
+
+		self.vplayer = virusAI.Player(self.grid)
+		
 		
 	def checkEvents(self):
 		for event in pygame.event.get():
@@ -90,8 +90,10 @@ class Game:
 						self.select_T = Tower(3,3)
 					else:
 						self.select_T = None
-
-
+				
+				if event.key == K_6:
+					self.vgroup.append(self.vplayer.getNextGroup())
+					
 	def start(self):
 		while(self.running):
 			self.clock.tick(60)
@@ -152,15 +154,23 @@ class Game:
 
 					self.m_down = False
 
-			for i in self.vgroup:
-				for j in self.T_list:
-					if pygame.sprite.collide_circle(i,j):
-						j.Shoot(i,self.bgroup)
-						
-			self.vgroup.update()
-			self.vgroup.draw(self.screen)
+			for j in self.T_list:
+				for z in self.vgroup
+					shoot = False
+					for i in z:
+						if pygame.sprite.collide_circle(i,j):
+							j.Shoot(i,self.bgroup)
+							shoot = True
+							break
+					if shoot: break
+					
 			self.bgroup.update()
 			self.bgroup.draw(self.screen)
+			for g in self.vgroup:
+				g.update()
+				g.draw(self.screen)
+			self.uigroup.update()
+			self.uigroup.draw(self.screen)
 			pygame.display.update()
   
   
