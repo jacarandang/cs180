@@ -113,3 +113,11 @@ class VirusGroup:
 	def getAction(self, idx):
 		if(idx >= len(self.actionList)): return None
 		return self.actionList[idx]
+
+class bullet:
+	def __init__(self, x=0, y=0, virus=None):
+		self.x = x
+		self.y = y
+		self.virus = virus
+		self.group = None
+	

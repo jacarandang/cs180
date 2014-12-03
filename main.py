@@ -35,6 +35,7 @@ class Game:
 		self.vgroup.add(self.virus)
 		self.group1 = VirusGroup([self.virus])
 		self.group1.setActions([(0, 0), (1, 0), (2, 0), (3, 0), (4, 0)])
+		self.bgroup = pygame.sprite.Group()
 		
 	def checkEvents(self):
 		for event in pygame.event.get():
@@ -58,7 +59,7 @@ class Game:
 				if event.key == K_1:
 					print 'T_1'
 					if self.select_T == None:
-						self.select_T = Tower()
+						self.select_T = Tower(1,1,30,1,'nml',6) #w=1, h=1, size=30, damage=1, tower_type='nml', shoot=1
 					else:
 						self.select_T = None
 
@@ -154,10 +155,12 @@ class Game:
 			for i in self.vgroup:
 				for j in self.T_list:
 					if pygame.sprite.collide_circle(i,j):
-						print 'Collide!'
-			
+						j.Shoot(i,self.bgroup)
+						
 			self.vgroup.update()
 			self.vgroup.draw(self.screen)
+			self.bgroup.update()
+			self.bgroup.draw(self.screen)
 			pygame.display.update()
   
   
