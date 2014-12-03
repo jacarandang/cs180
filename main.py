@@ -5,6 +5,7 @@ from classes.base import *
 from classes.tower import *
 from classes.virus import *
 from classes import virusAI
+from classes.UI import *
 #import classes
 
 class Game:
@@ -34,6 +35,8 @@ class Game:
 		self.vplayer = virusAI.Player(self.grid)
 		
 		self.vgroup = []
+		self.uigroup = pygame.sprite.Group()
+		self.uigroup.add(HoverDown(100, 50, 0, 0, 2))
 		
 	def checkEvents(self):
 		for event in pygame.event.get():
@@ -155,6 +158,9 @@ class Game:
 			for g in self.vgroup:
 				g.update()
 				g.draw(self.screen)
+			
+			self.uigroup.update()
+			self.uigroup.draw(self.screen)
 			pygame.display.update()
   
   
