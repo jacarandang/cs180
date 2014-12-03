@@ -57,7 +57,7 @@ def DFS(node):
 	if done:
 		cur = n
 		while(True):
-			path.insert(0, cur)
+			path.insert(0, cur.state)
 			if cur.parent is None:
 				break
 			cur = cur.parent

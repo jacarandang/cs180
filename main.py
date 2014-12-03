@@ -153,7 +153,7 @@ class Game:
 					self.m_down = False
 			
 			for g in self.vgroup:
-				print g.actionList
+				for s in g: print s
 				g.update()
 				g.draw(self.screen)
 			pygame.display.update()
