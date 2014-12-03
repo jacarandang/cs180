@@ -35,7 +35,7 @@ class Game:
 		self.bgroup = pygame.sprite.Group()
 
 		self.vplayer = virusAI.Player(self.grid)
-		
+		self.vgroup = []
 		
 	def checkEvents(self):
 		for event in pygame.event.get():
@@ -155,7 +155,7 @@ class Game:
 					self.m_down = False
 
 			for j in self.T_list:
-				for z in self.vgroup
+				for z in self.vgroup:
 					shoot = False
 					for i in z:
 						if pygame.sprite.collide_circle(i,j):
@@ -169,8 +169,6 @@ class Game:
 			for g in self.vgroup:
 				g.update()
 				g.draw(self.screen)
-			self.uigroup.update()
-			self.uigroup.draw(self.screen)
 			pygame.display.update()
   
   
