@@ -95,6 +95,9 @@ class VirusBase:
 	def setNextAction(self):
 		self.step += 1
 		
+	def damage(self, dmg):
+		self.life -= dmg
+		
 	def __repr__(self):
 		return 'virus'
 		

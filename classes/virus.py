@@ -44,6 +44,8 @@ class Virus(VirusBase, pygame.sprite.Sprite):
 			self.pos = self.x*30 + dx, self.y*30 + dy
 
 		self.rect.topleft = self.pos
+		if self.life <= 0:
+			self.kill()
 
 #A Virus Group which also serves as a Sprite Group		
 class VirusGroup(pygame.sprite.Group, VirusGroupBase):
