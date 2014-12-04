@@ -5,15 +5,19 @@ from AI import *
 
 class Player():
 
-	def __init__(self, board):
+	def __init__(self, board, thing):
 		self.board = board
+		self.thing = thing
 		
 	def getNextGroup(self):
-		v1 = Virus(self.board, 10, 5)
-		v2 = Virus(self.board, 10, 8)
-		v3 = Virus(self.board, 10, 10)
+		v1 = Fungi(self.board, self.thing)
+		v2 = Parasite(self.board, self.thing)
+		v3 = Bacteria(self.board, self.thing)
+		v4 = Virus(self.board, self.thing)
+		v5 = Ebola(self.board, self.thing)
+		v6 = HIV(self.board, self.thing)
 		group = VirusGroup()
-		group.add(v1, v2, v3)
+		group.add(v1, v2, v3, v4, v5, v6)
 		
 		p = []
 		for i in xrange(self.board.h):

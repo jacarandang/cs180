@@ -6,6 +6,7 @@ from classes.tower import *
 from classes.virus import *
 from classes import virusAI
 from classes.UI import *
+from classes.thing import *
 #import classes
 
 class Game:
@@ -17,9 +18,9 @@ class Game:
 		
 		self.bg = pygame.Surface((800, 600)) #temporary BG
 		self.bg = self.bg.convert()
-		self.bg.fill((255, 255, 255))
+		self.bg.fill((88, 0, 0))
 
-		self.image = pygame.image.load('res/bg1.jpg')
+		self.image = pygame.image.load('res/bg.png').convert_alpha()
 		self.imageRect = self.image.get_rect()
 
 		self.m_pos = (-10,-10)    #Mouse Coordinates
@@ -27,6 +28,7 @@ class Game:
 		self.m_pos_down = (-10,-10)  #Mouse Down Coordinates
 
 		self.grid = Board(22,18,(1,0))  #Board
+		self.thing = ThingSprite(100)
 		
 		self.select_T = None	#Tower Selected
 
@@ -34,11 +36,11 @@ class Game:
 		
 		self.bgroup = pygame.sprite.Group()
 
-		self.vplayer = virusAI.Player(self.grid)
+		self.vplayer = virusAI.Player(self.grid, self.thing)
 		self.vgroup = []
 		
-		self.uigroup = pygame.sprite.Group()
-		self.uigroup.add(HoverDown(200, 100, 500, 0, 2, 20))
+		self.allsprite = pygame.sprite.Group()
+		self.allsprite.add(self.thing)
 		
 	def checkEvents(self):
 		for event in pygame.event.get():
@@ -101,17 +103,29 @@ class Game:
 		while(self.running):
 			self.clock.tick(60)
 			self.checkEvents()
-			
-			self.screen.blit(self.image, self.imageRect)			
 			#self.screen.blit(self.image, (0,0), (400,300,300,300))
-			#self.screen.blit(self.bg, (0, 0))
 			#self.grid.draw(30,self.screen)
 
 			#Draws all Towers in Grid
+			self.screen.blit(self.bg, (0, 0))
+			
+			self.allsprite.update()
+			self.allsprite.draw(self.screen)
+
+			
+			self.bgroup.update()
+			self.screen.blit(self.image, self.imageRect)
+			
+			self.bgroup.draw(self.screen)
+			
 			for i in self.T_list:
 				#if i.view_atk:
 				i.drawAtk(0,0,self.screen)
 				i.drawBox(0,0,self.screen)
+			
+			for g in self.vgroup:
+				g.update()
+				g.draw(self.screen)
 
 		
 			#Place Tower in Grid
@@ -167,14 +181,6 @@ class Game:
 							break
 					if shoot: break
 					
-			self.bgroup.update()
-			self.bgroup.draw(self.screen)
-			for g in self.vgroup:
-				g.update()
-				g.draw(self.screen)
-				
-			self.uigroup.update()
-			self.uigroup.draw(self.screen)
 			pygame.display.update()
   
   
