@@ -139,4 +139,4 @@ class Thing:
 		return False
 		
 	def percentage(self):
-		return self.life/self.full*1.00
+		return self.life*1.00/self.full*1.00

@@ -18,10 +18,9 @@ class Game:
 		
 		self.bg = pygame.Surface((800, 600)) #temporary BG
 		self.bg = self.bg.convert()
-		self.bg.fill((255, 255, 255))
+		self.bg.fill((88, 0, 0))
 
-		self.image = pygame.image.load('res/bg.png').convert()
-		self.image.set_colorkey((255, 0, 255), RLEACCEL)
+		self.image = pygame.image.load('res/bg.png').convert_alpha()
 		self.imageRect = self.image.get_rect()
 
 		self.m_pos = (-10,-10)    #Mouse Coordinates
@@ -29,7 +28,7 @@ class Game:
 		self.m_pos_down = (-10,-10)  #Mouse Down Coordinates
 
 		self.grid = Board(22,18,(1,0))  #Board
-		self.thing = ThingSprite(1000)
+		self.thing = ThingSprite(100)
 		
 		self.select_T = None	#Tower Selected
 
@@ -104,10 +103,7 @@ class Game:
 		while(self.running):
 			self.clock.tick(60)
 			self.checkEvents()
-			print self.thing.life
-			self.screen.blit(self.image, self.imageRect)			
 			#self.screen.blit(self.image, (0,0), (400,300,300,300))
-			#self.screen.blit(self.bg, (0, 0))
 			#self.grid.draw(30,self.screen)
 
 			#Draws all Towers in Grid
@@ -170,13 +166,20 @@ class Game:
 							break
 					if shoot: break
 					
+			
+			self.screen.blit(self.bg, (0, 0))
+			
+			self.allsprite.update()
+			self.allsprite.draw(self.screen)
+			
 			self.bgroup.update()
+			self.screen.blit(self.image, self.imageRect)
+			
+			
 			self.bgroup.draw(self.screen)
 			for g in self.vgroup:
 				g.update()
 				g.draw(self.screen)
-			self.allsprite.update()
-			self.allsprite.draw(self.screen)
 			pygame.display.update()
   
   
