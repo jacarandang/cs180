@@ -82,7 +82,7 @@ class VirusBase:
 		self.x = 0
 		self.y = 0
 		self.group = None
-		self.damage = 1
+		self.dmg = 1
 		self.rod = .5	#rate of damage
 		
 	def getCurrentAction(self):
@@ -131,7 +131,7 @@ class Thing:
 		self.life = life
 		
 	def damage(self, damage):
-		self.life -= self.damage
+		self.life -= damage
 		
 	def  isDead(self):
 		if self.life <= 0:

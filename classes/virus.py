@@ -6,7 +6,7 @@ from time import time
 #An Individual Virus Sprite
 class Virus(VirusBase, pygame.sprite.Sprite):
 	
-	def __init__(self, board, life = 10, speed = 10):
+	def __init__(self, board, thing, life = 10, speed = 10):
 		pygame.sprite.Sprite.__init__(self)
 		VirusBase.__init__(self, board, life, speed)
 		self.size = 30
@@ -15,6 +15,7 @@ class Virus(VirusBase, pygame.sprite.Sprite):
 		pygame.draw.circle(self.image, (255, 0, 0), (15, 15), 15)
 		self.image.set_colorkey((0, 0, 0), RLEACCEL)
 		
+		self.thing = thing
 		self.radius = 15
 		self.rect = self.image.get_rect()
 		self.pos = (-self.size, -self.size)
@@ -34,9 +35,9 @@ class Virus(VirusBase, pygame.sprite.Sprite):
 		if self.life <= 0:
 			self.kill()
 		if self.x == self.board.w - 1:
-			if time() - self.atime() >= self.rod:
+			if time() - self.atime >= self.rod:
 				self.atime = time()
-				#damage the thing
+				self.thing.damage(self.dmg)
 				
 		diff = time() - self.time
 		if diff >= 1.00/self.speed:

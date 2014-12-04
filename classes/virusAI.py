@@ -5,13 +5,14 @@ from AI import *
 
 class Player():
 
-	def __init__(self, board):
+	def __init__(self, board, thing):
 		self.board = board
+		self.thing = thing
 		
 	def getNextGroup(self):
-		v1 = Virus(self.board, 10, 5)
-		v2 = Virus(self.board, 10, 8)
-		v3 = Virus(self.board, 10, 10)
+		v1 = Virus(self.board, self.thing, 10, 5)
+		v2 = Virus(self.board, self.thing,  10, 8)
+		v3 = Virus(self.board, self.thing,  10, 10)
 		group = VirusGroup()
 		group.add(v1, v2, v3)
 		

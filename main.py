@@ -6,6 +6,7 @@ from classes.tower import *
 from classes.virus import *
 from classes import virusAI
 from classes.UI import *
+from classes.thing import *
 #import classes
 
 class Game:
@@ -28,6 +29,7 @@ class Game:
 		self.m_pos_down = (-10,-10)  #Mouse Down Coordinates
 
 		self.grid = Board(22,18,(1,0))  #Board
+		self.thing = ThingSprite(1000)
 		
 		self.select_T = None	#Tower Selected
 
@@ -35,9 +37,11 @@ class Game:
 		
 		self.bgroup = pygame.sprite.Group()
 
-		self.vplayer = virusAI.Player(self.grid)
+		self.vplayer = virusAI.Player(self.grid, self.thing)
 		self.vgroup = []
 		
+		self.allsprite = pygame.sprite.Group()
+		self.allsprite.add(self.thing)
 		
 	def checkEvents(self):
 		for event in pygame.event.get():
@@ -100,7 +104,7 @@ class Game:
 		while(self.running):
 			self.clock.tick(60)
 			self.checkEvents()
-			
+			print self.thing.life
 			self.screen.blit(self.image, self.imageRect)			
 			#self.screen.blit(self.image, (0,0), (400,300,300,300))
 			#self.screen.blit(self.bg, (0, 0))
@@ -171,7 +175,8 @@ class Game:
 			for g in self.vgroup:
 				g.update()
 				g.draw(self.screen)
-				
+			self.allsprite.update()
+			self.allsprite.draw(self.screen)
 			pygame.display.update()
   
   
