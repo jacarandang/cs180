@@ -19,7 +19,8 @@ class Game:
 		self.bg = self.bg.convert()
 		self.bg.fill((255, 255, 255))
 
-		self.image = pygame.image.load('res/bg1.jpg')
+		self.image = pygame.image.load('res/bg.png').convert()
+		self.image.set_colorkey((255, 0, 255), RLEACCEL)
 		self.imageRect = self.image.get_rect()
 
 		self.m_pos = (-10,-10)    #Mouse Coordinates
@@ -37,8 +38,6 @@ class Game:
 		self.vplayer = virusAI.Player(self.grid)
 		self.vgroup = []
 		
-		self.uigroup = pygame.sprite.Group()
-		self.uigroup.add(HoverDown(200, 100, 500, 0, 2, 20))
 		
 	def checkEvents(self):
 		for event in pygame.event.get():
@@ -173,8 +172,6 @@ class Game:
 				g.update()
 				g.draw(self.screen)
 				
-			self.uigroup.update()
-			self.uigroup.draw(self.screen)
 			pygame.display.update()
   
   

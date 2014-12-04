@@ -20,6 +20,7 @@ class Virus(VirusBase, pygame.sprite.Sprite):
 		self.pos = (-self.size, -self.size)
 		self.rect.topleft = self.pos
 		self.time = time()
+		self.atime = time() #attack timer
 		
 	def init(self):
 		#Initiate the virus(display on screen)
@@ -30,6 +31,13 @@ class Virus(VirusBase, pygame.sprite.Sprite):
 		
 	def update(self):
 		#update function, automatically called by pygame.sprite.Group
+		if self.life <= 0:
+			self.kill()
+		if self.x == self.board.w - 1:
+			if time() - self.atime() >= self.rod:
+				self.atime = time()
+				#damage the thing
+				
 		diff = time() - self.time
 		if diff >= 1.00/self.speed:
 			self.time = time()
@@ -44,8 +52,6 @@ class Virus(VirusBase, pygame.sprite.Sprite):
 			self.pos = self.x*30 + dx, self.y*30 + dy
 
 		self.rect.topleft = self.pos
-		if self.life <= 0:
-			self.kill()
 
 #A Virus Group which also serves as a Sprite Group		
 class VirusGroup(pygame.sprite.Group, VirusGroupBase):

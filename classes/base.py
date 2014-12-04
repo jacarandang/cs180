@@ -82,6 +82,8 @@ class VirusBase:
 		self.x = 0
 		self.y = 0
 		self.group = None
+		self.damage = 1
+		self.rod = .5	#rate of damage
 		
 	def getCurrentAction(self):
 		if self.group is None: 
@@ -109,7 +111,6 @@ class VirusGroupBase:
 		self.actionList = []
 		for v in self.viruses:
 			v.group = self
-		print self.viruses
 			
 	def add(self, *vrs):
 		for virus in vrs:
@@ -126,6 +127,7 @@ class VirusGroupBase:
 class Thing:
 
 	def __init__(self, life = 1000):
+		self.full = life
 		self.life = life
 		
 	def damage(self, damage):
@@ -135,3 +137,6 @@ class Thing:
 		if self.life <= 0:
 			return True
 		return False
+		
+	def percentage(self):
+		return self.life/self.full*1.00
