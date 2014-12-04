@@ -31,6 +31,7 @@ class Game:
 		self.select_T = None	#Tower Selected
 
 		self.T_list = [] #Towers on Grid
+		self.tgroup = pygame.sprite.Group()
 		
 		self.bgroup = pygame.sprite.Group()
 
@@ -62,7 +63,7 @@ class Game:
 				if event.key == K_1:
 					print 'T_1'
 					if self.select_T == None:
-						self.select_T = Tower(1,1,30,1,'nml',6) #w=1, h=1, size=30, damage=1, tower_type='nml', shoot=1
+						self.select_T = Tower(1,1,30,1,'nml',6)
 					else:
 						self.select_T = None
 
@@ -96,6 +97,96 @@ class Game:
 				
 				if event.key == K_6:
 					self.vgroup.append(self.vplayer.getNextGroup())
+
+				if event.key == K_7:
+					if self.select_T == None:
+						self.select_T = StemCell()
+					else:
+						self.select_T = None
+
+				if event.key == K_8:
+					if self.select_T== None:
+						self.select_T = Lymphocyte()
+					else:
+						self.select_T = None
+				
+				if event.key == K_9:
+					if self.select_T == None:
+						self.select_T = Granulocyte()
+					else:
+						self.select_T = None
+
+				if event.key == K_0:
+					if self.select_T == None:
+						self.select_T = NaturalKillerCell()
+					else:
+						self.select_T = None
+
+				if event.key == K_q:
+					if self.select_T == None:
+						self.select_T = TCell()
+					else:
+						self.select_T = None
+
+				if event.key == K_w:
+					if self.select_T == None:
+						self.select_T = BCell()
+					else:
+						self.select_T = None
+
+				if event.key == K_e:
+					if self.select_T == None:
+						self.select_T = PlasmaCell()
+					else:
+						self.select_T = None
+
+				if event.key == K_r:
+					if self.select_T == None:
+						self.select_T = Granulocyte()
+					else:
+						self.select_T = None
+
+				if event.key == K_t:
+					if self.select_T == None:
+						self.select_T = Basophil()
+					else:
+						self.select_T = None
+
+				if event.key == K_y:
+					if self.select_T == None:
+						self.select_T = Neutrophil()
+					else:
+						self.select_T = None
+
+				if event.key == K_u:
+					if self.select_T == None:
+						self.select_T = Eosinophil()
+					else:
+						self.select_T = None
+
+				if event.key == K_i:
+					if self.select_T == None:
+						self.select_T = Monocyte()
+					else:
+						self.select_T = None
+
+				if event.key == K_o:
+					if self.select_T == None:
+						self.select_T = Macrophage()
+					else:
+						self.select_T = None
+
+				if event.key == K_p:
+					if self.select_T == None:
+						self.select_T = Megakaryocyte()
+					else:
+						self.select_T = None
+
+				if event.key == K_a:
+					if self.select_T == None:
+						self.select_T = Thrombocyte()
+					else:
+						self.select_T = None
 					
 	def start(self):
 		while(self.running):
@@ -103,16 +194,6 @@ class Game:
 			self.checkEvents()
 			
 			self.screen.blit(self.image, self.imageRect)			
-			#self.screen.blit(self.image, (0,0), (400,300,300,300))
-			#self.screen.blit(self.bg, (0, 0))
-			#self.grid.draw(30,self.screen)
-
-			#Draws all Towers in Grid
-			for i in self.T_list:
-				#if i.view_atk:
-				i.drawAtk(0,0,self.screen)
-				i.drawBox(0,0,self.screen)
-
 		
 			#Place Tower in Grid
 			if self.select_T != None:
@@ -137,6 +218,7 @@ class Game:
 							self.grid.set(i[0],i[1],1)
 
 						self.T_list.append(self.select_T)
+						self.tgroup.add(self.select_T)
 						self.select_T = None
 					else:
 						print 'Overlap/Outside Error'
@@ -166,6 +248,10 @@ class Game:
 							shoot = True
 							break
 					if shoot: break
+
+			
+			self.tgroup.update()
+			self.tgroup.draw(self.screen)
 					
 			self.bgroup.update()
 			self.bgroup.draw(self.screen)
@@ -173,8 +259,8 @@ class Game:
 				g.update()
 				g.draw(self.screen)
 				
-			self.uigroup.update()
-			self.uigroup.draw(self.screen)
+			#self.uigroup.update()
+			#self.uigroup.draw(self.screen)
 			pygame.display.update()
   
   

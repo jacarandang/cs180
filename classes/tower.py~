@@ -1,3 +1,4 @@
+import os, sys
 import pygame
 from pygame.locals import *
 from time import time
@@ -28,10 +29,8 @@ class Tower(pygame.sprite.Sprite):
 
 		self.time = time()
 
-		#self.atk_range = (w+2, h+2)
-		#self.atk_pos = []
-
-		#self.view_atk = False
+	def __repr__(self):
+		return self.tower_type
 
 	def setOccupy(self, boxContain):
 		for i in boxContain:
@@ -39,13 +38,10 @@ class Tower(pygame.sprite.Sprite):
 
 		self.rect.topleft = self.occupy[0][0]*self.size, self.occupy[0][1]*self.size
 		self.tRange = tower_range(self.rect, self.radius)
-		"""
-		y = self.occupy[0][1]-1
-		for i in range(self.atk_range[1]):
-			x = self.occupy[0][0]-1
-			for j in range(self.atk_range[0]):
-				self.atk_pos.append((x+j,y+i))
-		"""
+
+		y = self.occupy[0][1]*self.size
+		x = self.occupy[0][0]*self.size
+		self.rect.topleft = x, y
 
 	def drawBox(self, x_o=0, y_o=0, screen=None):
 		y = y_o + self.occupy[0][1]*self.size
@@ -63,19 +59,112 @@ class Tower(pygame.sprite.Sprite):
 	def Shoot(self, virus, bulletGroup):
 		diff = time() - self.time
 		if diff >= 1.00/self.shoot:
-			print 'shoot'
 			self.time = time()
-			bulletGroup.add(bullet(self.rect.center[0], self.rect.center[1], 1, diff, virus))
+			bulletGroup.add(bullet(self.rect.center[0], self.rect.center[1], 1, 1, virus))
+
+	def update(self):
+		pass
+
+class StemCell(Tower):
+	def __init__(self):
+		Tower.__init__(self, 1, 1, 30, 0, 'Stem Cell', 1)
 		
-	"""
-	def drawAtk(self, x_o=0, y_o=0, screen=None):
-		y = y_o + (self.atk_pos[0][1])*self.size
-		for i in range(self.atk_range[1]):
-			x = x_o + (self.atk_pos[0][0])*self.size
-			for j in range(self.atk_range[0]):
-				pygame.draw.rect(screen, (102,0,102), (x,y,self.size, self.size), 0)
-				x += self.size
-			y += self.size
-	"""
+		self.image = pygame.image.load('res/stemcell.PNG')
+		self.rect = self.image.get_rect()
 
+	def Shoot(self, virus, bulletGroup):
+		pass
 
+class Lymphocyte(Tower):
+	def __init__(self):
+		Tower.__init__(self, 1, 1, 30, 1, 'Lymphocyte', 3)
+
+		self.image = pygame.image.load('res/lymphoid.PNG')
+		self.rect = self.image.get_rect()
+
+class NaturalKillerCell(Tower):
+	def __init__(self):
+		Tower.__init__(self, 2, 2, 30, 2, 'Natural Killer Cell', 5)
+
+		self.image = pygame.image.load('res/natkill.PNG')
+		self.rect = self.image.get_rect()
+
+class TCell(Tower):
+	def __init__(self):
+		Tower.__init__(self, 2, 2, 30, 2, 'T-Cell', 5)
+
+		self.image = pygame.image.load('res/tcell.PNG')
+		self.rect = self.image.get_rect()
+
+class BCell(Tower):
+	def __init__(self):
+		Tower.__init__(self, 2, 2, 30, 2, 'B-Cell', 5)
+
+		self.image = pygame.image.load('res/bcell.PNG')
+		self.rect = self.image.get_rect()
+
+	def Shoot(self, virus, bulletGroup):
+		pass
+
+class PlasmaCell(Tower):
+	def __init__(self):
+		Tower.__init__(self, 2, 2, 30, 3, 'Plasma Cell', 7)
+		
+		self.image = pygame.image.load('res/plasma.PNG')
+		self.rect = self.image.get_rect()
+
+class Granulocyte(Tower):
+	def __init__(self):
+		Tower.__init__(self,1, 1, 30, 1, 'Granulocyte', 3)
+
+		self.image = pygame.image.load('res/myeloid.PNG')
+		self.rect = self.image.get_rect()
+
+class Basophil(Tower):
+	def __init__(self):
+		Tower.__init__(self,1, 1, 30, 2, 'Basophil', 5)
+
+		self.image = pygame.image.load('res/basophil.PNG')
+		self.rect = self.image.get_rect()
+
+class Neutrophil(Tower):
+	def __init__(self):
+		Tower.__init__(self,2, 2, 30, 2, 'Neutrophil', 5)
+
+		self.image = pygame.image.load('res/neutrophil.PNG')
+		self.rect = self.image.get_rect()
+
+class Eosinophil(Tower):
+	def __init__(self):
+		Tower.__init__(self,1, 1, 30, 2, 'Eosinophil', 5)
+
+		self.image = pygame.image.load('res/eosinophil.PNG')
+		self.rect = self.image.get_rect()
+
+class Monocyte(Tower):
+	def __init__(self):
+		Tower.__init__(self,1, 1, 30, 2, 'Monocyte', 5)
+
+		self.image = pygame.image.load('res/monocyte.PNG')
+		self.rect = self.image.get_rect()
+
+class Macrophage(Tower):
+	def __init__(self):
+		Tower.__init__(self,2, 2, 30, 2, 'Macrophage', 5)
+
+		self.image = pygame.image.load('res/macrophage.PNG')
+		self.rect = self.image.get_rect()
+
+class Megakaryocyte(Tower):
+	def __init__(self):
+		Tower.__init__(self,3, 3, 30, 2, 'Megakaryocyte', 5)
+
+		self.image = pygame.image.load('res/megakaryocyte.PNG')
+		self.rect = self.image.get_rect()
+
+class Thrombocyte(Tower):
+	def __init__(self):
+		Tower.__init__(self,1, 1, 30, 2, 'Thrombocyte', 5)
+
+		self.image = pygame.image.load('res/thrombocyte.PNG')
+		self.rect = self.image.get_rect()

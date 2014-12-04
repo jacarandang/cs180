@@ -1,8 +1,9 @@
 import pygame
 from pygame.locals import *
-from base import VirusBase
+from base import VirusBase, VirusGroupBase
 from time import time
 
+#An Individual Virus Sprite
 class Virus(VirusBase, pygame.sprite.Sprite):
 	
 	def __init__(self, board, life = 10, speed = 10):
@@ -21,19 +22,23 @@ class Virus(VirusBase, pygame.sprite.Sprite):
 		self.time = time()
 		
 	def init(self):
+		#Initiate the virus(display on screen)
 		self.x, self.y = self.getCurrentAction()
 		self.pos = self.x*self.size, self.y*self.size
 		self.pos.topleft = self.pos
 		self.time = time()
 		
 	def update(self):
+		#update function, automatically called by pygame.sprite.Group
+		if self.life <= 0:
+			self.kill()
+
 		diff = time() - self.time
 		if diff >= 1.00/self.speed:
 			self.time = time()
 			self.setNextAction()
-
-			if self.getCurrentAction() != None:
-				self.x, self.y = self.getCurrentAction()
+			if self.getCurrentAction() is None: return
+			self.x, self.y = self.getCurrentAction()
 		else:
 			target = self.getNextAction()
 			if(target == None): return
@@ -42,3 +47,16 @@ class Virus(VirusBase, pygame.sprite.Sprite):
 			self.pos = self.x*30 + dx, self.y*30 + dy
 
 		self.rect.topleft = self.pos
+
+#A Virus Group which also serves as a Sprite Group		
+class VirusGroup(pygame.sprite.Group, VirusGroupBase):
+
+	def __init__(self, *viruses):
+		pygame.sprite.Group.__init__(self, *viruses)
+		VirusGroupBase.__init__(self)
+		for v in viruses:
+			VirusGroupBase.add(v)
+		
+	def add(self, *viruses):
+		pygame.sprite.Group.add(self, *viruses)
+		VirusGroupBase.add(self, *viruses)

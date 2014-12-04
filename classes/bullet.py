@@ -34,5 +34,6 @@ class bullet(pygame.sprite.Sprite):
 				self.y = self.y - dy
 			self.rect.topleft = self.x, self.y
 		else:
+			self.virus.life = self.virus.life - self.dmg
 			self.kill()
 		
