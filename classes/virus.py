@@ -4,7 +4,7 @@ from base import VirusBase, VirusGroupBase
 from time import time
 
 #An Individual Virus Sprite
-class Virus(VirusBase, pygame.sprite.Sprite):
+class VirusSprite(VirusBase, pygame.sprite.Sprite):
 	
 	def __init__(self, board, thing, life = 10, speed = 10):
 		pygame.sprite.Sprite.__init__(self)
@@ -66,3 +66,45 @@ class VirusGroup(pygame.sprite.Group, VirusGroupBase):
 	def add(self, *viruses):
 		pygame.sprite.Group.add(self, *viruses)
 		VirusGroupBase.add(self, *viruses)
+
+class Fungi(VirusSprite):
+
+	def __init__(self, board, thing):
+		VirusSprite.__init__(self, board, thing, 20, 10)
+		self.image = pygame.image.load('res/fungi.png').convert_alpha()
+		self.rect = self.image.get_rect()
+		
+class Parasite(VirusSprite):
+
+	def __init__(self, board, thing):
+		VirusSprite.__init__(self, board, thing, 100, 2.5)
+		self.image = pygame.image.load('res/parasite1.png').convert_alpha()
+		self.rect = self.image.get_rect()
+		
+class Bacteria(VirusSprite):
+
+	def __init__(self, board, thing):
+		VirusSprite.__init__(self, board, thing, 60, 6)
+		self.image = pygame.image.load('res/bacteria.png').convert_alpha()
+		self.rect = self.image.get_rect()
+		
+class Virus(VirusSprite):
+
+	def __init__(self, board, thing):
+		VirusSprite.__init__(self, board, thing, 60, 8)
+		self.image = pygame.image.load('res/virus.png').convert_alpha()
+		self.rect = self.image.get_rect()
+		
+class Ebola(VirusSprite):
+
+	def __init__(self, board, thing):
+		VirusSprite.__init__(self, board, thing, 20, 8)
+		self.image = pygame.image.load('res/ebola1.png').convert_alpha()
+		self.rect = self.image.get_rect()
+		
+class HIV(VirusSprite):
+
+	def __init__(self, board, thing):
+		VirusSprite.__init__(self, board, thing, 90, 4)
+		self.image = pygame.image.load('res/hiv.png').convert_alpha()
+		self.rect = self.image.get_rect()

@@ -107,10 +107,25 @@ class Game:
 			#self.grid.draw(30,self.screen)
 
 			#Draws all Towers in Grid
+			self.screen.blit(self.bg, (0, 0))
+			
+			self.allsprite.update()
+			self.allsprite.draw(self.screen)
+
+			
+			self.bgroup.update()
+			self.screen.blit(self.image, self.imageRect)
+			
+			self.bgroup.draw(self.screen)
+			
 			for i in self.T_list:
 				#if i.view_atk:
 				i.drawAtk(0,0,self.screen)
 				i.drawBox(0,0,self.screen)
+			
+			for g in self.vgroup:
+				g.update()
+				g.draw(self.screen)
 
 		
 			#Place Tower in Grid
@@ -166,20 +181,6 @@ class Game:
 							break
 					if shoot: break
 					
-			
-			self.screen.blit(self.bg, (0, 0))
-			
-			self.allsprite.update()
-			self.allsprite.draw(self.screen)
-			
-			self.bgroup.update()
-			self.screen.blit(self.image, self.imageRect)
-			
-			
-			self.bgroup.draw(self.screen)
-			for g in self.vgroup:
-				g.update()
-				g.draw(self.screen)
 			pygame.display.update()
   
   
