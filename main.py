@@ -37,6 +37,9 @@ class Game:
 		self.vplayer = virusAI.Player(self.grid)
 		self.vgroup = []
 		
+		self.uigroup = pygame.sprite.Group()
+		self.uigroup.add(HoverDown(200, 100, 500, 0, 2, 20))
+		
 	def checkEvents(self):
 		for event in pygame.event.get():
 			if event.type == QUIT:
@@ -169,6 +172,9 @@ class Game:
 			for g in self.vgroup:
 				g.update()
 				g.draw(self.screen)
+				
+			self.uigroup.update()
+			self.uigroup.draw(self.screen)
 			pygame.display.update()
   
   
