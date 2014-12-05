@@ -27,6 +27,8 @@ class VirusSprite(VirusBase, pygame.sprite.Sprite):
 		self.dpsDmg = 0
 
 		self.atime = time() #attack timer
+
+		self.multiplier = 1 #Dmg Multiplier
 		
 	def init(self):
 		#Initiate the virus(display on screen)
@@ -38,8 +40,9 @@ class VirusSprite(VirusBase, pygame.sprite.Sprite):
 	def update(self):
 		#update function, automatically called by pygame.sprite.Group
 		dpsDiff = time() - self.dpsTimer
+		print 'self.life:', self.life, 'self.mult', self.multiplier
 		if dpsDiff >= 0.25:
-			self.life = self.life - self.dpsDmg 
+			self.life = self.life - self.dpsDmg*self.multiplier
 			self.dps -= 1
 			self.dpsTimer = time()
 		

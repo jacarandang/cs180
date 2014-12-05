@@ -106,7 +106,7 @@ class TCell(Tower):
 		self.image = pygame.image.load('res/tcell.PNG')
 		self.rect = self.image.get_rect()
 
-class BCell(Tower):
+class BCell(Tower): #Doing
 	#Increases Damage received of Pathogen (tag based)
 	def __init__(self):
 		Tower.__init__(self, 2, 2, 30, 2, 'B-Cell', 5)
@@ -115,7 +115,10 @@ class BCell(Tower):
 		self.rect = self.image.get_rect()
 
 	def Shoot(self, virus, bulletGroup):
-		pass
+		diff = time() - self.time
+		if diff >= 1.00/self.shoot:
+			self.time = time()
+			bulletGroup.add(TagBullet(self.rect.center[0], self.rect.center[1], 1, 1, virus,10))
 
 class PlasmaCell(Tower):
 	#Improved B-Cell, has Damage	
