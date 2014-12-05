@@ -43,6 +43,8 @@ class Game:
 		self.allsprite = pygame.sprite.Group()
 		self.allsprite.add(self.thing)
 		
+		self.status = "prep"	#"prep" or "wave"
+		
 	def checkEvents(self):
 		for event in pygame.event.get():
 			if event.type == QUIT:
