@@ -97,10 +97,23 @@ class Fungi(VirusSprite):
 class Parasite(VirusSprite):
 
 	def __init__(self, board, thing):
-		VirusSprite.__init__(self, board, thing, 100, 2.5)
-		self.image = pygame.image.load('res/parasite1.png').convert_alpha()
+		VirusSprite.__init__(self, board, thing, 20, 2.5)
+		self.images = []
+		for i in xrange(1, 6):
+			self.images.append(pygame.image.load('res/parasite'+str(i)+'.png'))
+		self.image = self.images[0]
+		self.iidx = 0
+		self.animtime = time()
 		self.rect = self.image.get_rect()
 		
+	def update(self):
+		VirusSprite.update(self)
+		if time() - self.animtime > 1/self.speed*1.00:
+			self.animtime = time()
+			self.iidx += 1
+			self.iidx %= 5
+			self.image = self.images[self.iidx]
+			
 class Bacteria(VirusSprite):
 
 	def __init__(self, board, thing):
@@ -119,9 +132,22 @@ class Ebola(VirusSprite):
 
 	def __init__(self, board, thing):
 		VirusSprite.__init__(self, board, thing, 20, 8)
-		self.image = pygame.image.load('res/ebola1.png').convert_alpha()
+		self.images = []
+		for i in xrange(1, 6):
+			self.images.append(pygame.image.load('res/ebola'+str(i)+'.png'))
+		self.image = self.images[0]
+		self.iidx = 0
+		self.animtime = time()
 		self.rect = self.image.get_rect()
 		
+	def update(self):
+		VirusSprite.update(self)
+		if time() - self.animtime > 1/self.speed*1.00:
+			self.animtime = time()
+			self.iidx += 1
+			self.iidx %= 5
+			self.image = self.images[self.iidx]
+			
 class HIV(VirusSprite):
 
 	def __init__(self, board, thing):
