@@ -205,7 +205,7 @@ class Game:
 			self.clock.tick(60)
 			self.checkEvents()
 			
-			if self.status = "prep":
+			if self.status == "prep":
 				if time() - self.timer >= self.preptime:
 					self.timer = time()
 					self.status = "wave"
