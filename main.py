@@ -190,6 +190,11 @@ class Game:
 					else:
 						self.select_T = None
 					
+				if event.key == K_z:
+					for g in self.vgroup:
+						for v in g:
+							v.stun(1)
+					
 	def start(self):
 		while(self.running):
 			self.clock.tick(60)

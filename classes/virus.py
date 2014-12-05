@@ -22,38 +22,58 @@ class VirusSprite(VirusBase, pygame.sprite.Sprite):
 		self.rect.topleft = self.pos
 		self.time = time()
 		self.atime = time() #attack timer
+		self.utime = time() #update timer
+		self.stuntime = 0
+		self.timestunned = 0
 		
 	def init(self):
 		#Initiate the virus(display on screen)
 		self.x, self.y = self.getCurrentAction()
 		self.pos = self.x*self.size, self.y*self.size
-		self.pos.topleft = self.pos
+		self.rect.topleft = self.pos
 		self.time = time()
 		
 	def update(self):
 		#update function, automatically called by pygame.sprite.Group
+		dt = time() - self.utime
+		self.utime = time()
+		
 		if self.life <= 0:
 			self.kill()
+			
 		if self.x == self.board.w - 1:
 			if time() - self.atime >= self.rod:
 				self.atime = time()
 				self.thing.damage(self.dmg)
-				
-		diff = time() - self.time
-		if diff >= 1.00/self.speed:
+			return
+		diff = time() - self.time - self.timestunned
+		
+		if self.stuntime > 0:
+			self.stuntime -= dt
+			self.timestunned += dt
+			if self.stuntime <= 0: self.stuntime = 0
+			return
+		
+		if diff  >= 1.00/self.speed:
 			self.time = time()
+			self.timestunned = 0
 			self.setNextAction()
+			x, y = self.getCurrentAction()
+			self.pos = x*self.size, y*self.size
+			self.rect.topleft = self.pos
 			if self.getCurrentAction() is None: return
 			self.x, self.y = self.getCurrentAction()
 		else:
 			target = self.getNextAction()
 			if(target == None): return
-			dx = (target[0] - self.x) * diff * self.speed * self.size
-			dy = (target[1] - self.y) * diff * self.speed * self.size
-			self.pos = self.x*30 + dx, self.y*30 + dy
-
+			dx = (target[0] - self.x) * dt * self.speed * self.size
+			dy = (target[1] - self.y) * dt * self.speed * self.size
+			self.pos = self.pos[0] + dx , self.pos[1] + dy
 		self.rect.topleft = self.pos
 
+	def stun(self, time):
+		self.stuntime += time
+		
 #A Virus Group which also serves as a Sprite Group		
 class VirusGroup(pygame.sprite.Group, VirusGroupBase):
 
