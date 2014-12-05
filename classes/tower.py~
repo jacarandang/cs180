@@ -154,16 +154,25 @@ class Basophil(Tower): #Implemented
 class Neutrophil(Tower): #Doing
 	#Stuns (engulfs, AOE) and digests enemy Pathogens (small poison damage)
 	def __init__(self):
-		Tower.__init__(self,2, 2, 30, 2, 'Neutrophil', 5)
+		Tower.__init__(self,2, 2, 30, 2, 'Neutrophil', 2)
 
 		self.image = pygame.image.load('res/neutrophil.PNG')
 		self.rect = self.image.get_rect()
+		self.stun = self.time
 
-	def stun(self, time):
-		pass
+	def Shoot(self, vlist, bulletGroup):
+		diffStun = time() - self.stun
+		if diffStun >= 2:
+			print 'stun!'
+			for i in vlist:
+				i.stun(1)
+			self.stun = time()
 
-	def Shoot(self, virus, bulletGroup):
-		pass
+		diff = time() - self.time
+		if diff >= 1.00/self.shoot:
+			for i in vlist:
+				bulletGroup.add(DPSbullet(self.rect.center[0], self.rect.center[1], 1, 1, i,5))
+			self.time = time()
 
 class Eosinophil(Tower): #Implemented
 	#Effective against Parasytic and Fungal Pathogens, Fast Damage 

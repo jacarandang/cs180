@@ -271,14 +271,20 @@ class Game:
 					self.m_down = False
 
 			for j in self.T_list:
+				vlist = []
 				for z in self.vgroup:
 					shoot = False
 					for i in z:
 						if pygame.sprite.collide_circle(i,j):
-							j.Shoot(i,self.bgroup)
-							shoot = True
-							break
+							if j.tower_type == 'Neutrophil':
+								vlist.append(i)
+							else:
+								j.Shoot(i,self.bgroup)
+								shoot = True
+								break
 					if shoot: break
+					if j.tower_type == 'Neutrophil':
+						j.Shoot(vlist, self.bgroup)
 
 			
 			self.tgroup.update()

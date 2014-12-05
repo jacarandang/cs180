@@ -45,7 +45,7 @@ class VirusSprite(VirusBase, pygame.sprite.Sprite):
 		#update function, automatically called by pygame.sprite.Group
 
 		dpsDiff = time() - self.dpsTimer
-		print 'self.life:', self.life, 'self.mult', self.multiplier
+		#print 'self.life:', self.life, 'self.mult', self.multiplier
 		if dpsDiff >= 0.25:
 			self.life = self.life - self.dpsDmg*self.multiplier
 			self.dps -= 1
