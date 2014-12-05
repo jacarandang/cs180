@@ -151,7 +151,7 @@ class Basophil(Tower): #Implemented
 		self.image = pygame.image.load('res/basophil.PNG')
 		self.rect = self.image.get_rect()
 
-class Neutrophil(Tower): #Doing
+class Neutrophil(Tower): #Implemented
 	#Stuns (engulfs, AOE) and digests enemy Pathogens (small poison damage)
 	def __init__(self):
 		Tower.__init__(self,2, 2, 30, 2, 'Neutrophil', 2)
@@ -162,7 +162,7 @@ class Neutrophil(Tower): #Doing
 
 	def Shoot(self, vlist, bulletGroup):
 		diffStun = time() - self.stun
-		if diffStun >= 2:
+		if diffStun >= 3:
 			for i in vlist:
 				i.stun(1)
 			self.stun = time()
@@ -210,7 +210,7 @@ class Macrophage(Tower): #Implemented
 			self.time = time()
 			virus.kill()
 
-class Megakaryocyte(Tower):
+class Megakaryocyte(Tower): #Implemented
 	#Effective against Ebola, can Tank (large HP)
 	def __init__(self):
 		Tower.__init__(self,3, 3, 30, 2, 'Megakaryocyte', 5)
@@ -218,10 +218,28 @@ class Megakaryocyte(Tower):
 		self.image = pygame.image.load('res/megakaryocyte.png')
 		self.rect = self.image.get_rect()
 
-class Thrombocyte(Tower):
+	def Shoot(self, virus, bulletGroup):
+		diff = time() - self.time
+		if diff >= 1.00/self.shoot:
+			if virus.name == 'ebola':
+				bulletGroup.add(bullet(self.rect.center[0], self.rect.center[1], 1, 10, virus))
+			else:
+				bulletGroup.add(bullet(self.rect.center[0], self.rect.center[1], 1, 5, virus))
+			self.time = time()
+
+class Thrombocyte(Tower): #Implemented
 	#Improved Megakaryocyte, Highly Effective against Ebola	
 	def __init__(self):
-		Tower.__init__(self,1, 1, 30, 2, 'Thrombocyte', 5)
+		Tower.__init__(self,1, 1, 30, 2, 'Thrombocyte', 7)
 
 		self.image = pygame.image.load('res/thrombocyte.PNG')
 		self.rect = self.image.get_rect()
+
+	def Shoot(self, virus, bulletGroup):
+		diff = time() - self.time
+		if diff >= 1.00/self.shoot:
+			if virus.name == 'ebola':
+				bulletGroup.add(bullet(self.rect.center[0], self.rect.center[1], 1, 20, virus))
+			else:
+				bulletGroup.add(bullet(self.rect.center[0], self.rect.center[1], 1, 10, virus))
+			self.time = time()
