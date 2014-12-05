@@ -28,6 +28,8 @@ class Tower(pygame.sprite.Sprite):
 		self.tRange = None
 
 		self.time = time()
+		
+		self.view_atk = False
 
 	def __repr__(self):
 		return self.tower_type
@@ -53,7 +55,7 @@ class Tower(pygame.sprite.Sprite):
 			y += self.size
 
 	def drawAtk(self, x_o=0, y_o=0, screen=None):
-		#pygame.draw.circle(screen,(0,0,0), (self.rect.center), self.radius)
+		pygame.draw.circle(screen,(0,0,0), (self.rect.center), self.radius)
 		pass
 
 	def Shoot(self, virus, bulletGroup):
@@ -82,10 +84,10 @@ class Lymphocyte(Tower): #Implemented
 		self.image = pygame.image.load('res/lymphoid.PNG')
 		self.rect = self.image.get_rect()
 
-class NaturalKillerCell(Tower):
+class NaturalKillerCell(Tower): #Implemented
 	#DPS, Poison Damage
 	def __init__(self):
-		Tower.__init__(self, 2, 2, 30, 2, 'Natural Killer Cell', 0.25)
+		Tower.__init__(self, 2, 2, 30, 2, 'Natural Killer Cell', 1)
 
 		self.image = pygame.image.load('res/natkill.PNG')
 		self.rect = self.image.get_rect()
@@ -105,6 +107,7 @@ class TCell(Tower):
 		self.rect = self.image.get_rect()
 
 class BCell(Tower):
+	#Increases Damage received of Pathogen (tag based)
 	def __init__(self):
 		Tower.__init__(self, 2, 2, 30, 2, 'B-Cell', 5)
 
@@ -153,21 +156,34 @@ class Eosinophil(Tower): #Implemented
 		self.image = pygame.image.load('res/eosinophil.PNG')
 		self.rect = self.image.get_rect()
 
-class Monocyte(Tower):
+class Monocyte(Tower): #Implemented
 	#Eats enemies on contact
 	def __init__(self):
-		Tower.__init__(self,1, 1, 30, 2, 'Monocyte', 5)
+		Tower.__init__(self,1, 1, 30, 2, 'Monocyte', 0.25)
 
 		self.image = pygame.image.load('res/monocyte.PNG')
 		self.rect = self.image.get_rect()
 
-class Macrophage(Tower):
+	def Shoot(self, virus, bulletGroup):
+		diff = time() - self.time
+		if diff >= 1.00/self.shoot:
+			self.time = time()
+			virus.kill()
+
+class Macrophage(Tower): #Implemented
 	#Eats enemies on contact. Better area of effect
 	def __init__(self):
-		Tower.__init__(self,2, 2, 30, 2, 'Macrophage', 5)
+		Tower.__init__(self,2, 2, 30, 2, 'Macrophage', 1.5)
 
 		self.image = pygame.image.load('res/macrophage.PNG')
 		self.rect = self.image.get_rect()
+		self.radius = self.radius*2
+
+	def Shoot(self, virus, bulletGroup):
+		diff = time() - self.time
+		if diff >= 1.00/self.shoot:
+			self.time = time()
+			virus.kill()
 
 class Megakaryocyte(Tower):
 	#Effective against Ebola, can Tank (large HP)

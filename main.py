@@ -210,9 +210,9 @@ class Game:
 			self.bgroup.draw(self.screen)
 			
 			for i in self.T_list:
-				#if i.view_atk:
-				i.drawAtk(0,0,self.screen)
-				i.drawBox(0,0,self.screen)
+				if i.view_atk:
+					i.drawAtk(0,0,self.screen)
+				#i.drawBox(0,0,self.screen)
 			
 			for g in self.vgroup:
 				g.update()

@@ -42,7 +42,6 @@ class VirusSprite(VirusBase, pygame.sprite.Sprite):
 			self.life = self.life - self.dpsDmg 
 			self.dps -= 1
 			self.dpsTimer = time()
-			print self.life
 		
 		if self.dps == 0:
 			self.dpsTimer = time()
