@@ -44,6 +44,9 @@ class Game:
 		self.allsprite.add(self.thing)
 		
 		self.status = "prep"	#"prep" or "wave"
+		self.preptime = 5
+		self.wavetime = 20
+		self.timer = time()
 		
 	def checkEvents(self):
 		for event in pygame.event.get():
@@ -201,9 +204,16 @@ class Game:
 		while(self.running):
 			self.clock.tick(60)
 			self.checkEvents()
-			#self.screen.blit(self.image, (0,0), (400,300,300,300))
-			#self.grid.draw(30,self.screen)
-
+			
+			if self.status = "prep":
+				if time() - self.timer >= self.preptime:
+					self.timer = time()
+					self.status = "wave"
+			else:
+				if time() - self.timer >= self.wavetime:
+					self.timer = time()
+					self.status = "prep"
+			
 			#Draws all Towers in Grid
 			self.screen.blit(self.bg, (0, 0))
 			
@@ -283,7 +293,7 @@ class Game:
 			
 			self.tgroup.update()
 			self.tgroup.draw(self.screen)
-					
+	
 			pygame.display.update()
   
   
