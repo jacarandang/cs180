@@ -1,7 +1,7 @@
 import os, sys
 import pygame
 from pygame.locals import *
-from time import time
+from time import time, sleep
 from classes.base import *
 from classes.bullet import *
 from classes.tower_range import *
@@ -163,7 +163,6 @@ class Neutrophil(Tower): #Doing
 	def Shoot(self, vlist, bulletGroup):
 		diffStun = time() - self.stun
 		if diffStun >= 2:
-			print 'stun!'
 			for i in vlist:
 				i.stun(1)
 			self.stun = time()

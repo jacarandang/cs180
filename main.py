@@ -283,8 +283,8 @@ class Game:
 								shoot = True
 								break
 					if shoot: break
-					if j.tower_type == 'Neutrophil':
-						j.Shoot(vlist, self.bgroup)
+				if j.tower_type == 'Neutrophil':
+					j.Shoot(vlist, self.bgroup)
 
 			
 			self.tgroup.update()
