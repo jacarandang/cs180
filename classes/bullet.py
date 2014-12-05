@@ -36,4 +36,30 @@ class bullet(pygame.sprite.Sprite):
 		else:
 			self.virus.life = self.virus.life - self.dmg
 			self.kill()
-		
+
+
+class DPSbullet(bullet):
+	def __init__(self, x=0, y=0, speed=5, dmg=1,virus=None, dps=10):
+		bullet.__init__(self, x, y, speed, dmg,virus)
+
+		self.dps = dps
+
+	def update(self):
+		if not pygame.sprite.collide_circle(self, self.virus):
+			dx = 5
+			dy = 5
+			if self.virus.pos[0] - self.x > 0:
+				self.x = self.x + dx
+			else:
+				self.x = self.x - dx
+
+			if self.virus.pos[1] - self.y > 0:
+				self.y = self.y + dy			
+			else:
+				self.y = self.y - dy
+			self.rect.topleft = self.x, self.y
+		else:
+			#Damage over time
+			self.virus.dps = self.dps
+			self.virus.dpsDmg = self.dmg
+			self.kill()
