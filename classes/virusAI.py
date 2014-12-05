@@ -28,5 +28,7 @@ class Player():
 					break
 					
 		group.setActions(p)
+		for v in group:
+			v.init()
 		return group
 		

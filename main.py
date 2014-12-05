@@ -43,6 +43,8 @@ class Game:
 		self.allsprite = pygame.sprite.Group()
 		self.allsprite.add(self.thing)
 		
+		self.status = "prep"	#"prep" or "wave"
+		
 	def checkEvents(self):
 		for event in pygame.event.get():
 			if event.type == QUIT:
@@ -189,6 +191,11 @@ class Game:
 						self.select_T = Thrombocyte()
 					else:
 						self.select_T = None
+					
+				if event.key == K_z:
+					for g in self.vgroup:
+						for v in g:
+							v.stun(1)
 					
 	def start(self):
 		while(self.running):
