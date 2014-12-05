@@ -106,7 +106,7 @@ class TCell(Tower):
 		self.image = pygame.image.load('res/tcell.PNG')
 		self.rect = self.image.get_rect()
 
-class BCell(Tower): #Doing
+class BCell(Tower): #Implemented
 	#Increases Damage received of Pathogen (tag based)
 	def __init__(self):
 		Tower.__init__(self, 2, 2, 30, 2, 'B-Cell', 5)
@@ -120,13 +120,21 @@ class BCell(Tower): #Doing
 			self.time = time()
 			bulletGroup.add(TagBullet(self.rect.center[0], self.rect.center[1], 1, 1, virus,10))
 
-class PlasmaCell(Tower):
+class PlasmaCell(Tower): #Implemented
 	#Improved B-Cell, has Damage	
 	def __init__(self):
 		Tower.__init__(self, 2, 2, 30, 3, 'Plasma Cell', 7)
 		
 		self.image = pygame.image.load('res/plasma.PNG')
 		self.rect = self.image.get_rect()
+
+	def Shoot(self, virus, bulletGroup):
+		diff = time() - self.time
+		if diff >= 1.00/self.shoot:
+			self.time = time()
+			bulletGroup.add(TagBullet(self.rect.center[0], self.rect.center[1], 1, 1, virus,10))
+			bulletGroup.add(bullet(self.rect.center[0], self.rect.center[1], 1, 1, virus))
+
 
 class Granulocyte(Tower): #Implemented
 	def __init__(self):
@@ -143,13 +151,19 @@ class Basophil(Tower): #Implemented
 		self.image = pygame.image.load('res/basophil.PNG')
 		self.rect = self.image.get_rect()
 
-class Neutrophil(Tower):
+class Neutrophil(Tower): #Doing
 	#Stuns (engulfs, AOE) and digests enemy Pathogens (small poison damage)
 	def __init__(self):
 		Tower.__init__(self,2, 2, 30, 2, 'Neutrophil', 5)
 
 		self.image = pygame.image.load('res/neutrophil.PNG')
 		self.rect = self.image.get_rect()
+
+	def stun(self, time):
+		pass
+
+	def Shoot(self, virus, bulletGroup):
+		pass
 
 class Eosinophil(Tower): #Implemented
 	#Effective against Parasytic and Fungal Pathogens, Fast Damage 
