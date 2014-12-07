@@ -60,7 +60,7 @@ class Tower(pygame.sprite.Sprite):
 
 	def Shoot(self, virus, bulletGroup):
 		diff = time() - self.time
-		if diff >= 1.00/self.shoot:
+		if diff >= 1.00/self.shoot and virus.visible:
 			self.time = time()
 			bulletGroup.add(bullet(self.rect.center[0], self.rect.center[1], 1, 1, virus))
 
@@ -94,17 +94,23 @@ class NaturalKillerCell(Tower): #Implemented
 
 	def Shoot(self, virus, bulletGroup):
 		diff = time() - self.time
-		if diff >= 1.00/self.shoot:
+		if diff >= 1.00/self.shoot and virus.visible:
 			self.time = time()
 			bulletGroup.add(DPSbullet(self.rect.center[0], self.rect.center[1], 1, 1, virus,10))
 
-class TCell(Tower):
+class TCell(Tower): #Doing
 	#Weakens Pathogens (Tracks Pathogens if invisible)
 	def __init__(self):
-		Tower.__init__(self, 2, 2, 30, 2, 'T-Cell', 5)
+		Tower.__init__(self, 2, 2, 30, 2, 'T-Cell', 7)
 
 		self.image = pygame.image.load('res/tcell.PNG')
 		self.rect = self.image.get_rect()
+
+	def Shoot(self, virus, bulletGroup):
+		diff = time() - self.time
+		if diff >= 1.00/self.shoot:
+			self.time = time()
+			bulletGroup.add(DetectBullet(self.rect.center[0], self.rect.center[1], 1, 1, virus))
 
 class BCell(Tower): #Implemented
 	#Increases Damage received of Pathogen (tag based)
@@ -116,7 +122,7 @@ class BCell(Tower): #Implemented
 
 	def Shoot(self, virus, bulletGroup):
 		diff = time() - self.time
-		if diff >= 1.00/self.shoot:
+		if diff >= 1.00/self.shoot and virus.visible:
 			self.time = time()
 			bulletGroup.add(TagBullet(self.rect.center[0], self.rect.center[1], 1, 1, virus,10))
 
@@ -130,7 +136,7 @@ class PlasmaCell(Tower): #Implemented
 
 	def Shoot(self, virus, bulletGroup):
 		diff = time() - self.time
-		if diff >= 1.00/self.shoot:
+		if diff >= 1.00/self.shoot and virus.visible:
 			self.time = time()
 			bulletGroup.add(TagBullet(self.rect.center[0], self.rect.center[1], 1, 1, virus,10))
 			bulletGroup.add(bullet(self.rect.center[0], self.rect.center[1], 1, 1, virus))
@@ -170,7 +176,8 @@ class Neutrophil(Tower): #Implemented
 		diff = time() - self.time
 		if diff >= 1.00/self.shoot:
 			for i in vlist:
-				bulletGroup.add(DPSbullet(self.rect.center[0], self.rect.center[1], 1, 1, i,5))
+				if i.visible:
+					bulletGroup.add(DPSbullet(self.rect.center[0], self.rect.center[1], 1, 1, i,5))
 			self.time = time()
 
 class Eosinophil(Tower): #Implemented
@@ -191,7 +198,7 @@ class Monocyte(Tower): #Implemented
 
 	def Shoot(self, virus, bulletGroup):
 		diff = time() - self.time
-		if diff >= 1.00/self.shoot:
+		if diff >= 1.00/self.shoot and virus.visible:
 			self.time = time()
 			virus.kill()
 
@@ -206,7 +213,7 @@ class Macrophage(Tower): #Implemented
 
 	def Shoot(self, virus, bulletGroup):
 		diff = time() - self.time
-		if diff >= 1.00/self.shoot:
+		if diff >= 1.00/self.shoot and virus.visible:
 			self.time = time()
 			virus.kill()
 
@@ -220,7 +227,7 @@ class Megakaryocyte(Tower): #Implemented
 
 	def Shoot(self, virus, bulletGroup):
 		diff = time() - self.time
-		if diff >= 1.00/self.shoot:
+		if diff >= 1.00/self.shoot and virus.visible:
 			if virus.name == 'ebola':
 				bulletGroup.add(bullet(self.rect.center[0], self.rect.center[1], 1, 10, virus))
 			else:
@@ -237,7 +244,7 @@ class Thrombocyte(Tower): #Implemented
 
 	def Shoot(self, virus, bulletGroup):
 		diff = time() - self.time
-		if diff >= 1.00/self.shoot:
+		if diff >= 1.00/self.shoot and virus.visible:
 			if virus.name == 'ebola':
 				bulletGroup.add(bullet(self.rect.center[0], self.rect.center[1], 1, 20, virus))
 			else:
