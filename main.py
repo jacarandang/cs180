@@ -61,6 +61,43 @@ class Game:
 		self.fgroup = pygame.sprite.Group()
 		self.fgroup.add(self.resource)
 		
+	def reinitialize(self):
+		self.m_pos = (-10,-10)    #Mouse Coordinates
+		self.m_down = False	#Left Mouse Button Down
+		self.m_pos_down = (-10,-10)  #Mouse Down Coordinates
+
+		self.grid = Board(22,18,(1,0))  #Board
+		self.thing = ThingSprite(100)
+		
+		self.select_T = None	#Tower Selected
+
+		self.T_list = [] #Towers on Grid
+		self.tgroup = pygame.sprite.Group()
+		
+		self.bgroup = pygame.sprite.Group()
+		self.vplayer = virusAI.Player(self.grid, self.thing, self.tgroup, self.values)
+		self.gameoptions = pygame.sprite.Group()
+		
+		self.vgroup = []
+		
+		self.allsprite = pygame.sprite.Group()
+		self.allsprite.add(self.thing)
+		
+		self.status = "prep"	#"prep" or "wave"
+		self.preptime = 5
+		self.wavetime = 20
+		self.timer = time()
+
+		self.resource = ATP() #resource
+		self.wave = 0
+		self.wFont = pygame.font.SysFont(None, 30)
+		self.wSurf = self.wFont.render(str(self.wave), True, (255,255,255))
+		self.wRect = self.wSurf.get_rect()
+		self.wRect.topleft = 675,450
+
+		self.fgroup = pygame.sprite.Group()
+		self.fgroup.add(self.resource)
+		
 	def checkEvents(self):
 		for event in pygame.event.get():
 			if event.type == QUIT:
@@ -231,7 +268,7 @@ class Game:
 		
 		self.gameoptions.add(pause,buy)
 		
-		while(self.running):
+		while(self.running and not self.thing.isDead()):
 			self.clock.tick(60)
 			self.checkEvents()
 			
@@ -350,6 +387,8 @@ class Game:
 			self.screen.blit(self.wSurf, self.wRect)
 	
 			pygame.display.update()
+			
+		return self.wave, self.thing.life
   
 class Mainmenu:
 
@@ -396,7 +435,17 @@ class Mainmenu:
 	def startgame(self):
 		game = Game(self.screen)
 		game.start() 
-					
+		
+		if game.thing.isDead():
+			while(True):
+				g = Gameover(self.screen)
+				action = g.start()
+				if action == 'again':
+					game.reinitialize()
+					game.start()
+				else: break
+		pygame.event.get()
+		
 	def start(self):
 		
 
@@ -428,21 +477,13 @@ class Gameover:
 		self.image = pygame.image.load('res/gameover.png')
 		self.imageRect = self.image.get_rect()
 
-		self.m_pos = (-10,-10)    #Mouse Coordinates
-		self.m_down = False	#Left Mouse Button Down
-		self.m_pos_down = (-10,-10)  #Mouse Down Coordinates
 		self.allsprite = pygame.sprite.Group()
-		
-		
-	
+		self.action = None
+			
 	def checkEvents(self):
 		for event in pygame.event.get():
 			if event.type == QUIT:
 				self.running = False
-
-			if event.type == MOUSEMOTION:
-				self.m_pos = (event.pos[0], event.pos[1])
-				#print self.m_pos
 
 			if event.type == MOUSEBUTTONDOWN:
 				if event.button == 1:
@@ -455,10 +496,14 @@ class Gameover:
 				if event.key == K_ESCAPE:
 					self.running = False
 					
+	def stop(self, action):
+		self.running = False
+		self.action = action
+					
 	def start(self):
 
-		goagain = Button(pygame.Surface((341,47)).convert(),(400,376),lambda: asd, 'res/goagain.png')
-		goquit = Button(pygame.Surface((225,44)).convert(),(400,467),lambda: asd, 'res/goreturn.png')
+		goagain = Button(pygame.Surface((341,47)).convert(),(400,376),lambda: self.stop('again'), 'res/goagain.png')
+		goquit = Button(pygame.Surface((225,44)).convert(),(400,467),lambda: self.stop('return'), 'res/goreturn.png')
 		self.overoptions.add(goagain,goquit)
 
 		while(self.running):
@@ -471,6 +516,7 @@ class Gameover:
 			self.overoptions.draw(self.screen)
 			pygame.display.update()
   
+		return self.action
 class Pause:
 
 	def __init__(self, screen):
