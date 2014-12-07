@@ -11,9 +11,13 @@ class bullet(pygame.sprite.Sprite):
 		self.virus = virus
 		self.size = 10
 
-		self.image = pygame.Surface((self.size, self.size))
-		pygame.draw.circle(self.image, (255, 255, 0), (self.size/2, self.size/2), self.size/2)
-		self.image.set_colorkey((0, 0, 0), RLEACCEL)
+		#self.image = pygame.Surface((self.size, self.size))
+		#pygame.draw.circle(self.image, (255, 255, 0), (self.size/2, self.size/2), self.size/2)
+		#self.image.set_colorkey((0, 0, 0), RLEACCEL)
+
+		self.image = pygame.image.load('res/blymphoid.PNG')
+		self.rect = self.image.get_rect()
+		self.rect.topleft = self.x, self.y
 
 		self.rect = self.image.get_rect()
 		self.rect.topleft = self.x, self.y
@@ -41,6 +45,9 @@ class bullet(pygame.sprite.Sprite):
 class DPSbullet(bullet):
 	def __init__(self, x=0, y=0, speed=5, dmg=1,virus=None, dps=10):
 		bullet.__init__(self, x, y, speed, dmg,virus)
+		self.image = pygame.image.load('res/bnatkill.PNG')
+		self.rect = self.image.get_rect()
+		self.rect.topleft = self.x, self.y
 
 		self.dps = dps
 
@@ -67,6 +74,9 @@ class DPSbullet(bullet):
 class TagBullet(bullet):
 	def __init__(self, x=0, y=0, speed=5, dmg=1,virus=None, mult=2):
 		bullet.__init__(self, x, y, speed, dmg, virus)
+		self.image = pygame.image.load('res/bbcell.PNG')
+		self.rect = self.image.get_rect()
+		self.rect.topleft = self.x, self.y
 
 		self.mult = mult
 
@@ -92,6 +102,9 @@ class TagBullet(bullet):
 class DetectBullet(bullet):
 	def __init__(self, x=0, y=0, speed=5, dmg=1,virus=None):
 		bullet.__init__(self, x, y, speed, dmg, virus)
+		self.image = pygame.image.load('res/btcell.PNG')
+		self.rect = self.image.get_rect()
+		self.rect.topleft = self.x, self.y
 		
 	def update(self):
 		if not pygame.sprite.collide_circle(self, self.virus):

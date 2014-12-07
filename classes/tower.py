@@ -9,7 +9,7 @@ from math import sqrt
 
 class Tower(pygame.sprite.Sprite):
 
-	def __init__(self, w=1, h=1, size=30, damage=1, tower_type='nml', shoot=1):
+	def __init__(self, w=1, h=1, size=30, damage=1, tower_type='nml', shoot=1, cost=1):
 		pygame.sprite.Sprite.__init__(self)
 		self.damage = damage
 		self.w = w
@@ -17,6 +17,7 @@ class Tower(pygame.sprite.Sprite):
 		self.size = size
 		self.tower_type = tower_type
 		self.shoot = shoot
+		self.cost = cost
 
 		self.image = pygame.Surface([self.w*self.size, self.h*self.size])
 		self.image.fill((0,0,0))
@@ -73,9 +74,12 @@ class Tower(pygame.sprite.Sprite):
 	def update(self):
 		pass
 
+
+#TOWER ARGUMENTS: (self, w=1, h=1, size=30, damage=1, tower_type='nml', shoot=1, cost=1):
+
 class StemCell(Tower): #Implemented
 	def __init__(self):
-		Tower.__init__(self, 1, 1, 30, 0, 'Stem Cell', 1)
+		Tower.__init__(self, 1, 1, 30, 0, 'Stem Cell', 1, 1)
 		
 		self.image = pygame.image.load('res/stemcell.PNG')
 		self.rect = self.image.get_rect()
@@ -85,7 +89,7 @@ class StemCell(Tower): #Implemented
 
 class Lymphocyte(Tower): #Implemented
 	def __init__(self):
-		Tower.__init__(self, 1, 1, 30, 1, 'Lymphocyte', 2)
+		Tower.__init__(self, 1, 1, 30, 1, 'Lymphocyte', 2, 2)
 
 		self.image = pygame.image.load('res/lymphoid.PNG')
 		self.rect = self.image.get_rect()
@@ -104,7 +108,7 @@ class NaturalKillerCell(Tower): #Implemented
 			self.time = time()
 			bulletGroup.add(DPSbullet(self.rect.center[0], self.rect.center[1], 1, 1, virus,10))
 
-class TCell(Tower): #Doing
+class TCell(Tower): #Implemented
 	#Weakens Pathogens (Tracks Pathogens if invisible)
 	def __init__(self):
 		Tower.__init__(self, 2, 2, 30, 2, 'T-Cell', 7)
@@ -150,7 +154,7 @@ class PlasmaCell(Tower): #Implemented
 
 class Granulocyte(Tower): #Implemented
 	def __init__(self):
-		Tower.__init__(self,1, 1, 30, 1, 'Granulocyte', 2)
+		Tower.__init__(self,1, 1, 30, 1, 'Granulocyte', 2, 2)
 
 		self.image = pygame.image.load('res/myeloid.PNG')
 		self.rect = self.image.get_rect()
