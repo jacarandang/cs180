@@ -37,3 +37,46 @@ class HoverDown(pygame.sprite.Sprite):
 				self.x = self.hx
 				self.y = self.hy
 		self.rect.topleft = self.x, self.y
+		
+		
+class Button(pygame.sprite.Sprite):
+
+	def __init__(self, image, (x, y), action, name, selected = False):
+		pygame.sprite.Sprite.__init__(self)
+		self.name = name
+		self.nimage =  image
+		self.nimage.set_colorkey((0, 0, 0), RLEACCEL)
+		self.simage = pygame.image.load(name)
+		self.nrect = self.nimage.get_rect()
+		self.srect = self.simage.get_rect()
+		self.srect.w = self.nrect.w 	
+		self.image, self.rect = None , None
+		if(selected):
+			self.image = self.simage
+			self.rect = self.srect
+		else:
+			self.image = self.nimage
+			self.rect = self.nrect
+		self.action = action
+		self.x = x
+		self.y = y
+		self.rect.center = self.x, self.y
+
+	def update(self):
+		if(self.rect.collidepoint(pygame.mouse.get_pos())): #mousehover
+			if self.image != self.simage:
+				self.image = self.simage
+				self.rect = self.srect
+				self.rect.center = self.x, self.y
+		else:
+			if self.image != self.nimage:
+				self.image = self.nimage
+				self.rect = self.nrect
+				self.rect.center = self.x, self.y
+			
+			
+	def click(self):
+		if(self.rect.collidepoint(pygame.mouse.get_pos())):
+			self.action()
+			return True
+		return False
