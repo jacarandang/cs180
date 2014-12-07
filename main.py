@@ -11,7 +11,7 @@ from classes.thing import *
 
 class Game:
 
-	def __init__(self, screen):
+	def __init__(self, screen, values = None):
 		self.screen = screen
 		self.running = True
 		self.clock = pygame.time.Clock()
@@ -23,6 +23,7 @@ class Game:
 		self.image = pygame.image.load('res/bg.png').convert_alpha()
 		self.imageRect = self.image.get_rect()
 
+		self.values = values
 		self.m_pos = (-10,-10)    #Mouse Coordinates
 		self.m_down = False	#Left Mouse Button Down
 		self.m_pos_down = (-10,-10)  #Mouse Down Coordinates
@@ -37,7 +38,7 @@ class Game:
 		
 		self.bgroup = pygame.sprite.Group()
 
-		self.vplayer = virusAI.Player(self.grid, self.thing, self.tgroup)
+		self.vplayer = virusAI.Player(self.grid, self.thing, self.tgroup, self.values)
 		self.vgroup = []
 		
 		self.allsprite = pygame.sprite.Group()

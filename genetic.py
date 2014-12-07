@@ -1,6 +1,7 @@
 from random import uniform, random, randint, choice
 import pickle
-
+from main import Game
+import pygame
 class Member:
 
 	def __init__(self, values = None):
@@ -14,6 +15,9 @@ class Member:
 				self.value[i] += uniform(-.1, .1)
 				
 	def evaluate(self):
+		scr = pygame.display.set_mode((800,600))
+		g = Game(scr)
+		a = g.start()
 		self.fitness = sum(self.value)
 		return self.fitness
 		
