@@ -43,14 +43,17 @@ class VirusSprite(VirusBase, pygame.sprite.Sprite):
 			self.visible = True
 			self.inviPast = False
 		
+		self.initiated = True
+		
 	def init(self):
 		#Initiate the virus(display on screen)
 		self.x, self.y = self.getCurrentAction()
 		self.pos = self.x*self.size, self.y*self.size
 		self.rect.topleft = self.pos
 		self.time = time()
-		
+		self.initiated = True
 	def update(self):
+		if not self.initiated: return
 		#update function, automatically called by pygame.sprite.Group
 
 		if self.visible == False:
@@ -121,9 +124,7 @@ class VirusGroup(pygame.sprite.Group, VirusGroupBase):
 	def __init__(self, *viruses):
 		pygame.sprite.Group.__init__(self, *viruses)
 		VirusGroupBase.__init__(self)
-		for v in viruses:
-			VirusGroupBase.add(v)
-		
+			
 	def add(self, *viruses):
 		pygame.sprite.Group.add(self, *viruses)
 		VirusGroupBase.add(self, *viruses)
@@ -135,6 +136,7 @@ class Fungi(VirusSprite):
 		self.image = pygame.image.load('res/fungi.png').convert_alpha()
 		self.visibleImage = self.image
 		self.rect = self.image.get_rect()
+		self.rect.topleft = (-30, -30)
 
 	def reappear(self):
 		self.image = pygame.image.load('res/fungi.png').convert_alpha()
@@ -153,6 +155,7 @@ class Parasite(VirusSprite):
 		self.iidx = 0
 		self.animtime = time()
 		self.rect = self.image.get_rect()
+		self.rect.topleft = (-30, -30)
 		
 	def update(self):
 		VirusSprite.update(self)
@@ -178,6 +181,7 @@ class Bacteria(VirusSprite):
 		VirusSprite.__init__(self, board, thing, 60, 6, "bacteria")
 		self.image = pygame.image.load('res/bacteria.png').convert_alpha()
 		self.rect = self.image.get_rect()
+		self.rect.topleft = (-30, -30)
 		
 class Virus(VirusSprite):
 
@@ -185,6 +189,7 @@ class Virus(VirusSprite):
 		VirusSprite.__init__(self, board, thing, 60, 8, "virus")
 		self.image = pygame.image.load('res/virus.png').convert_alpha()
 		self.rect = self.image.get_rect()
+		self.rect.topleft = (-30, -30)
 
 	def reappear(self):
 		self.image = pygame.image.load('res/virus.png').convert_alpha()
@@ -203,6 +208,7 @@ class Ebola(VirusSprite):
 		self.animtime = time()
 		self.rect = self.image.get_rect()
 		self.rect.topleft = self.pos
+		self.rect.topleft = (-30, -30)
 		
 	def update(self):
 		VirusSprite.update(self)
@@ -228,6 +234,7 @@ class HIV(VirusSprite):
 		VirusSprite.__init__(self, board, thing, 90, 4, "hiv")
 		self.image = pygame.image.load('res/hiv.png').convert_alpha()
 		self.rect = self.image.get_rect()
+		self.rect.topleft = (-30, -30)
 
 	def reappear(self):
 		self.image = pygame.image.load('res/hiv.png').convert_alpha()

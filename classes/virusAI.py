@@ -10,7 +10,7 @@ class Player():
 		self.board = board
 		self.thing = thing
 		self.tower = tower
-		e = Evaluator()
+		self.e = Evaluator()
 		
 	def hasValidPath(self, board):
 		p = []
@@ -25,7 +25,6 @@ class Player():
 			return p != []
 		
 	def getNextGroup(self):
-		v1 = Fungi(self.board, self.thing)
 		v2 = Parasite(self.board, self.thing)
 		v3 = Bacteria(self.board, self.thing)
 		v4 = Virus(self.board, self.thing)
@@ -36,7 +35,7 @@ class Player():
 		v7.inviPast = True
 		v7.name = 'invisible'
 		group = VirusGroup()
-		group.add(v1, v2, v3, v4, v5, v6, v7)
+		group.add()
 
 		p = []
 		cost = 400
@@ -48,8 +47,32 @@ class Player():
 					if temp_cost < cost:
 						p = temp_p
 						cost = temp_cost
-					
+				
+		inrange = []
+		for pos in p:
+			for t in self.tower:
+				if t in inrange: continue
+				if t.inRange(pos): inrange.append(t)
+		
+		ntowers = [0 for i in xrange(14)]
+		nnames = ["Stem Cell", "Lymphocyte", "Natural Killer Cell", "T-Cell", "B-Cell", "Plasma Cell", "Granulocyte", "Basophil", "Neutrophil", "Eosinophil", "Monocyte", "Macrophage", "Megakaryocyte", "Thrombocyte"]
+		for t in inrange:
+			for i in xrange(len(nnames)):
+				if t.tower_type == nnames[i]:
+					ntowers[i] += 1
+					break
+		
+		prop = self.e.eval(ntowers, 6)
+		print 10*prop[0], 10*prop[1], 10*prop[2], 10*prop[3], 10*prop[4], 10*prop[5]
+		for i in xrange(int(10*prop[0])): group.add(Fungi(self.board, self.thing))
+		for i in xrange(int(10*prop[1])): group.add(Parasite(self.board, self.thing))
+		for i in xrange(int(10*prop[2])): group.add(Bacteria(self.board, self.thing))
+		for i in xrange(int(10*prop[3])): group.add(Virus(self.board, self.thing))
+		for i in xrange(int(10*prop[4])): group.add(Ebola(self.board, self.thing))
+		for i in xrange(int(10*prop[5])): group.add(HIV(self.board, self.thing))
+		
 		group.setActions(p)
+		
 		for v in group:
 			v.init()
 		return group

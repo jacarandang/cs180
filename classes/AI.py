@@ -153,16 +153,23 @@ class Evaluator:
 		if self.values == None: self.values = [uniform(-0.5, 0.5) for i in xrange(14 * 6)]
 		
 	def eval(self, ntowers, nvirus):
-		total = [0 for i in xrange(len(nvirus))]
+		total = [0 for i in xrange(nvirus)]
 		for i in xrange(nvirus):
-			for j in xrange(ntowers):
-				total[i] += self.ntowers[j]*self.values[i*14 + j]
+			for j in xrange(len(ntowers)):
+				total[i] += ntowers[j]*self.values[i*14 + j]
 		
 		mn = min(total)
 		if mn < 0:
 			for i in xrange(len(total)): total[i] += mn
 		
 		s = sum(total)
+		if s == 0:
+			for i in xrange(len(total)):
+				total[i] += uniform(-0.25, 0.25)
+			mn = min(total)
+			if mn < 0:
+				for i in xrange(len(total)): total[i] += mn
+			s = sum(total)
 		for i in xrange(len(total)):
 			total[i] /= s
 			

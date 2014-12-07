@@ -115,6 +115,9 @@ class VirusGroupBase:
 		for v in self.viruses:
 			v.group = self
 			
+	def get(self, idx):
+		return self.viruses[idx]
+			
 	def add(self, *vrs):
 		for virus in vrs:
 			self.viruses.append(virus)

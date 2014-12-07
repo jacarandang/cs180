@@ -220,7 +220,6 @@ class Game:
 					self.timer = time()
 					self.status = "wave"
 					self.vgroup.append(self.vplayer.getNextGroup())
-					self.vplayer.getPath()
 			else:
 				if time() - self.timer >= self.wavetime or not self.hasVirus():	#or if no virus exist
 					self.timer = time()

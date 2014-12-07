@@ -5,6 +5,7 @@ from time import time, sleep
 from classes.base import *
 from classes.bullet import *
 from classes.tower_range import *
+from math import sqrt
 
 class Tower(pygame.sprite.Sprite):
 
@@ -31,6 +32,11 @@ class Tower(pygame.sprite.Sprite):
 		
 		self.view_atk = False
 
+	def inRange(self, pos):
+		mx = (self.occupy[0][0] + self.occupy[-1][0])/2
+		my = (self.occupy[0][1] + self.occupy[-1][1])/2
+		return sqrt((mx - pos[0]) ** 2 + (my - pos[1]) **2) <= self.radius/30.00
+		
 	def __repr__(self):
 		return self.tower_type
 
