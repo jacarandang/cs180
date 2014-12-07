@@ -9,6 +9,17 @@ class Player():
 		self.board = board
 		self.thing = thing
 		
+	def hasValidPath(self, board):
+		p = []
+		for i in xrange(board.h):
+			if board.get(i) == 0:
+				n = VirusNode((0, i)), board)
+				p = DFS(n)
+				if p!=[]:
+					break
+					
+			return p != []
+		
 	def getNextGroup(self):
 		v1 = Fungi(self.board, self.thing)
 		v2 = Parasite(self.board, self.thing)
