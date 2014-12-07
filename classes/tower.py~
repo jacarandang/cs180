@@ -31,6 +31,7 @@ class Tower(pygame.sprite.Sprite):
 		self.time = time()
 		
 		self.view_atk = False
+		self.view_upgrade = None
 
 	def __repr__(self):
 		return self.tower_type

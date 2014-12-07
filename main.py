@@ -58,6 +58,8 @@ class Game:
 
 		self.fgroup = pygame.sprite.Group()
 		self.fgroup.add(self.resource)
+
+		self.pgroup = pygame.sprite.Group()
 		
 	def checkEvents(self):
 		for event in pygame.event.get():
@@ -296,17 +298,31 @@ class Game:
 					self.m_down = False
 			else:
 				if self.m_down:
-
+					#Check if Tower is being clicked
 					for i in self.T_list:
 						for j in i.occupy:
 							if j == self.grid.coorToIndex(self.m_pos_down, i.size):
 								if i.view_atk:								
 									i.view_atk = False
+									i.view_upgrade.visible = False
+									i.view_upgrade = None
 								else:
-									i.view_atk = True								
-								#i.drawAtk(0,0,self.screen)
+									if i.view_upgrade == None:
+										pop = PopUp(self.m_pos_down[0],self.m_pos_down[1], i)
+										i.view_atk = True
+										i.view_upgrade = pop									
+										self.pgroup.add(pop)								
 								break
 
+					#Check if Upgrade is being clicked
+					for i in self.pgroup:
+						if i.prevRect.collidepoint(self.m_pos_down[0], self.m_pos_down[1]):
+							print 'prev'
+							i.prev()
+						if i.nextRect.collidepoint(self.m_pos_down[0], self.m_pos_down[1]):
+							print 'next'
+							i.next()
+	
 					self.m_down = False
 
 			for j in self.T_list:
@@ -330,6 +346,10 @@ class Game:
 
 			self.fgroup.update()
 			self.fgroup.draw(self.screen)
+
+			#Display PopUp
+			self.pgroup.update()
+			self.pgroup.draw(self.screen)
 
 			#display wave
 			self.wSurf = self.wFont.render(str(self.wave), True, (255,255,255))
