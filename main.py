@@ -37,7 +37,7 @@ class Game:
 		
 		self.bgroup = pygame.sprite.Group()
 
-		self.vplayer = virusAI.Player(self.grid, self.thing)
+		self.vplayer = virusAI.Player(self.grid, self.thing, self.tgroup)
 		self.vgroup = []
 		
 		self.allsprite = pygame.sprite.Group()
@@ -220,11 +220,13 @@ class Game:
 					self.timer = time()
 					self.status = "wave"
 					self.vgroup.append(self.vplayer.getNextGroup())
+					self.vplayer.getPath()
 			else:
 				if time() - self.timer >= self.wavetime or not self.hasVirus():	#or if no virus exist
 					self.timer = time()
 					self.status = "prep"
 					print "prep"
+					
 			
 			#Draws all Towers in Grid
 			self.screen.blit(self.bg, (0, 0))

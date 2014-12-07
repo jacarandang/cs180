@@ -72,6 +72,9 @@ class Board:
 
 		return (x,y)
 	
+	def getInRange(self, tower):
+		pass
+	
 class VirusBase:
 	
 	def __init__(self, board, life=10, speed=1):

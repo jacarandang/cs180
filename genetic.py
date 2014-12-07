@@ -1,4 +1,5 @@
 from random import uniform, random, randint, choice
+import pickle
 
 class Member:
 

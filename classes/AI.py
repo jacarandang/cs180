@@ -1,4 +1,5 @@
 from DS import *
+from random import uniform
 
 class VirusNode(Node):
 
@@ -144,3 +145,26 @@ def UCS(node):
 			cur = cur.parent
 	
 	return path
+
+class Evaluator:
+
+	def __init__(self, values = None):
+		self.values = values
+		if self.values == None: self.values = [uniform(-0.5, 0.5) for i in xrange(14 * 6)]
+		
+	def eval(self, ntowers, nvirus):
+		total = [0 for i in xrange(len(nvirus))]
+		for i in xrange(nvirus):
+			for j in xrange(ntowers):
+				total[i] += self.ntowers[j]*self.values[i*14 + j]
+		
+		mn = min(total)
+		if mn < 0:
+			for i in xrange(len(total)): total[i] += mn
+		
+		s = sum(total)
+		for i in xrange(len(total)):
+			total[i] /= s
+			
+		return total
+		

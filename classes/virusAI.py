@@ -2,12 +2,15 @@ import pygame
 from pygame.locals import *
 from virus import *
 from AI import *
+from pickle import *
 
 class Player():
 
-	def __init__(self, board, thing):
+	def __init__(self, board, thing, tower):
 		self.board = board
 		self.thing = thing
+		self.tower = tower
+		e = Evaluator()
 		
 	def hasValidPath(self, board):
 		p = []
@@ -51,3 +54,21 @@ class Player():
 			v.init()
 		return group
 		
+	def getPath(self): 
+		board = self.board.board
+		for i in xrange(self.board.w):
+			for j in xrange(self.board.h):
+				if board[i][j]:
+					board[i][j] = -1
+		
+		one = [(-1, 1), (-1, 0), (-1, 1), (0, -1), (0, 1), (1, -1), (1, 0), (1, 1)]
+		two = [(-1, -1)]
+		for t in self.tower:
+			d = t.damage * t.shoot
+			r = t.radius/30.00
+			mid = (t.occupy[-1][0] + t.occupy[0][0])/2, (t.occupy[-1][1] + t.occupy[0][1])/2
+			print mid, r
+			tl = int(mid[0] - r), int(mid[1] - r)
+			br = int(mid[0] + r), int(mid[1] + r)
+			print tl
+			print tl[0]+ 2*r, tl[1] + 2*r
