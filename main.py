@@ -36,7 +36,8 @@ class Game:
 		self.tgroup = pygame.sprite.Group()
 		
 		self.bgroup = pygame.sprite.Group()
-
+		self.gameoptions = pygame.sprite.Group()
+		
 		self.vplayer = virusAI.Player(self.grid, self.thing)
 		self.vgroup = []
 		
@@ -62,7 +63,9 @@ class Game:
 					print 'left mouse button'
 					self.m_down = True
 					self.m_pos_down = (event.pos[0], event.pos[1])
-
+					for b in self.gameoptions:
+						b.click()
+						
 			if event.type == KEYDOWN:
 				if event.key == K_ESCAPE:
 					self.running = False
@@ -201,6 +204,11 @@ class Game:
 							v.stun(1)
 					
 	def start(self):
+		pause = Button(pygame.Surface((104,29)).convert(),(730,32),lambda: asd, 'res/pauseg.PNG')
+		buy = Button(pygame.Surface((69,27)).convert(),(730,70),lambda: asd, 'res/buyg.png')
+		
+		self.gameoptions.add(pause,buy)
+		
 		while(self.running):
 			self.clock.tick(60)
 			self.checkEvents()
@@ -295,10 +303,13 @@ class Game:
 					if shoot: break
 				if j.tower_type == 'Neutrophil':
 					j.Shoot(vlist, self.bgroup)
+
 			
 			self.tgroup.update()
 			self.tgroup.draw(self.screen)
-	
+			
+			self.gameoptions.update()
+			self.gameoptions.draw(self.screen)
 			pygame.display.update()
   
 class Mainmenu:
