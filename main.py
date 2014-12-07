@@ -390,16 +390,19 @@ class Mainmenu:
 					
 	def stop(self):
 		self.running = False
+	
+	def startgame(self):
+		game = Game(self.screen)
+		game.start() 
 					
 	def start(self):
 		
 
-		start = Button(pygame.Surface((190,43)).convert(),(183,379),lambda: asd, 'res/start.PNG')
-		help = Button(pygame.Surface((143,43)).convert(),(378,379),lambda: asd, 'res/help.PNG')
-		options = Button(pygame.Surface((240,43)).convert(),(595,379),lambda: asd, 'res/options.PNG')
+		start = Button(pygame.Surface((190,43)).convert(),(315,379),self.startgame , 'res/start.PNG')
+		help = Button(pygame.Surface((143,43)).convert(),(508,379),lambda: asd, 'res/help.PNG')
 		credits = Button(pygame.Surface((244,41)).convert(),(308,469),lambda: asd, 'res/credits.PNG')
 		quit = Button(pygame.Surface((153,41)).convert(),(537,468),self.stop  , 'res/quit.PNG')
-		self.mainoptions.add(start,help,options,credits,quit)
+		self.mainoptions.add(start,help,credits,quit)
 		
 		
 		while(self.running):
@@ -529,14 +532,10 @@ if __name__ == '__main__':
 	SCREEN = pygame.display.set_mode((800, 600))
 	#pygame.display.toggle_fullscreen()
 	
-	
-	
+
 	mmenu = Mainmenu(SCREEN)
 	mmenu.start()
 	
-	
-	game = Game(SCREEN)
-	game.start()
 
 
 
