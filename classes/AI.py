@@ -2,9 +2,10 @@ from DS import *
 
 class VirusNode(Node):
 
-	def __init__(self, pos, board, parent = None):
+	def __init__(self, pos, board, parent = None, cost = 0):
 		Node.__init__(self, pos, parent)
 		self.board = board
+		self.cost = cost
 		
 	def nextNodes(self):
 		dx = [-1, 0, 0, 1]
@@ -16,7 +17,7 @@ class VirusNode(Node):
 			ny = self.state[1] + dy[i]
 			if nx >= 0 and nx < self.board.w and ny >= 0 and ny < self.board.h:
 				if self.board.get(nx, ny) == 0:
-					nxt.append(VirusNode((nx, ny), self.board, self))
+					nxt.append(VirusNode((nx, ny), self.board, self, self.cost + 1))
 		
 		return nxt
 	def isTarget(self):
@@ -27,7 +28,10 @@ class VirusNode(Node):
 	def __repr__(self):
 		return str(self.state)
 		
-def DFS(node):
+	def __cmp__(self, other):
+		return other.cost - self.cost
+		
+def BFS(node):
 	s = Queue()
 	s.push(node)
 	
@@ -54,6 +58,83 @@ def DFS(node):
 			s.push(nodes)
 			
 	path = []
+	cost = 0
+	if done:
+		cost = n.cost
+		cur = n
+		while(True):
+			path.insert(0, cur.state)
+			if cur.parent is None:
+				break
+			cur = cur.parent
+	
+	return path, cost
+
+def DFS(node):
+	s = Stack()
+	s.push(node)
+	
+	visited = []
+	done = False
+	n = None
+	while not s.isEmpty():
+		n = s.pop()
+		
+		if n in visited:
+			continue
+		visited.append(n)
+			
+		if n.isTarget():
+			done = True
+			break
+			
+		nxt = n.nextNodes()
+		
+			
+		for nodes in nxt:
+			if nodes in visited:
+				continue
+			s.push(nodes)
+			
+	path = []
+	cost = 0
+	if done:
+		cost = n.cost
+		cur = n
+		while(True):
+			path.insert(0, cur.state)
+			if cur.parent is None:
+				break
+			cur = cur.parent
+	
+	return path, cost
+	
+def UCS(node):
+	pq = PQ()
+	pq.push(node)
+	visited = []
+	done = False
+	n = None
+	while not pq.isEmpty():
+		n = s.pop()
+		
+		if n in visited:
+			continue
+		visited.append(n)
+		
+		if n.isTarget():
+			done = True
+			break
+		
+		nxt = n.nextNodes()
+		
+		for nodes in nxt:
+			if nodes in visited:
+				continue
+			s.push(nodes)
+			
+		path = []
+		
 	if done:
 		cur = n
 		while(True):
