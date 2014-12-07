@@ -332,7 +332,9 @@ class Game:
 							i.next()
 						
 						if i.sellRect.collidepoint(self.m_pos_down[0], self.m_pos_down[1]):
-							print 'sell'
+							print 'sell'							
+							self.resource.currentATP += i.tower.cost
+							i.sell()
 
 						if i.upgradeRect.collidepoint(self.m_pos_down[0], self.m_pos_down[1]):
 							print 'upgrade'
@@ -355,6 +357,14 @@ class Game:
 					if shoot: break
 				if j.tower_type == 'Neutrophil':
 					j.Shoot(vlist, self.bgroup)
+
+			for i in self.T_list:
+				present = False
+				for j in self.tgroup:
+					if j == i:
+						present = True
+				if present == False:
+					self.T_list.remove(i)
 
 			self.tgroup.update()
 			self.tgroup.draw(self.screen)

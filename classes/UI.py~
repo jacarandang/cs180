@@ -163,6 +163,9 @@ class PopUp(pygame.sprite.Sprite):
 	def prev(self):
 		if self.index > 0:
 			self.index -= 1
+	def sell(self):
+		self.tower.kill()
+		self.visible = False
 
 	def update(self):
 		if self.visible == False:
