@@ -7,6 +7,7 @@ from classes.virus import *
 from classes import virusAI
 from classes.UI import *
 from classes.thing import *
+from classes.ATP import *
 #import classes
 
 class Game:
@@ -48,6 +49,16 @@ class Game:
 		self.preptime = 5
 		self.wavetime = 20
 		self.timer = time()
+
+		self.resource = ATP() #resource
+		self.wave = 0
+		self.wFont = pygame.font.SysFont(None, 30)
+		self.wSurf = self.wFont.render(str(self.wave), True, (255,255,255))
+		self.wRect = self.wSurf.get_rect()
+		self.wRect.topleft = 675,450
+
+		self.fgroup = pygame.sprite.Group()
+		self.fgroup.add(self.resource)
 		
 	def checkEvents(self):
 		for event in pygame.event.get():
@@ -203,6 +214,16 @@ class Game:
 						for v in g:
 							v.stun(1)
 					
+	def hasVirus(self):
+		v = False
+		for g in self.vgroup:
+			if len(g) != 0:
+				v = True
+				break
+		
+		return v
+		
+		
 	def start(self):
 		pause = Button(pygame.Surface((104,29)).convert(),(730,32),lambda: asd, 'res/pauseg.PNG')
 		buy = Button(pygame.Surface((69,27)).convert(),(730,70),lambda: asd, 'res/buyg.png')
@@ -217,10 +238,14 @@ class Game:
 				if time() - self.timer >= self.preptime:
 					self.timer = time()
 					self.status = "wave"
+					self.vgroup.append(self.vplayer.getNextGroup())
+					self.wave += 1
 			else:
-				if time() - self.timer >= self.wavetime:
+				if time() - self.timer >= self.wavetime or not self.hasVirus():	#or if no virus exist
 					self.timer = time()
 					self.status = "prep"
+					self.resource.addATP(self.wave)
+					print "prep"
 			
 			#Draws all Towers in Grid
 			self.screen.blit(self.bg, (0, 0))
@@ -261,14 +286,18 @@ class Game:
 								if j == k:
 									overlap = True
 					if not overlap:
-						self.select_T.setOccupy(boxContain)
+						if self.resource.currentATP - self.select_T.cost >= 0:
+							self.select_T.setOccupy(boxContain)
 
-						for i in boxContain:
-							self.grid.set(i[0],i[1],1)
+							for i in boxContain:
+								self.grid.set(i[0],i[1],1)
 
-						self.T_list.append(self.select_T)
-						self.tgroup.add(self.select_T)
-						self.select_T = None
+							self.T_list.append(self.select_T)
+							self.tgroup.add(self.select_T) 
+							self.resource.currentATP -= self.select_T.cost
+							self.select_T = None
+						else:
+							print 'Not enough ATP'
 					else:
 						print 'Overlap/Outside Error'
 
@@ -310,6 +339,14 @@ class Game:
 			
 			self.gameoptions.update()
 			self.gameoptions.draw(self.screen)
+
+			self.fgroup.update()
+			self.fgroup.draw(self.screen)
+
+			#display wave
+			self.wSurf = self.wFont.render(str(self.wave), True, (255,255,255))
+			self.screen.blit(self.wSurf, self.wRect)
+	
 			pygame.display.update()
   
 class Mainmenu:
