@@ -74,8 +74,6 @@ class Player():
 		
 		group.setActions(p)
 		
-		for v in group:
-			v.init()
 		return group
 		
 	def getPath(self): 

@@ -43,15 +43,21 @@ class VirusSprite(VirusBase, pygame.sprite.Sprite):
 			self.visible = True
 			self.inviPast = False
 		
-		self.initiated = True
+		self.initiated = False
 		
 	def init(self):
 		#Initiate the virus(display on screen)
-		self.x, self.y = self.getCurrentAction()
+		self.x, self.y = 0, 0 
+		if self.getCurrentAction() != None:
+			self.x, self.y = self.getCurrentAction()
 		self.pos = self.x*self.size, self.y*self.size
+		self.step = 0
 		self.rect.topleft = self.pos
 		self.time = time()
+		self.utime = time()
+		self.atime = time()
 		self.initiated = True
+		
 	def update(self):
 		if not self.initiated: return
 		#update function, automatically called by pygame.sprite.Group
@@ -122,13 +128,28 @@ class VirusSprite(VirusBase, pygame.sprite.Sprite):
 class VirusGroup(pygame.sprite.Group, VirusGroupBase):
 
 	def __init__(self, *viruses):
-		pygame.sprite.Group.__init__(self, *viruses)
+		self.hvirus = [i for i in viruses]
+		pygame.sprite.Group.__init__(self)
 		VirusGroupBase.__init__(self)
+		self.timer = time()
 			
 	def add(self, *viruses):
+		for v in viruses:
+			self.hvirus.append(v)
+			
+	def addToGroup(self, *viruses):
 		pygame.sprite.Group.add(self, *viruses)
 		VirusGroupBase.add(self, *viruses)
 
+	def update(self):
+		if time() - self.timer >= 0.5:
+			self.timer = time()
+			if not len(self.hvirus) == 0:
+				v = self.hvirus.pop()
+				self.addToGroup(v)
+				v.init()
+		pygame.sprite.Group.update(self)
+		
 class Fungi(VirusSprite):
 
 	def __init__(self, board, thing):
