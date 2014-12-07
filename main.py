@@ -322,7 +322,7 @@ class Game:
 										self.pgroup.add(pop)								
 								break
 
-					#Check if Upgrade is being clicked
+					#Check if PopUp is being clicked
 					for i in self.pgroup:
 						if i.prevRect.collidepoint(self.m_pos_down[0], self.m_pos_down[1]):
 							print 'prev'
@@ -330,8 +330,15 @@ class Game:
 						if i.nextRect.collidepoint(self.m_pos_down[0], self.m_pos_down[1]):
 							print 'next'
 							i.next()
+						
+						if i.sellRect.collidepoint(self.m_pos_down[0], self.m_pos_down[1]):
+							print 'sell'
+
+						if i.upgradeRect.collidepoint(self.m_pos_down[0], self.m_pos_down[1]):
+							print 'upgrade'
 	
 					self.m_down = False
+
 
 			for j in self.T_list:
 				vlist = []
@@ -349,7 +356,6 @@ class Game:
 				if j.tower_type == 'Neutrophil':
 					j.Shoot(vlist, self.bgroup)
 
-			
 			self.tgroup.update()
 			self.tgroup.draw(self.screen)
 			
