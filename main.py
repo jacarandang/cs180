@@ -37,7 +37,8 @@ class Game:
 		self.tgroup = pygame.sprite.Group()
 		
 		self.bgroup = pygame.sprite.Group()
-
+		self.gameoptions = pygame.sprite.Group()
+		
 		self.vplayer = virusAI.Player(self.grid, self.thing)
 		self.vgroup = []
 		
@@ -75,7 +76,9 @@ class Game:
 					print 'left mouse button'
 					self.m_down = True
 					self.m_pos_down = (event.pos[0], event.pos[1])
-
+					for b in self.gameoptions:
+						b.click()
+						
 			if event.type == KEYDOWN:
 				if event.key == K_ESCAPE:
 					self.running = False
@@ -224,6 +227,11 @@ class Game:
 		
 		
 	def start(self):
+		pause = Button(pygame.Surface((104,20)).convert(),(730,32),lambda: asd, 'res/pauseg.PNG')
+		buy = Button(pygame.Surface((69,20)).convert(),(730,70),lambda: asd, 'res/buyg.png')
+		
+		self.gameoptions.add(pause,buy)
+		
 		while(self.running):
 			self.clock.tick(60)
 			self.checkEvents()
@@ -341,8 +349,12 @@ class Game:
 				if j.tower_type == 'Neutrophil':
 					j.Shoot(vlist, self.bgroup)
 
+			
 			self.tgroup.update()
 			self.tgroup.draw(self.screen)
+			
+			self.gameoptions.update()
+			self.gameoptions.draw(self.screen)
 
 			self.fgroup.update()
 			self.fgroup.draw(self.screen)
@@ -398,16 +410,19 @@ class Mainmenu:
 					
 	def stop(self):
 		self.running = False
+	
+	def startgame(self):
+		game = Game(self.screen)
+		game.start() 
 					
 	def start(self):
 		
 
-		start = Button(pygame.Surface((190,43)).convert(),(183,379),lambda: asd, 'res/start.PNG')
-		help = Button(pygame.Surface((143,43)).convert(),(378,379),lambda: asd, 'res/help.PNG')
-		options = Button(pygame.Surface((240,43)).convert(),(595,379),lambda: asd, 'res/options.PNG')
+		start = Button(pygame.Surface((190,43)).convert(),(315,379),self.startgame , 'res/start.PNG')
+		help = Button(pygame.Surface((143,43)).convert(),(508,379),lambda: asd, 'res/help.PNG')
 		credits = Button(pygame.Surface((244,41)).convert(),(308,469),lambda: asd, 'res/credits.PNG')
 		quit = Button(pygame.Surface((153,41)).convert(),(537,468),self.stop  , 'res/quit.PNG')
-		self.mainoptions.add(start,help,options,credits,quit)
+		self.mainoptions.add(start,help,credits,quit)
 		
 		
 		while(self.running):
@@ -537,14 +552,10 @@ if __name__ == '__main__':
 	SCREEN = pygame.display.set_mode((800, 600))
 	#pygame.display.toggle_fullscreen()
 	
-	
-	
+
 	mmenu = Mainmenu(SCREEN)
 	mmenu.start()
 	
-	
-	game = Game(SCREEN)
-	game.start()
 
 
 
