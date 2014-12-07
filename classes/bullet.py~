@@ -88,3 +88,29 @@ class TagBullet(bullet):
 			#Damage multiplier 
 			self.virus.multiplier = self.virus.multiplier + self.mult
 			self.kill()
+
+class DetectBullet(bullet):
+	def __init__(self, , x=0, y=0, speed=5, dmg=1,virus=None):
+		bullet.__init__(self, x, y, speed, dmg, virus)
+		
+	def update(self):
+		if not pygame.sprite.collide_circle(self, self.virus):
+			dx = 5
+			dy = 5
+			if self.virus.pos[0] - self.x > 0:
+				self.x = self.x + dx
+			else:
+				self.x = self.x - dx
+
+			if self.virus.pos[1] - self.y > 0:
+				self.y = self.y + dy			
+			else:
+				self.y = self.y - dy
+			self.rect.topleft = self.x, self.y
+		else:
+			#Detect Virus
+			if self.virus.visible == False:
+				self.virus.visible = True
+			self.virus.life = self.virus.life - self.dmg*self.virus.multiplier
+			self.kill()
+		

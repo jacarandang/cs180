@@ -1,4 +1,5 @@
 import pygame
+import random
 from pygame.locals import *
 from base import VirusBase, VirusGroupBase
 from time import time
@@ -12,7 +13,8 @@ class VirusSprite(VirusBase, pygame.sprite.Sprite):
 		self.size = 30
 		
 		self.image = pygame.Surface((self.size, self.size))
-		pygame.draw.circle(self.image, (255, 0, 0), (15, 15), 15)
+		#pygame.draw.circle(self.image, (255, 0, 0), (15, 15), 15)
+		pygame.draw.circle(self.image, (0,0,0), (15,15), 15)
 		self.image.set_colorkey((0, 0, 0), RLEACCEL)
 		
 		self.name = name
@@ -34,6 +36,13 @@ class VirusSprite(VirusBase, pygame.sprite.Sprite):
 		self.stuntime = 0
 		self.timestunned = 0
 		
+		if random.randint(1,100) <= 5:
+			self.visible = False
+			self.inviPast = True
+		else:
+			self.visible = True
+			self.inviPast = False
+		
 	def init(self):
 		#Initiate the virus(display on screen)
 		self.x, self.y = self.getCurrentAction()
@@ -44,8 +53,14 @@ class VirusSprite(VirusBase, pygame.sprite.Sprite):
 	def update(self):
 		#update function, automatically called by pygame.sprite.Group
 
+		if self.visible == False:
+			self.image = pygame.Surface((self.size, self.size))
+			pygame.draw.circle(self.image, (0,0,0), (15,15), 15)
+			self.image.set_colorkey((0, 0, 0), RLEACCEL)
+		elif self.inviPast and self.visible:
+			self.reappear()
+
 		dpsDiff = time() - self.dpsTimer
-		#print 'self.life:', self.life, 'self.mult', self.multiplier
 		if dpsDiff >= 0.25:
 			self.life = self.life - self.dpsDmg*self.multiplier
 			self.dps -= 1
@@ -93,6 +108,12 @@ class VirusSprite(VirusBase, pygame.sprite.Sprite):
 
 	def stun(self, time):
 		self.stuntime += time
+
+	def reappear(self):
+		pass
+
+	def __repr__(self):
+		return self.name
 		
 #A Virus Group which also serves as a Sprite Group		
 class VirusGroup(pygame.sprite.Group, VirusGroupBase):
@@ -112,7 +133,14 @@ class Fungi(VirusSprite):
 	def __init__(self, board, thing):
 		VirusSprite.__init__(self, board, thing, 20, 10, "fungi")
 		self.image = pygame.image.load('res/fungi.png').convert_alpha()
+		self.visibleImage = self.image
 		self.rect = self.image.get_rect()
+
+	def reappear(self):
+		self.image = pygame.image.load('res/fungi.png').convert_alpha()
+		self.visibleImage = self.image
+		self.rect = self.image.get_rect()
+		self.rect.topleft = self.pos
 		
 class Parasite(VirusSprite):
 
@@ -133,6 +161,16 @@ class Parasite(VirusSprite):
 			self.iidx += 1
 			self.iidx %= 5
 			self.image = self.images[self.iidx]
+
+	def reappear(self):
+		self.images = []
+		for i in xrange(1, 6):
+			self.images.append(pygame.image.load('res/parasite'+str(i)+'.png'))
+		self.image = self.images[0]
+		self.iidx = 0
+		self.animtime = time()
+		self.rect = self.image.get_rect()
+		self.rect.topleft = self.pos
 			
 class Bacteria(VirusSprite):
 
@@ -147,6 +185,11 @@ class Virus(VirusSprite):
 		VirusSprite.__init__(self, board, thing, 60, 8, "virus")
 		self.image = pygame.image.load('res/virus.png').convert_alpha()
 		self.rect = self.image.get_rect()
+
+	def reappear(self):
+		self.image = pygame.image.load('res/virus.png').convert_alpha()
+		self.rect = self.image.get_rect()
+		self.rect.topleft = self.pos
 		
 class Ebola(VirusSprite):
 
@@ -159,6 +202,7 @@ class Ebola(VirusSprite):
 		self.iidx = 0
 		self.animtime = time()
 		self.rect = self.image.get_rect()
+		self.rect.topleft = self.pos
 		
 	def update(self):
 		VirusSprite.update(self)
@@ -167,6 +211,16 @@ class Ebola(VirusSprite):
 			self.iidx += 1
 			self.iidx %= 5
 			self.image = self.images[self.iidx]
+
+	def reappear(self):
+		self.images = []
+		for i in xrange(1, 6):
+			self.images.append(pygame.image.load('res/ebola'+str(i)+'.png'))
+		self.image = self.images[0]
+		self.iidx = 0
+		self.animtime = time()
+		self.rect = self.image.get_rect()
+		self.rect.topleft = self.pos
 			
 class HIV(VirusSprite):
 
@@ -174,3 +228,8 @@ class HIV(VirusSprite):
 		VirusSprite.__init__(self, board, thing, 90, 4, "hiv")
 		self.image = pygame.image.load('res/hiv.png').convert_alpha()
 		self.rect = self.image.get_rect()
+
+	def reappear(self):
+		self.image = pygame.image.load('res/hiv.png').convert_alpha()
+		self.rect = self.image.get_rect()
+		self.rect.topleft = self.pos

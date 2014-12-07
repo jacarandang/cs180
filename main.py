@@ -295,7 +295,6 @@ class Game:
 					if shoot: break
 				if j.tower_type == 'Neutrophil':
 					j.Shoot(vlist, self.bgroup)
-
 			
 			self.tgroup.update()
 			self.tgroup.draw(self.screen)
