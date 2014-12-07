@@ -144,12 +144,16 @@ class PopUp(pygame.sprite.Sprite):
 
 		if self.tower.tower_type == 'Natural Killer Cell' or self.tower.tower_type == 'T-Cell' or self.tower.tower_type == 'Plasma Cell' or self.tower.tower_type == 'Basophil' or self.tower.tower_type == 'Neutrophil' or self.tower.tower_type == 'Eosinophil' or self.tower.tower_type == 'Macrophage' or self.tower.tower_type == 'Thrombocyte':
 			self.upgrades.append(pygame.image.load('res/ufinalform.png')) #No Upgrades
-
+		
 			self.sellRect = pygame.Rect(self.x, self.y+104-12, 120, 12)
 			self.upgradeRect = None
 		else:
-			self.sellRect = pygame.Rect(self.x, self.y+132-25, 120, 12)
-			self.upgradeRect = pygame.Rect(self.x, self.y+132-12, 120, 12)
+			if self.tower.tower_type == 'Megakaryocyte' or self.tower.tower_type == 'B-Cell' or self.tower.tower_type == 'Monocyte':
+				self.sellRect = pygame.Rect(self.x, self.y+118-25, 120, 12)
+				self.upgradeRect = pygame.Rect(self.x, self.y+118-12, 120, 12)
+			else:
+				self.sellRect = pygame.Rect(self.x, self.y+132-25, 120, 12)
+				self.upgradeRect = pygame.Rect(self.x, self.y+132-12, 120, 12)
 
 		self.image = self.upgrades[self.index]
 		self.rect = self.image.get_rect()

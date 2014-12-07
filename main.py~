@@ -336,7 +336,7 @@ class Game:
 							self.resource.currentATP += i.tower.cost
 							i.sell()
 
-						if i.upgradeRect.collidepoint(self.m_pos_down[0], self.m_pos_down[1]):
+						if i.upgradeRect != None and i.upgradeRect.collidepoint(self.m_pos_down[0], self.m_pos_down[1]):
 							print 'upgrade'
 	
 					self.m_down = False
@@ -364,6 +364,9 @@ class Game:
 					if j == i:
 						present = True
 				if present == False:
+					for k in i.occupy:
+						self.grid.set(k[0],k[1],0)
+					print 'occupy:', i.occupy
 					self.T_list.remove(i)
 
 			self.tgroup.update()
