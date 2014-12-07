@@ -113,15 +113,39 @@ class PopUp(pygame.sprite.Sprite):
 			self.upgrades.append(pygame.image.load('res/ulymphocyte.png')) #Lymphocyte
 			self.upgrades.append(pygame.image.load('res/ugranulocyte.png')) #Granulocyte
 
-			self.image = self.upgrades[self.index]
-			self.rect = self.image.get_rect()
-			self.rect.topleft = self.x, self.y
-
 		if self.tower.tower_type == 'Lymphocyte':
 			#Upgrades to:
 			self.upgrades.append(pygame.image.load('res/unatkill.png'))#Natural Killer Cell
 			self.upgrades.append(pygame.image.load('res/utcell.png'))#T-Cell
 			self.upgrades.append(pygame.image.load('res/ubcell.png'))#B-Cell
+
+		if self.tower.tower_type == 'B-Cell':
+			#Upgrades to:
+			self.upgrades.append(pygame.image.load('res/uplasma.png')) #Plasma Cell
+
+		if self.tower.tower_type == 'Granulocyte':
+			#Upgrades to:
+			self.upgrades.append(pygame.image.load('res/ubasophil.png')) #Basophil
+			self.upgrades.append(pygame.image.load('res/uneutrophil.png')) #Neutrophil
+			self.upgrades.append(pygame.image.load('res/ueosinophil.png')) #Eosinophil
+			self.upgrades.append(pygame.image.load('res/umonocyte.png')) #Monocyte
+			self.upgrades.append(pygame.image.load('res/umegakaryocyte.png')) #Megakaryocyte
+
+		if self.tower.tower_type == 'Monocyte':
+			#Upgrades to:	
+			self.upgrades.append(pygame.image.load('res/umacrophage.png')) #Macrophage
+
+		if self.tower.tower_type == 'Megakaryocyte':
+			#Upgrades to:
+			self.upgrades.append(pygame.image.load('res/uthrombocyte.png')) #Thrombocyte
+
+		if self.tower.tower_type == 'Natural Killer Cell' or self.tower.tower_type == 'T-Cell' or self.tower.tower_type == 'Plasma Cell' or self.tower.tower_type == 'Basophil' or self.tower.tower_type == 'Neutrophil' or self.tower.tower_type == 'Eosinophil' or self.tower.tower_type == 'Macrophage' or self.tower.tower_type == 'Thrombocyte':
+			print 'pasok'
+			self.upgrades.append(pygame.image.load('res/ufinalform.png')) #No Upgrades
+
+		self.image = self.upgrades[self.index]
+		self.rect = self.image.get_rect()
+		self.rect.topleft = self.x, self.y
 
 	def next(self):
 		if self.index < len(self.upgrades)-1:
