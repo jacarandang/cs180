@@ -225,8 +225,8 @@ class Game:
 		
 		
 	def start(self):
-		pause = Button(pygame.Surface((104,29)).convert(),(730,32),lambda: asd, 'res/pauseg.PNG')
-		buy = Button(pygame.Surface((69,27)).convert(),(730,70),lambda: asd, 'res/buyg.png')
+		pause = Button(pygame.Surface((104,20)).convert(),(730,32),lambda: asd, 'res/pauseg.PNG')
+		buy = Button(pygame.Surface((69,20)).convert(),(730,70),lambda: asd, 'res/buyg.png')
 		
 		self.gameoptions.add(pause,buy)
 		
