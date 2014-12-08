@@ -8,6 +8,7 @@ from classes import virusAI
 from classes.UI import *
 from classes.thing import *
 from classes.ATP import *
+from classes.trivia import *
 #import classes
 
 class Game:
@@ -39,6 +40,7 @@ class Game:
 		
 		self.bgroup = pygame.sprite.Group()
 		self.gameoptions = pygame.sprite.Group()
+		self.pauseoptions = pygame.sprite.Group()
 		
 		self.vgroup = []
 		
@@ -51,6 +53,8 @@ class Game:
 		self.timer = time()
 
 		self.resource = ATP() #resource
+		self.trivia = trivia()
+		
 		self.wave = 0
 		self.wFont = pygame.font.SysFont(None, 30)
 		self.wSurf = self.wFont.render(str(self.wave), True, (255,255,255))
@@ -60,7 +64,7 @@ class Game:
 		
 		self.vplayer = virusAI.Player(self.grid, self.thing, self.tgroup, self.values, self.resource)
 		self.fgroup = pygame.sprite.Group()
-		self.fgroup.add(self.resource)
+		self.fgroup.add(self.resource, self.trivia)
 		
 		self.pgroup = pygame.sprite.Group()
 
@@ -83,6 +87,7 @@ class Game:
 		self.bgroup = pygame.sprite.Group()
 		self.vplayer = virusAI.Player(self.grid, self.thing, self.tgroup, self.values, self.resource)
 		self.gameoptions = pygame.sprite.Group()
+		self.pauseoptions = pygame.sprite.Group()
 		
 		self.vgroup = []
 		
@@ -274,10 +279,46 @@ class Game:
 		
 		return v
 		
+	def foo(self):
+		pass
+		
+	def pause(self):
+		self.pimage = pygame.image.load('res/pausemenu.png')
+		self.pimageRect = self.pimage.get_rect()
+		
+		goagain = Button(pygame.Surface((235,47)).convert(),(400,376),self.foo, 'res/presume.png')
+		goquit = Button(pygame.Surface((225,44)).convert(),(400,467),self.foo, 'res/return.png')	
+		self.pauseoptions.add(goagain,goquit)
+
+		while(True):
+			for event in pygame.event.get():
+				if event.type == QUIT:
+					self.quit = True
+					return
+				elif event.type == KEYDOWN:
+					if event.key == K_p or event.key == K_ESCAPE:
+						return
+				elif event.type == MOUSEBUTTONDOWN:
+					for sprite in self.pauseoptions:
+						c = sprite.click()
+						if(c and sprite == goagain):
+							return
+						elif c and sprite == goquit:
+							self.running = False
+							return
+							
+			self.checkEvents()
+			self.screen.blit(self.pimage, self.pimageRect)
+			self.pauseoptions.update()
+			self.pauseoptions.draw(self.screen)
+			pygame.display.flip()		
+			
+	def stop(self):
+		self.running = False
 		
 	def start(self):
-		pause = Button(pygame.Surface((104,20)).convert(),(730,32),lambda: asd, 'res/pauseg.PNG')
-		buy = Button(pygame.Surface((69,20)).convert(),(730,70),lambda: asd, 'res/buyg.png')
+		pause = Button(pygame.Surface((104,20)).convert(),(730,32),self.pause, 'res/pauseg.PNG')
+		buy = Button(pygame.Surface((69,20)).convert(),(730,70),self.stop, 'res/buyg.png')
 		
 		self.gameoptions.add(pause,buy)
 		while(self.running and not self.thing.isDead()):
@@ -470,8 +511,11 @@ class Mainmenu:
 		self.m_down = False	#Left Mouse Button Down
 		self.m_pos_down = (-10,-10)  #Mouse Down Coordinates
 		self.allsprite = pygame.sprite.Group()
-		
+
 		self.bgm = pygame.mixer.Sound('res//bgm.ogg')
+		self.creditoptions = pygame.sprite.Group()		
+		self.helpoptions = pygame.sprite.Group()		
+		
 	def checkEvents(self):
 		for event in pygame.event.get():
 			if event.type == QUIT:
@@ -492,6 +536,9 @@ class Mainmenu:
 			if event.type == KEYDOWN:
 				if event.key == K_ESCAPE:
 					self.running = False
+
+	def foo(self):
+		pass
 					
 	def stop(self):
 		self.running = False
@@ -509,14 +556,80 @@ class Mainmenu:
 					game.start()
 				else: break
 		pygame.event.get()
+	
+	def credits(self):
+		self.pimage = pygame.image.load('res/creditsmenu.png')
+		self.pimageRect = self.pimage.get_rect()
 		
+		goquit = Button(pygame.Surface((225,44)).convert(),(670,544),self.foo, 'res/return.png')	
+		self.creditoptions.add(goquit)
+
+		while(True):
+			for event in pygame.event.get():
+				if event.type == QUIT:
+					self.quit = True
+					return
+				elif event.type == KEYDOWN:
+					if event.key == K_p or event.key == K_ESCAPE:
+						return
+				elif event.type == MOUSEBUTTONDOWN:
+					for sprite in self.creditoptions:
+						c = sprite.click()
+						if(c and sprite == goquit):
+							return
+
+							
+			self.checkEvents()
+			self.screen.blit(self.pimage, self.pimageRect)
+			self.creditoptions.update()
+			self.creditoptions.draw(self.screen)
+			pygame.display.flip()		
+
+	def help(self):
+		self.pimage = pygame.image.load('res/helpmenu.png')
+		self.pimageRect = self.pimage.get_rect()
+		
+		self.page = 1
+		
+		goquit = Button(pygame.Surface((225,44)).convert(),(670,544),self.foo, 'res/return.png')	
+		gonext = Button(pygame.Surface((146,44)).convert(),(468,543),self.foo, 'res/next.PNG')	
+		self.helpoptions.add(goquit,gonext)
+
+		while(True):
+			for event in pygame.event.get():
+				if event.type == QUIT:
+					self.quit = True
+					return
+				elif event.type == KEYDOWN:
+					if event.key == K_p or event.key == K_ESCAPE:
+						return
+				elif event.type == MOUSEBUTTONDOWN:
+					for sprite in self.helpoptions:
+						c = sprite.click()
+						if(c and sprite == goquit):
+							return
+						elif c and sprite == gonext:
+							if self.page == 1:
+								self.pimage = pygame.image.load('res/helpmenu2.png')
+								self.page = 2
+							elif self.page == 2:
+								self.pimage = pygame.image.load('res/helpmenu.png')
+								self.page = 1
+							
+			self.checkEvents()
+			self.screen.blit(self.pimage, self.pimageRect)
+			self.helpoptions.update()
+			self.helpoptions.draw(self.screen)
+			pygame.display.flip()		
+			
+	
 	def start(self):
 		
 
 		start = Button(pygame.Surface((190,43)).convert(),(315,379),self.startgame , 'res/start.PNG')
-		help = Button(pygame.Surface((143,43)).convert(),(508,379),lambda: asd, 'res/help.PNG')
-		credits = Button(pygame.Surface((244,41)).convert(),(308,469),lambda: asd, 'res/credits.PNG')
-		quit = Button(pygame.Surface((153,41)).convert(),(537,468),self.stop  , 'res/quit.PNG')
+		help = Button(pygame.Surface((143,43)).convert(),(508,379),self.help, 'res/help.PNG')
+		credits = Button(pygame.Surface((244,41)).convert(),(308,469),self.credits, 'res/credits.PNG')
+		quit = Button(pygame.Surface((153,41)).convert(),(537,468),self.stop , 'res/quit.PNG')
 		self.mainoptions.add(start,help,credits,quit)
 		
 		self.bgm.play()
@@ -581,66 +694,14 @@ class Gameover:
 			pygame.display.update()
   
 		return self.action
-class Pause:
 
-	def __init__(self, screen):
-		self.screen = screen
-		self.running = True
-		self.bg = pygame.Surface((800, 600)) #temporary BG
-		self.bg = self.bg.convert()
-		self.pauseoptions = pygame.sprite.Group()
-		self.image = pygame.image.load('res/pausemenu.png')
-		self.imageRect = self.image.get_rect()
-
-		self.m_pos = (-10,-10)    #Mouse Coordinates
-		self.m_down = False	#Left Mouse Button Down
-		self.m_pos_down = (-10,-10)  #Mouse Down Coordinates
-		self.allsprite = pygame.sprite.Group()
-		
-		
-	
-	def checkEvents(self):
-		for event in pygame.event.get():
-			if event.type == QUIT:
-				self.running = False
-
-			if event.type == MOUSEMOTION:
-				self.m_pos = (event.pos[0], event.pos[1])
-				#print self.m_pos
-
-			if event.type == MOUSEBUTTONDOWN:
-				if event.button == 1:
-					print 'left mouse button'
-					self.m_down = True
-					self.m_pos_down = (event.pos[0], event.pos[1])
-					for b in self.pauseoptions:
-						b.click()
-						
-			if event.type == KEYDOWN:
-				if event.key == K_ESCAPE:
-					self.running = False
-					
-	def start(self):
-
-		goagain = Button(pygame.Surface((235,47)).convert(),(400,376),lambda: asd, 'res/presume.png')
-		goquit = Button(pygame.Surface((225,44)).convert(),(400,467),lambda: asd, 'res/return.png')
-		self.pauseoptions.add(goagain,goquit)
-
-		while(self.running):
-			self.checkEvents()
-			self.screen.blit(self.bg, (0, 0))
-			self.screen.blit(self.image, self.imageRect)
-			self.allsprite.update()
-			self.allsprite.draw(self.screen)
-			self.pauseoptions.update()
-			self.pauseoptions.draw(self.screen)
-			pygame.display.update()  
-  
   
 if __name__ == '__main__':	
 
 	pygame.init()
-	pygame.display.set_caption("Game Title")
+	pygame.display.set_caption("Heart Attack")
+	icon = pygame.image.load('res/icon.png')
+	pygame.display.set_icon(icon)
 	SCREEN = pygame.display.set_mode((800, 600))
 	#pygame.display.toggle_fullscreen()
 	
