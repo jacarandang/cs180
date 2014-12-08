@@ -38,7 +38,6 @@ class Game:
 		self.tgroup = pygame.sprite.Group()
 		
 		self.bgroup = pygame.sprite.Group()
-		self.vplayer = virusAI.Player(self.grid, self.thing, self.tgroup, self.values)
 		self.gameoptions = pygame.sprite.Group()
 		
 		self.vgroup = []
@@ -58,12 +57,15 @@ class Game:
 		self.wRect = self.wSurf.get_rect()
 		self.wRect.topleft = 675,450
 
+		
+		self.vplayer = virusAI.Player(self.grid, self.thing, self.tgroup, self.values, self.resource)
 		self.fgroup = pygame.sprite.Group()
 		self.fgroup.add(self.resource)
 		
 		self.pgroup = pygame.sprite.Group()
 
 		self.go = False
+		
 		
 	def reinitialize(self):
 		self.m_pos = (-10,-10)    #Mouse Coordinates
@@ -79,7 +81,7 @@ class Game:
 		self.tgroup = pygame.sprite.Group()
 		
 		self.bgroup = pygame.sprite.Group()
-		self.vplayer = virusAI.Player(self.grid, self.thing, self.tgroup, self.values)
+		self.vplayer = virusAI.Player(self.grid, self.thing, self.tgroup, self.values, self.resource)
 		self.gameoptions = pygame.sprite.Group()
 		
 		self.vgroup = []
@@ -88,7 +90,7 @@ class Game:
 		self.allsprite.add(self.thing)
 		
 		self.status = "prep"	#"prep" or "wave"
-		self.preptime = 5
+		self.preptime = 10
 		self.wavetime = 20
 		self.timer = time()
 
@@ -278,7 +280,6 @@ class Game:
 		buy = Button(pygame.Surface((69,20)).convert(),(730,70),lambda: asd, 'res/buyg.png')
 		
 		self.gameoptions.add(pause,buy)
-		
 		while(self.running and not self.thing.isDead()):
 			self.clock.tick(60)
 			self.checkEvents()
@@ -296,6 +297,7 @@ class Game:
 					self.timer = time()
 					self.status = "prep"
 					self.resource.addATP(self.wave)
+					self.resource.addVirusATP(self.wave)
 					print "prep"
 					
 			
@@ -338,7 +340,15 @@ class Game:
 								if j == k:
 									overlap = True
 					if not overlap:
-						if self.resource.currentATP - self.select_T.cost >= 0:
+						gr = self.grid.copy()
+						bl = False
+						for i in boxContain:
+							gr.set(i[0], i[1], 1)
+							if not self.vplayer.hasValidPath(gr):
+								print "Blocking"
+								bl = True
+								break
+						if self.resource.currentATP - self.select_T.cost >= 0 and not bl:
 							self.select_T.setOccupy(boxContain)
 
 							for i in boxContain:
@@ -349,7 +359,7 @@ class Game:
 							self.resource.currentATP -= self.select_T.cost
 							self.select_T = None
 						else:
-							print 'Not enough ATP'
+							if not bl: print 'Not enough ATP'
 					else:
 						print 'Overlap/Outside Error'
 
@@ -461,8 +471,7 @@ class Mainmenu:
 		self.m_pos_down = (-10,-10)  #Mouse Down Coordinates
 		self.allsprite = pygame.sprite.Group()
 		
-		
-	
+		self.bgm = pygame.mixer.Sound('res//bgm.ogg')
 	def checkEvents(self):
 		for event in pygame.event.get():
 			if event.type == QUIT:
@@ -510,7 +519,7 @@ class Mainmenu:
 		quit = Button(pygame.Surface((153,41)).convert(),(537,468),self.stop  , 'res/quit.PNG')
 		self.mainoptions.add(start,help,credits,quit)
 		
-		
+		self.bgm.play()
 		while(self.running):
 			self.checkEvents()
 			self.screen.blit(self.bg, (0, 0))
@@ -520,7 +529,7 @@ class Mainmenu:
 			self.mainoptions.update()
 			self.mainoptions.draw(self.screen)
 			pygame.display.update()
-  
+		self.bgm.stop()
 class Gameover:
 
 	def __init__(self, screen):

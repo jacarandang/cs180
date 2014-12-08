@@ -165,7 +165,7 @@ class Evaluator:
 		s = sum(total)
 		if s == 0:
 			for i in xrange(len(total)):
-				total[i] += uniform(-0.25, 0.25)
+				total[i] += uniform(0, 0.25)
 			mn = min(total)
 			if mn < 0:
 				for i in xrange(len(total)): total[i] += mn

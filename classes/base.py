@@ -13,6 +13,13 @@ class Board:
 				arr.append(0)
 			self.board.append(arr)
 	
+	def copy(self):
+		b = Board(self.w, self.h, self.coor)
+		for i in xrange(self.w):
+			for j in xrange(self.h):
+				b.board[i][j] = self.board[i][j]
+		return b
+	
 	def get(self, r, c):
 		return self.board[r][c]
 	
