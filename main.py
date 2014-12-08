@@ -163,7 +163,7 @@ class Game:
 						self.select_T = None
 				
 				if event.key == K_6:
-					self.vgroup.append(self.vplayer.getNextGroup())
+					self.vgroup.append(self.vplayer.force())
 
 				if event.key == K_7:
 					if self.select_T == None:

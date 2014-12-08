@@ -25,6 +25,24 @@ class Player():
 					
 			return p != []
 		
+	def force(self):
+		v = Parasite(self.board, self.thing)
+		group = VirusGroup()
+		group.add(v)
+		
+		p = []
+		for i in xrange(self.board.h):
+			if self.board.get(0, i) == 0:
+				n = VirusNode((0, i), self.board)
+				temp_p, temp_cost = BFS(n)
+				if temp_p != []:
+					p = temp_p
+					break
+					
+		group.setActions(p)
+		
+		return group
+		
 	def getNextGroup(self):
 		v2 = Parasite(self.board, self.thing)
 		v3 = Bacteria(self.board, self.thing)
