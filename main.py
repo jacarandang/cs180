@@ -8,6 +8,7 @@ from classes import virusAI
 from classes.UI import *
 from classes.thing import *
 from classes.ATP import *
+from classes.trivia import *
 #import classes
 
 class Game:
@@ -53,6 +54,8 @@ class Game:
 		self.timer = time()
 
 		self.resource = ATP() #resource
+		self.trivia = trivia()
+		
 		self.wave = 0
 		self.wFont = pygame.font.SysFont(None, 30)
 		self.wSurf = self.wFont.render(str(self.wave), True, (255,255,255))
@@ -60,7 +63,7 @@ class Game:
 		self.wRect.topleft = 675,450
 
 		self.fgroup = pygame.sprite.Group()
-		self.fgroup.add(self.resource)
+		self.fgroup.add(self.resource, self.trivia)
 		
 		self.pgroup = pygame.sprite.Group()
 		
