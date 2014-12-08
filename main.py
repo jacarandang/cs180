@@ -97,6 +97,8 @@ class Game:
 
 		self.fgroup = pygame.sprite.Group()
 		self.fgroup.add(self.resource)
+
+		self.pgroup = pygame.sprite.Group()
 		
 	def checkEvents(self):
 		for event in pygame.event.get():
@@ -343,18 +345,45 @@ class Game:
 					self.m_down = False
 			else:
 				if self.m_down:
-
+					#Check if Tower is being clicked
 					for i in self.T_list:
 						for j in i.occupy:
 							if j == self.grid.coorToIndex(self.m_pos_down, i.size):
 								if i.view_atk:								
 									i.view_atk = False
+									i.view_upgrade.visible = False
+									i.view_upgrade = None
 								else:
-									i.view_atk = True								
-								#i.drawAtk(0,0,self.screen)
+									if i.view_upgrade == None:
+										pop = PopUp(self.m_pos_down[0],self.m_pos_down[1], i)
+										i.view_atk = True
+										i.view_upgrade = pop									
+										self.pgroup.add(pop)								
 								break
 
+					#Check if PopUp is being clicked
+					for i in self.pgroup:
+						if i.prevRect.collidepoint(self.m_pos_down[0], self.m_pos_down[1]):
+							print 'prev'
+							i.prev()
+						if i.nextRect.collidepoint(self.m_pos_down[0], self.m_pos_down[1]):
+							print 'next'
+							i.next()
+						
+						if i.sellRect.collidepoint(self.m_pos_down[0], self.m_pos_down[1]):
+							print 'sell'							
+							self.resource.currentATP += i.tower.cost
+							i.sell()
+
+						if i.upgradeRect != None and i.upgradeRect.collidepoint(self.m_pos_down[0], self.m_pos_down[1]):
+							print 'upgrade'
+							if i.upgrade().cost <= self.resource.currentATP:
+								i.sell()
+								self.select_T = i.upgrade()
+								self.resource.currentATP -= self.select_T.cost
+	
 					self.m_down = False
+
 
 			for j in self.T_list:
 				vlist = []
@@ -372,7 +401,21 @@ class Game:
 				if j.tower_type == 'Neutrophil':
 					j.Shoot(vlist, self.bgroup)
 
-			
+			for i in self.tgroup:
+				print i.damage,
+			print '\n'
+
+			#Removes Tower from T_List and sets occupy in Grid to 0
+			for i in self.T_list:
+				present = False
+				for j in self.tgroup:
+					if j == i:
+						present = True
+				if present == False:
+					for k in i.occupy:
+						self.grid.set(k[0],k[1],0)
+					self.T_list.remove(i)
+
 			self.tgroup.update()
 			self.tgroup.draw(self.screen)
 			
@@ -381,6 +424,10 @@ class Game:
 
 			self.fgroup.update()
 			self.fgroup.draw(self.screen)
+
+			#Display PopUp
+			self.pgroup.update()
+			self.pgroup.draw(self.screen)
 
 			#display wave
 			self.wSurf = self.wFont.render(str(self.wave), True, (255,255,255))

@@ -5,7 +5,7 @@ class ATP(pygame.sprite.Sprite):
 	def __init__(self):
 		pygame.sprite.Sprite.__init__(self)
 		#Tower ATP
-		self.initATP = 30
+		self.initATP = 100
 		self.currentATP = self.initATP
 
 		#Virus ATP

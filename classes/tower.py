@@ -32,6 +32,7 @@ class Tower(pygame.sprite.Sprite):
 		self.time = time()
 		
 		self.view_atk = False
+		self.view_upgrade = None
 
 	def inRange(self, pos):
 		mx = (self.occupy[0][0] + self.occupy[-1][0])/2
@@ -69,7 +70,7 @@ class Tower(pygame.sprite.Sprite):
 		diff = time() - self.time
 		if diff >= 1.00/self.shoot and virus.visible:
 			self.time = time()
-			bulletGroup.add(bullet(self.rect.center[0], self.rect.center[1], 1, 1, virus))
+			bulletGroup.add(bullet(self.rect.center[0], self.rect.center[1], 1, self.damage, virus))
 
 	def update(self):
 		pass
@@ -89,7 +90,7 @@ class StemCell(Tower): #Implemented
 
 class Lymphocyte(Tower): #Implemented
 	def __init__(self):
-		Tower.__init__(self, 1, 1, 30, 1, 'Lymphocyte', 2, 2)
+		Tower.__init__(self, 1, 1, 30, 10, 'Lymphocyte', 3, 2)
 
 		self.image = pygame.image.load('res/lymphoid.PNG')
 		self.rect = self.image.get_rect()
@@ -106,7 +107,7 @@ class NaturalKillerCell(Tower): #Implemented
 		diff = time() - self.time
 		if diff >= 1.00/self.shoot and virus.visible:
 			self.time = time()
-			bulletGroup.add(DPSbullet(self.rect.center[0], self.rect.center[1], 1, 1, virus,10))
+			bulletGroup.add(DPSbullet(self.rect.center[0], self.rect.center[1], 1, self.damage, virus,10))
 
 class TCell(Tower): #Implemented
 	#Weakens Pathogens (Tracks Pathogens if invisible)
@@ -120,7 +121,7 @@ class TCell(Tower): #Implemented
 		diff = time() - self.time
 		if diff >= 1.00/self.shoot:
 			self.time = time()
-			bulletGroup.add(DetectBullet(self.rect.center[0], self.rect.center[1], 1, 1, virus))
+			bulletGroup.add(DetectBullet(self.rect.center[0], self.rect.center[1], 1, self.damage, virus))
 
 class BCell(Tower): #Implemented
 	#Increases Damage received of Pathogen (tag based)
@@ -134,7 +135,7 @@ class BCell(Tower): #Implemented
 		diff = time() - self.time
 		if diff >= 1.00/self.shoot and virus.visible:
 			self.time = time()
-			bulletGroup.add(TagBullet(self.rect.center[0], self.rect.center[1], 1, 1, virus,10))
+			bulletGroup.add(TagBullet(self.rect.center[0], self.rect.center[1], 1, self.damage, virus,10))
 
 class PlasmaCell(Tower): #Implemented
 	#Improved B-Cell, has Damage	
@@ -149,12 +150,12 @@ class PlasmaCell(Tower): #Implemented
 		if diff >= 1.00/self.shoot and virus.visible:
 			self.time = time()
 			bulletGroup.add(TagBullet(self.rect.center[0], self.rect.center[1], 1, 1, virus,10))
-			bulletGroup.add(bullet(self.rect.center[0], self.rect.center[1], 1, 1, virus))
+			bulletGroup.add(bullet(self.rect.center[0], self.rect.center[1], 1, self.damage, virus))
 
 
 class Granulocyte(Tower): #Implemented
 	def __init__(self):
-		Tower.__init__(self,1, 1, 30, 1, 'Granulocyte', 2, 2)
+		Tower.__init__(self,1, 1, 30, 15, 'Granulocyte', 3, 2)
 
 		self.image = pygame.image.load('res/myeloid.PNG')
 		self.rect = self.image.get_rect()
@@ -187,7 +188,7 @@ class Neutrophil(Tower): #Implemented
 		if diff >= 1.00/self.shoot:
 			for i in vlist:
 				if i.visible:
-					bulletGroup.add(DPSbullet(self.rect.center[0], self.rect.center[1], 1, 1, i,5))
+					bulletGroup.add(DPSbullet(self.rect.center[0], self.rect.center[1], 1, self.damage, i,5))
 			self.time = time()
 
 class Eosinophil(Tower): #Implemented
@@ -239,9 +240,9 @@ class Megakaryocyte(Tower): #Implemented
 		diff = time() - self.time
 		if diff >= 1.00/self.shoot and virus.visible:
 			if virus.name == 'ebola':
-				bulletGroup.add(bullet(self.rect.center[0], self.rect.center[1], 1, 10, virus))
+				bulletGroup.add(bullet(self.rect.center[0], self.rect.center[1], 1, self.damage + 10, virus))
 			else:
-				bulletGroup.add(bullet(self.rect.center[0], self.rect.center[1], 1, 5, virus))
+				bulletGroup.add(bullet(self.rect.center[0], self.rect.center[1], 1, self.damage + 5, virus))
 			self.time = time()
 
 class Thrombocyte(Tower): #Implemented
@@ -256,7 +257,7 @@ class Thrombocyte(Tower): #Implemented
 		diff = time() - self.time
 		if diff >= 1.00/self.shoot and virus.visible:
 			if virus.name == 'ebola':
-				bulletGroup.add(bullet(self.rect.center[0], self.rect.center[1], 1, 20, virus))
+				bulletGroup.add(bullet(self.rect.center[0], self.rect.center[1], 1, self.damage + 20, virus))
 			else:
-				bulletGroup.add(bullet(self.rect.center[0], self.rect.center[1], 1, 10, virus))
+				bulletGroup.add(bullet(self.rect.center[0], self.rect.center[1], 1, self.damage + 10, virus))
 			self.time = time()

@@ -37,7 +37,8 @@ class Game:
 		self.tgroup = pygame.sprite.Group()
 		
 		self.bgroup = pygame.sprite.Group()
-
+		self.gameoptions = pygame.sprite.Group()
+		
 		self.vplayer = virusAI.Player(self.grid, self.thing)
 		self.vgroup = []
 		
@@ -54,10 +55,12 @@ class Game:
 		self.wFont = pygame.font.SysFont(None, 30)
 		self.wSurf = self.wFont.render(str(self.wave), True, (255,255,255))
 		self.wRect = self.wSurf.get_rect()
-		self.wRect.topleft = 675,470
+		self.wRect.topleft = 675,450
 
 		self.fgroup = pygame.sprite.Group()
 		self.fgroup.add(self.resource)
+
+		self.pgroup = pygame.sprite.Group()
 		
 	def checkEvents(self):
 		for event in pygame.event.get():
@@ -73,7 +76,9 @@ class Game:
 					print 'left mouse button'
 					self.m_down = True
 					self.m_pos_down = (event.pos[0], event.pos[1])
-
+					for b in self.gameoptions:
+						b.click()
+						
 			if event.type == KEYDOWN:
 				if event.key == K_ESCAPE:
 					self.running = False
@@ -222,6 +227,11 @@ class Game:
 		
 		
 	def start(self):
+		pause = Button(pygame.Surface((104,20)).convert(),(730,32),lambda: asd, 'res/pauseg.PNG')
+		buy = Button(pygame.Surface((69,20)).convert(),(730,70),lambda: asd, 'res/buyg.png')
+		
+		self.gameoptions.add(pause,buy)
+		
 		while(self.running):
 			self.clock.tick(60)
 			self.checkEvents()
@@ -296,18 +306,45 @@ class Game:
 					self.m_down = False
 			else:
 				if self.m_down:
-
+					#Check if Tower is being clicked
 					for i in self.T_list:
 						for j in i.occupy:
 							if j == self.grid.coorToIndex(self.m_pos_down, i.size):
 								if i.view_atk:								
 									i.view_atk = False
+									i.view_upgrade.visible = False
+									i.view_upgrade = None
 								else:
-									i.view_atk = True								
-								#i.drawAtk(0,0,self.screen)
+									if i.view_upgrade == None:
+										pop = PopUp(self.m_pos_down[0],self.m_pos_down[1], i)
+										i.view_atk = True
+										i.view_upgrade = pop									
+										self.pgroup.add(pop)								
 								break
 
+					#Check if PopUp is being clicked
+					for i in self.pgroup:
+						if i.prevRect.collidepoint(self.m_pos_down[0], self.m_pos_down[1]):
+							print 'prev'
+							i.prev()
+						if i.nextRect.collidepoint(self.m_pos_down[0], self.m_pos_down[1]):
+							print 'next'
+							i.next()
+						
+						if i.sellRect.collidepoint(self.m_pos_down[0], self.m_pos_down[1]):
+							print 'sell'							
+							self.resource.currentATP += i.tower.cost
+							i.sell()
+
+						if i.upgradeRect != None and i.upgradeRect.collidepoint(self.m_pos_down[0], self.m_pos_down[1]):
+							print 'upgrade'
+							if i.upgrade().cost <= self.resource.currentATP:
+								i.sell()
+								self.select_T = i.upgrade()
+								self.resource.currentATP -= self.select_T.cost
+	
 					self.m_down = False
+
 
 			for j in self.T_list:
 				vlist = []
@@ -325,17 +362,214 @@ class Game:
 				if j.tower_type == 'Neutrophil':
 					j.Shoot(vlist, self.bgroup)
 
+			for i in self.tgroup:
+				print i.dmg,
+			print '\n'
+
+			#Removes Tower from T_List and sets occupy in Grid to 0
+			for i in self.T_list:
+				present = False
+				for j in self.tgroup:
+					if j == i:
+						present = True
+				if present == False:
+					for k in i.occupy:
+						self.grid.set(k[0],k[1],0)
+					self.T_list.remove(i)
+
 			self.tgroup.update()
 			self.tgroup.draw(self.screen)
+			
+			self.gameoptions.update()
+			self.gameoptions.draw(self.screen)
 
 			self.fgroup.update()
 			self.fgroup.draw(self.screen)
+
+			#Display PopUp
+			self.pgroup.update()
+			self.pgroup.draw(self.screen)
 
 			#display wave
 			self.wSurf = self.wFont.render(str(self.wave), True, (255,255,255))
 			self.screen.blit(self.wSurf, self.wRect)
 	
 			pygame.display.update()
+  
+class Mainmenu:
+
+	def __init__(self, screen):
+		self.screen = screen
+		self.running = True
+		self.bg = pygame.Surface((800, 600)) #temporary BG
+		self.bg = self.bg.convert()
+		self.mainoptions = pygame.sprite.Group()
+		self.image = pygame.image.load('res/mainmenu.png')
+		self.imageRect = self.image.get_rect()
+
+		self.m_pos = (-10,-10)    #Mouse Coordinates
+		self.m_down = False	#Left Mouse Button Down
+		self.m_pos_down = (-10,-10)  #Mouse Down Coordinates
+		self.allsprite = pygame.sprite.Group()
+		
+		
+	
+	def checkEvents(self):
+		for event in pygame.event.get():
+			if event.type == QUIT:
+				self.running = False
+
+			if event.type == MOUSEMOTION:
+				self.m_pos = (event.pos[0], event.pos[1])
+				#print self.m_pos
+
+			if event.type == MOUSEBUTTONDOWN:
+				if event.button == 1:
+					print 'left mouse button'
+					self.m_down = True
+					self.m_pos_down = (event.pos[0], event.pos[1])
+					for b in self.mainoptions:
+						b.click()
+
+			if event.type == KEYDOWN:
+				if event.key == K_ESCAPE:
+					self.running = False
+					
+	def stop(self):
+		self.running = False
+	
+	def startgame(self):
+		game = Game(self.screen)
+		game.start() 
+					
+	def start(self):
+		
+
+		start = Button(pygame.Surface((190,43)).convert(),(315,379),self.startgame , 'res/start.PNG')
+		help = Button(pygame.Surface((143,43)).convert(),(508,379),lambda: asd, 'res/help.PNG')
+		credits = Button(pygame.Surface((244,41)).convert(),(308,469),lambda: asd, 'res/credits.PNG')
+		quit = Button(pygame.Surface((153,41)).convert(),(537,468),self.stop  , 'res/quit.PNG')
+		self.mainoptions.add(start,help,credits,quit)
+		
+		
+		while(self.running):
+			self.checkEvents()
+			self.screen.blit(self.bg, (0, 0))
+			self.screen.blit(self.image, self.imageRect)
+			self.allsprite.update()
+			self.allsprite.draw(self.screen)
+			self.mainoptions.update()
+			self.mainoptions.draw(self.screen)
+			pygame.display.update()
+  
+class Gameover:
+
+	def __init__(self, screen):
+		self.screen = screen
+		self.running = True
+		self.bg = pygame.Surface((800, 600)) #temporary BG
+		self.bg = self.bg.convert()
+		self.overoptions = pygame.sprite.Group()
+		self.image = pygame.image.load('res/gameover.png')
+		self.imageRect = self.image.get_rect()
+
+		self.m_pos = (-10,-10)    #Mouse Coordinates
+		self.m_down = False	#Left Mouse Button Down
+		self.m_pos_down = (-10,-10)  #Mouse Down Coordinates
+		self.allsprite = pygame.sprite.Group()
+		
+		
+	
+	def checkEvents(self):
+		for event in pygame.event.get():
+			if event.type == QUIT:
+				self.running = False
+
+			if event.type == MOUSEMOTION:
+				self.m_pos = (event.pos[0], event.pos[1])
+				#print self.m_pos
+
+			if event.type == MOUSEBUTTONDOWN:
+				if event.button == 1:
+					print 'left mouse button'
+					self.m_down = True
+					self.m_pos_down = (event.pos[0], event.pos[1])
+					for b in self.overoptions:
+						b.click()
+			if event.type == KEYDOWN:
+				if event.key == K_ESCAPE:
+					self.running = False
+					
+	def start(self):
+
+		goagain = Button(pygame.Surface((341,47)).convert(),(400,376),lambda: asd, 'res/goagain.png')
+		goquit = Button(pygame.Surface((225,44)).convert(),(400,467),lambda: asd, 'res/goreturn.png')
+		self.overoptions.add(goagain,goquit)
+
+		while(self.running):
+			self.checkEvents()
+			self.screen.blit(self.bg, (0, 0))
+			self.screen.blit(self.image, self.imageRect)
+			self.allsprite.update()
+			self.allsprite.draw(self.screen)
+			self.overoptions.update()
+			self.overoptions.draw(self.screen)
+			pygame.display.update()
+  
+class Pause:
+
+	def __init__(self, screen):
+		self.screen = screen
+		self.running = True
+		self.bg = pygame.Surface((800, 600)) #temporary BG
+		self.bg = self.bg.convert()
+		self.pauseoptions = pygame.sprite.Group()
+		self.image = pygame.image.load('res/pausemenu.png')
+		self.imageRect = self.image.get_rect()
+
+		self.m_pos = (-10,-10)    #Mouse Coordinates
+		self.m_down = False	#Left Mouse Button Down
+		self.m_pos_down = (-10,-10)  #Mouse Down Coordinates
+		self.allsprite = pygame.sprite.Group()
+		
+		
+	
+	def checkEvents(self):
+		for event in pygame.event.get():
+			if event.type == QUIT:
+				self.running = False
+
+			if event.type == MOUSEMOTION:
+				self.m_pos = (event.pos[0], event.pos[1])
+				#print self.m_pos
+
+			if event.type == MOUSEBUTTONDOWN:
+				if event.button == 1:
+					print 'left mouse button'
+					self.m_down = True
+					self.m_pos_down = (event.pos[0], event.pos[1])
+					for b in self.pauseoptions:
+						b.click()
+						
+			if event.type == KEYDOWN:
+				if event.key == K_ESCAPE:
+					self.running = False
+					
+	def start(self):
+
+		goagain = Button(pygame.Surface((235,47)).convert(),(400,376),lambda: asd, 'res/presume.png')
+		goquit = Button(pygame.Surface((225,44)).convert(),(400,467),lambda: asd, 'res/return.png')
+		self.pauseoptions.add(goagain,goquit)
+
+		while(self.running):
+			self.checkEvents()
+			self.screen.blit(self.bg, (0, 0))
+			self.screen.blit(self.image, self.imageRect)
+			self.allsprite.update()
+			self.allsprite.draw(self.screen)
+			self.pauseoptions.update()
+			self.pauseoptions.draw(self.screen)
+			pygame.display.update()  
   
   
 if __name__ == '__main__':	
@@ -345,8 +579,10 @@ if __name__ == '__main__':
 	SCREEN = pygame.display.set_mode((800, 600))
 	#pygame.display.toggle_fullscreen()
 	
-	game = Game(SCREEN)
-	game.start()
+
+	mmenu = Mainmenu(SCREEN)
+	mmenu.start()
+	
 
 
 
