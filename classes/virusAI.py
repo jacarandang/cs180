@@ -6,12 +6,14 @@ from pickle import *
 
 class Player():
 
-	def __init__(self, board, thing, tower, values = None):
+	def __init__(self, board, thing, tower, values = None, atp = None):
 		self.board = board
 		self.thing = thing
 		self.tower = tower
 		self.values = values
 		self.e = Evaluator(values)
+		self.atp = atp
+		self.costs = []
 		
 	def hasValidPath(self, board):
 		p = []

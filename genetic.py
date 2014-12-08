@@ -2,6 +2,7 @@ from random import uniform, random, randint, choice
 import pickle
 from main import Game
 import pygame
+pygame.init()
 class Member:
 
 	def __init__(self, values = None):
@@ -18,7 +19,11 @@ class Member:
 		scr = pygame.display.set_mode((800,600))
 		g = Game(scr)
 		a = g.start()
-		self.fitness = sum(self.value)
+		if g.thing.life < 0:
+			g.thing.life = 0
+		self.fitness = (g.thing.full - g.thing.life)/g.wave
+		print self.fitness
+		raw_input()
 		return self.fitness
 		
 	def __cmp__(self, other):
