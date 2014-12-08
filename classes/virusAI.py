@@ -65,27 +65,27 @@ class Player():
 		num = int(self.atp.currentVirusATP/prop_cost)
 		
 		nhiv = int(num * prop[5])
-		for i in xrange(nhiv): group.add(HIV(self.board, self.thing))
+		for i in xrange(nhiv): group.add(HIV(self.board, self.thing, self.atp))
 		self.atp.currentVirusATP -= nhiv * self.vcosts[5]
 		
 		nebo = int(num * prop[4])
-		for i in xrange(nebo): group.add(Ebola(self.board, self.thing))
+		for i in xrange(nebo): group.add(Ebola(self.board, self.thing, self.atp))
 		self.atp.currentVirusATP -= nebo * self.vcosts[4]
 		
 		nvir = int(num * prop[3])
-		for i in xrange(nvir): group.add(Virus(self.board, self.thing))
+		for i in xrange(nvir): group.add(Virus(self.board, self.thing, self.atp))
 		self.atp.currentVirusATP -= nvir * self.vcosts[3]
 		
 		nbac = int(num * prop[2])
-		for i in xrange(nbac): group.add(Bacteria(self.board, self.thing))
+		for i in xrange(nbac): group.add(Bacteria(self.board, self.thing, self.atp))
 		self.atp.currentVirusATP -= nbac * self.vcosts[2]
 		
 		npar = int(num * prop[1])
-		for i in xrange(npar): group.add(Parasite(self.board, self.thing))
+		for i in xrange(npar): group.add(Parasite(self.board, self.thing, self.atp))
 		self.atp.currentVirusATP -= npar * self.vcosts[1]
 		
 		nfun = self.atp.currentVirusATP
-		for i in xrange(nfun): group.add(Fungi(self.board, self.thing))
+		for i in xrange(nfun): group.add(Fungi(self.board, self.thing, self.atp))
 		self.atp.currentVirusATP -= nfun * self.vcosts[0]
 		
 		group.setActions(p)
