@@ -492,7 +492,8 @@ class Mainmenu:
 		self.m_down = False	#Left Mouse Button Down
 		self.m_pos_down = (-10,-10)  #Mouse Down Coordinates
 		self.allsprite = pygame.sprite.Group()
-		
+		self.creditoptions = pygame.sprite.Group()		
+		self.helpoptions = pygame.sprite.Group()		
 		
 	
 	def checkEvents(self):
@@ -515,6 +516,9 @@ class Mainmenu:
 			if event.type == KEYDOWN:
 				if event.key == K_ESCAPE:
 					self.running = False
+
+	def foo(self):
+		pass
 					
 	def stop(self):
 		self.running = False
@@ -532,13 +536,70 @@ class Mainmenu:
 					game.start()
 				else: break
 		pygame.event.get()
+	
+	def credits(self):
+		self.pimage = pygame.image.load('res/creditsmenu.png')
+		self.pimageRect = self.pimage.get_rect()
 		
+		goquit = Button(pygame.Surface((225,44)).convert(),(670,544),self.foo, 'res/return.png')	
+		self.creditoptions.add(goquit,goquit)
+
+		while(True):
+			for event in pygame.event.get():
+				if event.type == QUIT:
+					self.quit = True
+					return
+				elif event.type == KEYDOWN:
+					if event.key == K_p or event.key == K_ESCAPE:
+						return
+				elif event.type == MOUSEBUTTONDOWN:
+					for sprite in self.creditoptions:
+						c = sprite.click()
+						if(c and sprite == goquit):
+							return
+
+							
+			self.checkEvents()
+			self.screen.blit(self.pimage, self.pimageRect)
+			self.creditoptions.update()
+			self.creditoptions.draw(self.screen)
+			pygame.display.flip()		
+
+	def help(self):
+		self.pimage = pygame.image.load('res/helpmenu.png')
+		self.pimageRect = self.pimage.get_rect()
+		
+		goquit = Button(pygame.Surface((225,44)).convert(),(670,544),self.foo, 'res/return.png')	
+		self.helpoptions.add(goquit,goquit)
+
+		while(True):
+			for event in pygame.event.get():
+				if event.type == QUIT:
+					self.quit = True
+					return
+				elif event.type == KEYDOWN:
+					if event.key == K_p or event.key == K_ESCAPE:
+						return
+				elif event.type == MOUSEBUTTONDOWN:
+					for sprite in self.helpoptions:
+						c = sprite.click()
+						if(c and sprite == goquit):
+							return
+
+							
+			self.checkEvents()
+			self.screen.blit(self.pimage, self.pimageRect)
+			self.helpoptions.update()
+			self.helpoptions.draw(self.screen)
+			pygame.display.flip()		
+			
+	
 	def start(self):
 		
 
 		start = Button(pygame.Surface((190,43)).convert(),(315,379),self.startgame , 'res/start.PNG')
-		help = Button(pygame.Surface((143,43)).convert(),(508,379),lambda: asd, 'res/help.PNG')
-		credits = Button(pygame.Surface((244,41)).convert(),(308,469),lambda: asd, 'res/credits.PNG')
+		help = Button(pygame.Surface((143,43)).convert(),(508,379),self.help, 'res/help.PNG')
+		credits = Button(pygame.Surface((244,41)).convert(),(308,469),self.credits, 'res/credits.PNG')
 		quit = Button(pygame.Surface((153,41)).convert(),(537,468),self.stop  , 'res/quit.PNG')
 		self.mainoptions.add(start,help,credits,quit)
 		
