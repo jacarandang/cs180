@@ -569,6 +569,8 @@ class Mainmenu:
 		self.pimage = pygame.image.load('res/helpmenu.png')
 		self.pimageRect = self.pimage.get_rect()
 		
+		self.page = 1
+		
 		goquit = Button(pygame.Surface((225,44)).convert(),(670,544),self.foo, 'res/return.png')	
 		gonext = Button(pygame.Surface((146,44)).convert(),(468,543),self.foo, 'res/next.PNG')	
 		self.helpoptions.add(goquit,gonext)
@@ -586,7 +588,13 @@ class Mainmenu:
 						c = sprite.click()
 						if(c and sprite == goquit):
 							return
-
+						elif c and sprite == gonext:
+							if self.page == 1:
+								self.pimage = pygame.image.load('res/helpmenu2.png')
+								self.page = 2
+							elif self.page == 2:
+								self.pimage = pygame.image.load('res/helpmenu.png')
+								self.page = 1
 							
 			self.checkEvents()
 			self.screen.blit(self.pimage, self.pimageRect)
@@ -601,7 +609,7 @@ class Mainmenu:
 		start = Button(pygame.Surface((190,43)).convert(),(315,379),self.startgame , 'res/start.PNG')
 		help = Button(pygame.Surface((143,43)).convert(),(508,379),self.help, 'res/help.PNG')
 		credits = Button(pygame.Surface((244,41)).convert(),(308,469),self.credits, 'res/credits.PNG')
-		quit = Button(pygame.Surface((153,41)).convert(),(537,468),self.stop  , 'res/quit.PNG')
+		quit = Button(pygame.Surface((153,41)).convert(),(537,468),self.stop , 'res/quit.PNG')
 		self.mainoptions.add(start,help,credits,quit)
 		
 		
