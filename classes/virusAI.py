@@ -19,13 +19,14 @@ class Player():
 		p = []
 		cost = 0
 		for i in xrange(board.h):
-			if board.get(i) == 0:
+			if board.get(0, i) == 0:
 				n = VirusNode((0, i), board)
 				p, cost = DFS(n)
 				if p!=[]:
-					break
+					print p[0]
+					return True
 					
-			return p != []
+		return False
 		
 	def getNextGroup(self):
 		v2 = Parasite(self.board, self.thing)

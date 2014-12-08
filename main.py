@@ -86,7 +86,7 @@ class Game:
 		self.allsprite.add(self.thing)
 		
 		self.status = "prep"	#"prep" or "wave"
-		self.preptime = 5
+		self.preptime = 10
 		self.wavetime = 20
 		self.timer = time()
 
@@ -329,7 +329,15 @@ class Game:
 								if j == k:
 									overlap = True
 					if not overlap:
-						if self.resource.currentATP - self.select_T.cost >= 0:
+						gr = self.grid.copy()
+						bl = False
+						for i in boxContain:
+							gr.set(i[0], i[1], 1)
+							if not self.vplayer.hasValidPath(gr):
+								print "Blocking"
+								bl = True
+								break
+						if self.resource.currentATP - self.select_T.cost >= 0 and not bl:
 							self.select_T.setOccupy(boxContain)
 
 							for i in boxContain:
@@ -340,7 +348,7 @@ class Game:
 							self.resource.currentATP -= self.select_T.cost
 							self.select_T = None
 						else:
-							print 'Not enough ATP'
+							if not bl: print 'Not enough ATP'
 					else:
 						print 'Overlap/Outside Error'
 
@@ -404,8 +412,9 @@ class Game:
 					j.Shoot(vlist, self.bgroup)
 
 			for i in self.tgroup:
-				print i.damage,
-			print '\n'
+				#print i.damage,
+				pass
+			#print '\n'
 
 			#Removes Tower from T_List and sets occupy in Grid to 0
 			for i in self.T_list:
