@@ -61,6 +61,8 @@ class Game:
 		self.fgroup = pygame.sprite.Group()
 		self.fgroup.add(self.resource)
 		
+		self.pgroup = pygame.sprite.Group()
+		
 	def reinitialize(self):
 		self.m_pos = (-10,-10)    #Mouse Coordinates
 		self.m_down = False	#Left Mouse Button Down
