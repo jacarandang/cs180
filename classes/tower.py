@@ -90,7 +90,7 @@ class StemCell(Tower): #Implemented
 
 class Lymphocyte(Tower): #Implemented
 	def __init__(self):
-		Tower.__init__(self, 1, 1, 30, 10, 'Lymphocyte', 3, 2)
+		Tower.__init__(self, 1, 1, 30, 5, 'Lymphocyte', 2, 2)
 
 		self.image = pygame.image.load('res/lymphoid.PNG')
 		self.rect = self.image.get_rect()
@@ -155,7 +155,7 @@ class PlasmaCell(Tower): #Implemented
 
 class Granulocyte(Tower): #Implemented
 	def __init__(self):
-		Tower.__init__(self,1, 1, 30, 15, 'Granulocyte', 3, 2)
+		Tower.__init__(self,1, 1, 30, 5, 'Granulocyte', 2, 2)
 
 		self.image = pygame.image.load('res/myeloid.PNG')
 		self.rect = self.image.get_rect()

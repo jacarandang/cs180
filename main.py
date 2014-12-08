@@ -62,6 +62,8 @@ class Game:
 		self.fgroup.add(self.resource)
 		
 		self.pgroup = pygame.sprite.Group()
+
+		self.go = False
 		
 	def reinitialize(self):
 		self.m_pos = (-10,-10)    #Mouse Coordinates
@@ -101,6 +103,8 @@ class Game:
 		self.fgroup.add(self.resource)
 
 		self.pgroup = pygame.sprite.Group()
+
+		self.go = False
 		
 	def checkEvents(self):
 		for event in pygame.event.get():
@@ -255,6 +259,9 @@ class Game:
 					for g in self.vgroup:
 						for v in g:
 							v.stun(1)
+
+				if event.key == K_g:
+					self.go = True
 					
 	def hasVirus(self):
 		v = False
@@ -277,11 +284,13 @@ class Game:
 			self.checkEvents()
 			
 			if self.status == "prep":
-				if time() - self.timer >= self.preptime:
+				if time() - self.timer >= self.preptime and self.go:
+					#WAVE
 					self.timer = time()
 					self.status = "wave"
 					self.vgroup.append(self.vplayer.getNextGroup())
 					self.wave += 1
+					self.go = False
 			else:
 				if time() - self.timer >= self.wavetime or not self.hasVirus():	#or if no virus exist
 					self.timer = time()
@@ -383,6 +392,8 @@ class Game:
 								i.sell()
 								self.select_T = i.upgrade()
 								self.resource.currentATP -= self.select_T.cost
+							else:
+								print 'Not enough ATP'
 	
 					self.m_down = False
 
