@@ -142,7 +142,7 @@ class VirusGroup(pygame.sprite.Group, VirusGroupBase):
 		VirusGroupBase.add(self, *viruses)
 
 	def update(self):
-		if time() - self.timer >= 0.5:
+		if time() - self.timer >= 0.25:
 			self.timer = time()
 			if not len(self.hvirus) == 0:
 				v = self.hvirus.pop()

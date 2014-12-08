@@ -26,10 +26,17 @@ class Player():
 			return p != []
 		
 	def force(self):
-		v = Parasite(self.board, self.thing)
+		#v = Fungi(self.board, self.thing)
 		group = VirusGroup()
-		group.add(v)
+		for i in xrange(30):
+			group.add(Fungi(self.board, self.thing))
 		
+		#for i in xrange(1):
+		#	group.add(HIV(self.board, self.thing))
+
+		#for i in xrange(50):
+		#	group.add(Ebola(self.board, self.thing))
+
 		p = []
 		for i in xrange(self.board.h):
 			if self.board.get(0, i) == 0:

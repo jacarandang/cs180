@@ -391,7 +391,6 @@ class Game:
 							if i.upgrade().cost <= self.resource.currentATP:
 								i.sell()
 								self.select_T = i.upgrade()
-								self.resource.currentATP -= self.select_T.cost
 							else:
 								print 'Not enough ATP'
 	
@@ -413,10 +412,6 @@ class Game:
 					if shoot: break
 				if j.tower_type == 'Neutrophil':
 					j.Shoot(vlist, self.bgroup)
-
-			for i in self.tgroup:
-				print i.damage,
-			print '\n'
 
 			#Removes Tower from T_List and sets occupy in Grid to 0
 			for i in self.T_list:

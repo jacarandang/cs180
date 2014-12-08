@@ -90,7 +90,7 @@ class StemCell(Tower): #Implemented
 
 class Lymphocyte(Tower): #Implemented
 	def __init__(self):
-		Tower.__init__(self, 1, 1, 30, 5, 'Lymphocyte', 2, 2)
+		Tower.__init__(self, 1, 1, 30, 3, 'Lymphocyte', 2, 2)
 
 		self.image = pygame.image.load('res/lymphoid.PNG')
 		self.rect = self.image.get_rect()
@@ -98,7 +98,7 @@ class Lymphocyte(Tower): #Implemented
 class NaturalKillerCell(Tower): #Implemented
 	#DPS, Poison Damage
 	def __init__(self):
-		Tower.__init__(self, 2, 2, 30, 2, 'Natural Killer Cell', 1)
+		Tower.__init__(self, 2, 2, 30, 7, 'Natural Killer Cell', 1, 10)
 
 		self.image = pygame.image.load('res/natkill.PNG')
 		self.rect = self.image.get_rect()
@@ -107,12 +107,12 @@ class NaturalKillerCell(Tower): #Implemented
 		diff = time() - self.time
 		if diff >= 1.00/self.shoot and virus.visible:
 			self.time = time()
-			bulletGroup.add(DPSbullet(self.rect.center[0], self.rect.center[1], 1, self.damage, virus,10))
+			bulletGroup.add(DPSbullet(self.rect.center[0], self.rect.center[1], 1, self.damage, virus,21))
 
 class TCell(Tower): #Implemented
 	#Weakens Pathogens (Tracks Pathogens if invisible)
 	def __init__(self):
-		Tower.__init__(self, 2, 2, 30, 2, 'T-Cell', 7)
+		Tower.__init__(self, 2, 2, 30, 5, 'T-Cell', 7, 3)
 
 		self.image = pygame.image.load('res/tcell.PNG')
 		self.rect = self.image.get_rect()
@@ -126,7 +126,7 @@ class TCell(Tower): #Implemented
 class BCell(Tower): #Implemented
 	#Increases Damage received of Pathogen (tag based)
 	def __init__(self):
-		Tower.__init__(self, 2, 2, 30, 2, 'B-Cell', 5)
+		Tower.__init__(self, 2, 2, 30, 0, 'B-Cell', 5, 10)
 
 		self.image = pygame.image.load('res/bcell.PNG')
 		self.rect = self.image.get_rect()
@@ -140,7 +140,7 @@ class BCell(Tower): #Implemented
 class PlasmaCell(Tower): #Implemented
 	#Improved B-Cell, has Damage	
 	def __init__(self):
-		Tower.__init__(self, 2, 2, 30, 3, 'Plasma Cell', 7)
+		Tower.__init__(self, 2, 2, 30, 10, 'Plasma Cell', 7)
 		
 		self.image = pygame.image.load('res/plasma.PNG')
 		self.rect = self.image.get_rect()
@@ -155,7 +155,7 @@ class PlasmaCell(Tower): #Implemented
 
 class Granulocyte(Tower): #Implemented
 	def __init__(self):
-		Tower.__init__(self,1, 1, 30, 5, 'Granulocyte', 2, 2)
+		Tower.__init__(self,1, 1, 30, 3, 'Granulocyte', 2, 2)
 
 		self.image = pygame.image.load('res/myeloid.PNG')
 		self.rect = self.image.get_rect()
@@ -163,7 +163,7 @@ class Granulocyte(Tower): #Implemented
 class Basophil(Tower): #Implemented
 	#Highly effective against Parasytes and Bacteria, Fast Damage (SMG)
 	def __init__(self):
-		Tower.__init__(self,1, 1, 30, 2, 'Basophil', 10)
+		Tower.__init__(self,1, 1, 30, 5, 'Basophil', 10, 20)
 
 		self.image = pygame.image.load('res/basophil.PNG')
 		self.rect = self.image.get_rect()
@@ -171,7 +171,7 @@ class Basophil(Tower): #Implemented
 class Neutrophil(Tower): #Implemented
 	#Stuns (engulfs, AOE) and digests enemy Pathogens (small poison damage)
 	def __init__(self):
-		Tower.__init__(self,2, 2, 30, 2, 'Neutrophil', 2)
+		Tower.__init__(self,2, 2, 30, 5, 'Neutrophil', 2, 30)
 
 		self.image = pygame.image.load('res/neutrophil.PNG')
 		self.rect = self.image.get_rect()
@@ -194,7 +194,7 @@ class Neutrophil(Tower): #Implemented
 class Eosinophil(Tower): #Implemented
 	#Effective against Parasytic and Fungal Pathogens, Fast Damage 
 	def __init__(self):
-		Tower.__init__(self,1, 1, 30, 2, 'Eosinophil', 10)
+		Tower.__init__(self,1, 1, 30, 5, 'Eosinophil', 10, 20)
 
 		self.image = pygame.image.load('res/eosinophil.PNG')
 		self.rect = self.image.get_rect()
@@ -202,7 +202,7 @@ class Eosinophil(Tower): #Implemented
 class Monocyte(Tower): #Implemented
 	#Eats enemies on contact
 	def __init__(self):
-		Tower.__init__(self,1, 1, 30, 2, 'Monocyte', 0.25)
+		Tower.__init__(self,1, 1, 30, 0, 'Monocyte', 0.25, 30)
 
 		self.image = pygame.image.load('res/monocyte.PNG')
 		self.rect = self.image.get_rect()
@@ -216,7 +216,7 @@ class Monocyte(Tower): #Implemented
 class Macrophage(Tower): #Implemented
 	#Eats enemies on contact. Better area of effect
 	def __init__(self):
-		Tower.__init__(self,2, 2, 30, 2, 'Macrophage', 1.5)
+		Tower.__init__(self,2, 2, 30, 0, 'Macrophage', 1.5, 40)
 
 		self.image = pygame.image.load('res/macrophage.PNG')
 		self.rect = self.image.get_rect()
@@ -231,7 +231,7 @@ class Macrophage(Tower): #Implemented
 class Megakaryocyte(Tower): #Implemented
 	#Effective against Ebola, can Tank (large HP)
 	def __init__(self):
-		Tower.__init__(self,3, 3, 30, 2, 'Megakaryocyte', 5)
+		Tower.__init__(self,3, 3, 30, 8, 'Megakaryocyte', 5, 20)
 
 		self.image = pygame.image.load('res/megakaryocyte.png')
 		self.rect = self.image.get_rect()
@@ -248,7 +248,7 @@ class Megakaryocyte(Tower): #Implemented
 class Thrombocyte(Tower): #Implemented
 	#Improved Megakaryocyte, Highly Effective against Ebola	
 	def __init__(self):
-		Tower.__init__(self,1, 1, 30, 2, 'Thrombocyte', 7)
+		Tower.__init__(self,1, 1, 30, 10, 'Thrombocyte', 7, 30)
 
 		self.image = pygame.image.load('res/thrombocyte.PNG')
 		self.rect = self.image.get_rect()
