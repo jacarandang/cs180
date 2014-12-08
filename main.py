@@ -542,7 +542,7 @@ class Mainmenu:
 		self.pimageRect = self.pimage.get_rect()
 		
 		goquit = Button(pygame.Surface((225,44)).convert(),(670,544),self.foo, 'res/return.png')	
-		self.creditoptions.add(goquit,goquit)
+		self.creditoptions.add(goquit)
 
 		while(True):
 			for event in pygame.event.get():
@@ -570,7 +570,8 @@ class Mainmenu:
 		self.pimageRect = self.pimage.get_rect()
 		
 		goquit = Button(pygame.Surface((225,44)).convert(),(670,544),self.foo, 'res/return.png')	
-		self.helpoptions.add(goquit,goquit)
+		gonext = Button(pygame.Surface((146,44)).convert(),(468,543),self.foo, 'res/next.PNG')	
+		self.helpoptions.add(goquit,gonext)
 
 		while(True):
 			for event in pygame.event.get():
