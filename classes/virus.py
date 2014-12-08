@@ -200,7 +200,7 @@ class Parasite(VirusSprite):
 class Bacteria(VirusSprite):
 
 	def __init__(self, board, thing):
-		VirusSprite.__init__(self, board, thing, 60, 6, "bacteria", 3)
+		VirusSprite.__init__(self, board, thing, 60, 6, "bacteria", 10)
 		self.image = pygame.image.load('res/bacteria.png').convert_alpha()
 		self.rect = self.image.get_rect()
 		self.rect.topleft = (-30, -30)
