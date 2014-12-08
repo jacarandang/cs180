@@ -671,7 +671,9 @@ class Gameover:
 if __name__ == '__main__':	
 
 	pygame.init()
-	pygame.display.set_caption("Game Title")
+	pygame.display.set_caption("Heart Attack")
+	icon = pygame.image.load('res/icon.png')
+	pygame.display.set_icon(icon)
 	SCREEN = pygame.display.set_mode((800, 600))
 	#pygame.display.toggle_fullscreen()
 	
