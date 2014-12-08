@@ -7,18 +7,21 @@ class trivia(pygame.sprite.Sprite):
 	def __init__(self):
 		pygame.sprite.Sprite.__init__(self)
 		self.t = [
-		"Virus was coined from the Latin word meaning poison.",
-		"Walter Reed discovered the first human virus, yellow fever, in 1901."
+		"Virus was coined from the Latin word meaning poison",
+		"Walter Reed discovered the first human virus, yellow fever, in 1901"
 		]
-		self.basicFont = pygame.font.SysFont(None, 30)
+		self.basicFont = pygame.font.Font('res/UltraCondensedSansSerif.ttf', 30)
 		self.displayText = random.choice(self.t)
-		self.image = self.basicFont.render(self.displayText, True, (255,255,255))
+		self.image = self.basicFont.render(self.displayText, True, (189,0,0))
 		self.rect = self.image.get_rect()
-		self.rect.topleft = 9,551
+		self.rect.topleft = (400-self.rect.centerx),553
 		self.time = time()
 		
 	def update(self):
 		if time() - self.time >= 10:
 			self.displayText = random.choice(self.t)
-			self.image = self.basicFont.render(self.displayText, True, (255,255,255))
+			self.image = self.basicFont.render(self.displayText, True, (189,0,0))
+			self.rect = self.image.get_rect()
+			self.rect.topleft = (400-self.rect.centerx),553
 			self.time = time()
+			

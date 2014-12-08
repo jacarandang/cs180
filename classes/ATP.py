@@ -12,11 +12,11 @@ class ATP(pygame.sprite.Sprite):
 		self.initVirusATP = 30
 		self.currentVirusATP = self.initVirusATP
 		
-		self.basicFont = pygame.font.SysFont(None, 30)
+		self.basicFont = pygame.font.Font('res/DS-DIGI.TTF', 30)
 		self.displayText = str(self.currentATP)
-		self.image = self.basicFont.render(self.displayText, True, (255,255,255))
+		self.image = self.basicFont.render(self.displayText, True, (189,0,0))
 		self.rect = self.image.get_rect()
-		self.rect.topleft = 675,490
+		self.rect.topleft = (730-self.rect.centerx),511
 		
 	def addATP(self, wave):
 		#FUNCTION: ((0.3x)^2)+15
@@ -29,6 +29,7 @@ class ATP(pygame.sprite.Sprite):
 
 	def update(self):
 		self.displayText = str(self.currentATP)
-		self.image = self.basicFont.render(self.displayText, True, (255,255,255))
-	
+		self.image = self.basicFont.render(self.displayText, True, (189,0,0))
+		self.rect = self.image.get_rect()
+		self.rect.topleft = (730-self.rect.centerx),511
 

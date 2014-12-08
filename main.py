@@ -56,10 +56,10 @@ class Game:
 		self.trivia = trivia()
 		
 		self.wave = 0
-		self.wFont = pygame.font.SysFont(None, 30)
-		self.wSurf = self.wFont.render(str(self.wave), True, (255,255,255))
+		self.wFont = pygame.font.Font('res/DS-DIGI.TTF', 30)
+		self.wSurf = self.wFont.render(str(self.wave), True, (189,0,0))
 		self.wRect = self.wSurf.get_rect()
-		self.wRect.topleft = 675,450
+		self.wRect.topleft = (730-self.wRect.centerx),463
 
 		
 		self.vplayer = virusAI.Player(self.grid, self.thing, self.tgroup, self.values, self.resource)
@@ -101,10 +101,10 @@ class Game:
 
 		self.resource = ATP() #resource
 		self.wave = 0
-		self.wFont = pygame.font.SysFont(None, 30)
-		self.wSurf = self.wFont.render(str(self.wave), True, (255,255,255))
+		self.wFont = pygame.font.Font('res/DS-DIGI.TTF', 30)
+		self.wSurf = self.wFont.render(str(self.wave), True, (189,0,0))
 		self.wRect = self.wSurf.get_rect()
-		self.wRect.topleft = 675,450
+		self.wRect.topleft = (730-self.wRect.centerx),463
 
 		self.fgroup = pygame.sprite.Group()
 		self.fgroup.add(self.resource)
@@ -488,9 +488,6 @@ class Game:
 
 			self.tgroup.update()
 			self.tgroup.draw(self.screen)
-			
-			self.gameoptions.update()
-			self.gameoptions.draw(self.screen)
 
 			self.fgroup.update()
 			self.fgroup.draw(self.screen)
@@ -500,8 +497,13 @@ class Game:
 			self.pgroup.draw(self.screen)
 
 			#display wave
-			self.wSurf = self.wFont.render(str(self.wave), True, (255,255,255))
+			self.wSurf = self.wFont.render(str(self.wave), True, (189,0,0))
+			self.wRect = self.wSurf.get_rect()
+			self.wRect.topleft = (730-self.wRect.centerx),463
 			self.screen.blit(self.wSurf, self.wRect)
+			
+			self.gameoptions.update()
+			self.gameoptions.draw(self.screen)
 	
 			pygame.display.update()
 			
