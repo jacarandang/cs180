@@ -40,6 +40,7 @@ class Game:
 		self.bgroup = pygame.sprite.Group()
 		self.vplayer = virusAI.Player(self.grid, self.thing, self.tgroup, self.values)
 		self.gameoptions = pygame.sprite.Group()
+		self.pauseoptions = pygame.sprite.Group()
 		
 		self.vgroup = []
 		
@@ -79,6 +80,7 @@ class Game:
 		self.bgroup = pygame.sprite.Group()
 		self.vplayer = virusAI.Player(self.grid, self.thing, self.tgroup, self.values)
 		self.gameoptions = pygame.sprite.Group()
+		self.pauseoptions = pygame.sprite.Group()
 		
 		self.vgroup = []
 		
@@ -265,10 +267,46 @@ class Game:
 		
 		return v
 		
+	def foo(self):
+		pass
+		
+	def pause(self):
+		self.pimage = pygame.image.load('res/pausemenu.png')
+		self.pimageRect = self.pimage.get_rect()
+		
+		goagain = Button(pygame.Surface((235,47)).convert(),(400,376),self.foo, 'res/presume.png')
+		goquit = Button(pygame.Surface((225,44)).convert(),(400,467),self.foo, 'res/return.png')	
+		self.pauseoptions.add(goagain,goquit)
+
+		while(True):
+			for event in pygame.event.get():
+				if event.type == QUIT:
+					self.quit = True
+					return
+				elif event.type == KEYDOWN:
+					if event.key == K_p or event.key == K_ESCAPE:
+						return
+				elif event.type == MOUSEBUTTONDOWN:
+					for sprite in self.pauseoptions:
+						c = sprite.click()
+						if(c and sprite == goagain):
+							return
+						elif c and sprite == goquit:
+							self.running = False
+							return
+							
+			self.checkEvents()
+			self.screen.blit(self.pimage, self.pimageRect)
+			self.pauseoptions.update()
+			self.pauseoptions.draw(self.screen)
+			pygame.display.flip()		
+			
+	def stop(self):
+		self.running = False
 		
 	def start(self):
-		pause = Button(pygame.Surface((104,20)).convert(),(730,32),lambda: asd, 'res/pauseg.PNG')
-		buy = Button(pygame.Surface((69,20)).convert(),(730,70),lambda: asd, 'res/buyg.png')
+		pause = Button(pygame.Surface((104,20)).convert(),(730,32),self.pause, 'res/pauseg.PNG')
+		buy = Button(pygame.Surface((69,20)).convert(),(730,70),self.stop, 'res/buyg.png')
 		
 		self.gameoptions.add(pause,buy)
 		
@@ -566,61 +604,7 @@ class Gameover:
 			pygame.display.update()
   
 		return self.action
-class Pause:
 
-	def __init__(self, screen):
-		self.screen = screen
-		self.running = True
-		self.bg = pygame.Surface((800, 600)) #temporary BG
-		self.bg = self.bg.convert()
-		self.pauseoptions = pygame.sprite.Group()
-		self.image = pygame.image.load('res/pausemenu.png')
-		self.imageRect = self.image.get_rect()
-
-		self.m_pos = (-10,-10)    #Mouse Coordinates
-		self.m_down = False	#Left Mouse Button Down
-		self.m_pos_down = (-10,-10)  #Mouse Down Coordinates
-		self.allsprite = pygame.sprite.Group()
-		
-		
-	
-	def checkEvents(self):
-		for event in pygame.event.get():
-			if event.type == QUIT:
-				self.running = False
-
-			if event.type == MOUSEMOTION:
-				self.m_pos = (event.pos[0], event.pos[1])
-				#print self.m_pos
-
-			if event.type == MOUSEBUTTONDOWN:
-				if event.button == 1:
-					print 'left mouse button'
-					self.m_down = True
-					self.m_pos_down = (event.pos[0], event.pos[1])
-					for b in self.pauseoptions:
-						b.click()
-						
-			if event.type == KEYDOWN:
-				if event.key == K_ESCAPE:
-					self.running = False
-					
-	def start(self):
-
-		goagain = Button(pygame.Surface((235,47)).convert(),(400,376),lambda: asd, 'res/presume.png')
-		goquit = Button(pygame.Surface((225,44)).convert(),(400,467),lambda: asd, 'res/return.png')
-		self.pauseoptions.add(goagain,goquit)
-
-		while(self.running):
-			self.checkEvents()
-			self.screen.blit(self.bg, (0, 0))
-			self.screen.blit(self.image, self.imageRect)
-			self.allsprite.update()
-			self.allsprite.draw(self.screen)
-			self.pauseoptions.update()
-			self.pauseoptions.draw(self.screen)
-			pygame.display.update()  
-  
   
 if __name__ == '__main__':	
 
