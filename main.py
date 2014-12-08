@@ -315,12 +315,16 @@ class Game:
 			
 	def stop(self):
 		self.running = False
-		
+	
+	def waveg(self):
+		self.go = True
+	
 	def start(self):
 		pause = Button(pygame.Surface((104,20)).convert(),(730,32),self.pause, 'res/pauseg.PNG')
 		buy = Button(pygame.Surface((69,20)).convert(),(730,70),self.stop, 'res/buyg.png')
+		waveb = Button(pygame.Surface((93,26)).convert(),(730,458),self.waveg, 'res/wave.PNG')
 		
-		self.gameoptions.add(pause,buy)
+		self.gameoptions.add(pause,buy,waveb)
 		while(self.running and not self.thing.isDead()):
 			self.clock.tick(60)
 			self.checkEvents()
