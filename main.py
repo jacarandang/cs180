@@ -319,9 +319,16 @@ class Game:
 	def waveg(self):
 		self.go = True
 	
+	def spawnstem(self):
+		if self.select_T == None:
+			self.select_T = StemCell()
+		else:
+			self.select_T = None	
+	
+	
 	def start(self):
 		pause = Button(pygame.Surface((104,20)).convert(),(730,32),self.pause, 'res/pauseg.PNG')
-		buy = Button(pygame.Surface((69,20)).convert(),(730,70),self.stop, 'res/buyg.png')
+		buy = Button(pygame.Surface((69,20)).convert(),(730,70),self.spawnstem, 'res/buyg.png')
 		waveb = Button(pygame.Surface((93,26)).convert(),(730,458),self.waveg, 'res/wave.PNG')
 		
 		self.gameoptions.add(pause,buy,waveb)
