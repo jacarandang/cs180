@@ -338,6 +338,10 @@ class Game:
 
 						if i.upgradeRect != None and i.upgradeRect.collidepoint(self.m_pos_down[0], self.m_pos_down[1]):
 							print 'upgrade'
+							if i.upgrade().cost <= self.resource.currentATP:
+								i.sell()
+								self.select_T = i.upgrade()
+								self.resource.currentATP -= self.select_T.cost
 	
 					self.m_down = False
 
@@ -358,6 +362,11 @@ class Game:
 				if j.tower_type == 'Neutrophil':
 					j.Shoot(vlist, self.bgroup)
 
+			for i in self.tgroup:
+				print i.dmg,
+			print '\n'
+
+			#Removes Tower from T_List and sets occupy in Grid to 0
 			for i in self.T_list:
 				present = False
 				for j in self.tgroup:
@@ -366,7 +375,6 @@ class Game:
 				if present == False:
 					for k in i.occupy:
 						self.grid.set(k[0],k[1],0)
-					print 'occupy:', i.occupy
 					self.T_list.remove(i)
 
 			self.tgroup.update()

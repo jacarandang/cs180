@@ -1,5 +1,6 @@
 import pygame
 from pygame.locals import *
+from tower import *
 
 class HoverDown(pygame.sprite.Sprite):
 
@@ -94,6 +95,9 @@ class PopUp(pygame.sprite.Sprite):
 		if self.y >= 600 - self.height:
 			self.y -= self.height
 
+		if self.x >= 660 - self.width:
+			self.x = self.x - (self.width + self.width/2)
+
 		self.upgrades = []
 		self.image = pygame.Surface((self.width, self.height))
 		self.image.fill((255, 255, 255))
@@ -107,8 +111,10 @@ class PopUp(pygame.sprite.Sprite):
 		self.upgradeRect = None
 
 		self.index = 0
+		self.upTower = []
 
 		self.towerUpgrade() #Get Upgrades
+		
 		
 	def towerUpgrade(self):
 		if self.tower.tower_type == 'Stem Cell':
@@ -116,15 +122,24 @@ class PopUp(pygame.sprite.Sprite):
 			self.upgrades.append(pygame.image.load('res/ulymphocyte.png')) #Lymphocyte
 			self.upgrades.append(pygame.image.load('res/ugranulocyte.png')) #Granulocyte
 
+			self.upTower.append(Lymphocyte())
+			self.upTower.append(Granulocyte())
+
 		if self.tower.tower_type == 'Lymphocyte':
 			#Upgrades to:
 			self.upgrades.append(pygame.image.load('res/unatkill.png'))#Natural Killer Cell
 			self.upgrades.append(pygame.image.load('res/utcell.png'))#T-Cell
 			self.upgrades.append(pygame.image.load('res/ubcell.png'))#B-Cell
 
+			self.upTower.append(NaturalKillerCell())
+			self.upTower.append(TCell())
+			self.upTower.append(BCell())
+
 		if self.tower.tower_type == 'B-Cell':
 			#Upgrades to:
 			self.upgrades.append(pygame.image.load('res/uplasma.png')) #Plasma Cell
+		
+			self.upTower.append(PlasmaCell())
 
 		if self.tower.tower_type == 'Granulocyte':
 			#Upgrades to:
@@ -134,13 +149,23 @@ class PopUp(pygame.sprite.Sprite):
 			self.upgrades.append(pygame.image.load('res/umonocyte.png')) #Monocyte
 			self.upgrades.append(pygame.image.load('res/umegakaryocyte.png')) #Megakaryocyte
 
+			self.upTower.append(Basophil())
+			self.upTower.append(Neutrophil())
+			self.upTower.append(Eosinophil())
+			self.upTower.append(Monocyte())
+			self.upTower.append(Megakaryocyte())
+
 		if self.tower.tower_type == 'Monocyte':
 			#Upgrades to:	
 			self.upgrades.append(pygame.image.load('res/umacrophage.png')) #Macrophage
+	
+			self.upTower.append(Macrophage())
 
 		if self.tower.tower_type == 'Megakaryocyte':
 			#Upgrades to:
 			self.upgrades.append(pygame.image.load('res/uthrombocyte.png')) #Thrombocyte
+
+			self.upTower.append(Thrombocyte())
 
 		if self.tower.tower_type == 'Natural Killer Cell' or self.tower.tower_type == 'T-Cell' or self.tower.tower_type == 'Plasma Cell' or self.tower.tower_type == 'Basophil' or self.tower.tower_type == 'Neutrophil' or self.tower.tower_type == 'Eosinophil' or self.tower.tower_type == 'Macrophage' or self.tower.tower_type == 'Thrombocyte':
 			self.upgrades.append(pygame.image.load('res/ufinalform.png')) #No Upgrades
@@ -170,6 +195,9 @@ class PopUp(pygame.sprite.Sprite):
 	def sell(self):
 		self.tower.kill()
 		self.visible = False
+
+	def upgrade(self):
+		return self.upTower[self.index]
 
 	def update(self):
 		if self.visible == False:
