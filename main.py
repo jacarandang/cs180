@@ -844,7 +844,6 @@ if __name__ == '__main__':
 			if arg == '': arg = 'actions'
 			actionfile = arg
 	print virus, recordfile, actionfile
-	raw_input()
 	mmenu = Mainmenu(SCREEN, virus, recordfile, actionfile)
 	mmenu.start()
 	
