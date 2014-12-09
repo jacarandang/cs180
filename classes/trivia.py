@@ -31,7 +31,7 @@ class trivia(pygame.sprite.Sprite):
 		self.time = time()
 		
 	def update(self):
-		if time() - self.time >= 4:
+		if time() - self.time >= 10:
 			self.displayText = random.choice(self.t)
 			self.image = self.basicFont.render(self.displayText, True, (189,0,0))
 			self.rect = self.image.get_rect()
