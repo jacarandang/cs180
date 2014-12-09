@@ -426,7 +426,15 @@ class Game:
 							self.T_list.append(self.select_T)
 							self.tgroup.add(self.select_T) 
 							self.resource.currentATP -= self.select_T.cost
-							self.select_T = None
+							if self.select_T.tower_type == "Stem Cell":
+								mods = pygame.key.get_mods()
+								if mods & KMOD_LSHIFT:
+									print "Yes"
+									self.select_T = StemCell()
+								else:
+									self.select_T = None
+							else:
+								self.select_T = None
 						else:
 							if not bl: print 'Not enough ATP'
 					else:
