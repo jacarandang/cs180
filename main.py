@@ -56,6 +56,7 @@ class Game:
 		self.trivia = trivia()
 		
 		self.wave = 0
+		self.currWave = -1
 		self.wFont = pygame.font.Font('res/DS-DIGI.TTF', 30)
 		self.wSurf = self.wFont.render(str(self.wave), True, (189,0,0))
 		self.wRect = self.wSurf.get_rect()
@@ -101,6 +102,7 @@ class Game:
 
 		self.resource = ATP() #resource
 		self.wave = 0
+		self.currWave = -1
 		self.wFont = pygame.font.Font('res/DS-DIGI.TTF', 30)
 		self.wSurf = self.wFont.render(str(self.wave), True, (189,0,0))
 		self.wRect = self.wSurf.get_rect()
@@ -335,6 +337,8 @@ class Game:
 		while(self.running and not self.thing.isDead()):
 			self.clock.tick(60)
 			self.checkEvents()
+
+			#print 'currWave:', self.currWave, 'wave:', self.wave, 'hasVirus:', self.hasVirus()
 			
 			if self.status == "prep":
 				if time() - self.timer >= self.preptime and self.go:
@@ -342,16 +346,15 @@ class Game:
 					self.timer = time()
 					self.status = "wave"
 					self.vgroup.append(self.vplayer.getNextGroup())
-					self.wave += 1
+					self.resource.addATP(self.wave)
+					self.resource.addVirusATP(self.wave)
 					self.go = False
 			else:
 				if time() - self.timer >= self.wavetime or not self.hasVirus():	#or if no virus exist
 					self.timer = time()
 					self.status = "prep"
-					self.resource.addATP(self.wave)
-					self.resource.addVirusATP(self.wave)
+					self.wave += 1
 					print "prep"
-					
 			
 			#Draws all Towers in Grid
 			self.screen.blit(self.bg, (0, 0))
@@ -418,6 +421,31 @@ class Game:
 					self.m_down = False
 			else:
 				if self.m_down:
+
+					#Check if PopUp is being clicked
+					for i in self.pgroup:
+						if i.prevRect.collidepoint(self.m_pos_down[0], self.m_pos_down[1]):
+							print 'prev'
+							i.prev()
+							self.m_pos_down = -10, -10
+						if i.nextRect.collidepoint(self.m_pos_down[0], self.m_pos_down[1]):
+							print 'next'
+							i.next()
+							self.m_pos_down = -10, -10
+						if i.sellRect.collidepoint(self.m_pos_down[0], self.m_pos_down[1]):
+							print 'sell'							
+							self.resource.currentATP += i.tower.cost
+							i.sell()
+							self.m_pos_down = -10, -10
+						if i.upgradeRect != None and i.upgradeRect.collidepoint(self.m_pos_down[0], self.m_pos_down[1]):
+							print 'upgrade'
+							if i.upgrade().cost <= self.resource.currentATP:
+								i.sell()
+								self.select_T = i.upgrade()
+							else:
+								print 'Not enough ATP'
+							self.m_pos_down = -10, -10
+
 					#Check if Tower is being clicked
 					for i in self.T_list:
 						for j in i.occupy:
@@ -434,27 +462,7 @@ class Game:
 										self.pgroup.add(pop)								
 								break
 
-					#Check if PopUp is being clicked
-					for i in self.pgroup:
-						if i.prevRect.collidepoint(self.m_pos_down[0], self.m_pos_down[1]):
-							print 'prev'
-							i.prev()
-						if i.nextRect.collidepoint(self.m_pos_down[0], self.m_pos_down[1]):
-							print 'next'
-							i.next()
-						
-						if i.sellRect.collidepoint(self.m_pos_down[0], self.m_pos_down[1]):
-							print 'sell'							
-							self.resource.currentATP += i.tower.cost
-							i.sell()
-
-						if i.upgradeRect != None and i.upgradeRect.collidepoint(self.m_pos_down[0], self.m_pos_down[1]):
-							print 'upgrade'
-							if i.upgrade().cost <= self.resource.currentATP:
-								i.sell()
-								self.select_T = i.upgrade()
-							else:
-								print 'Not enough ATP'
+					
 	
 					self.m_down = False
 
