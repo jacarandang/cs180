@@ -475,6 +475,7 @@ class Game:
 							if j.tower_type == 'Neutrophil':
 								vlist.append(i)
 							else:
+								if not i.visible: continue
 								j.Shoot(i,self.bgroup)
 								shoot = True
 								break

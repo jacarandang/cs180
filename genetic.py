@@ -100,4 +100,5 @@ dir = 'ai'
 g = Genetic(2)
 pop  = g.start(1)
 pop.sort(reverse = True)
-print pop
+with file(os.path.join(dir, 'data.net'), "wb") as f:
+	pickle.dump(pop, f)
