@@ -16,20 +16,20 @@ the player, by attacking its 'heart' at the end of the grid, reducing its life p
 1. main.py - Contains the main game logic
 2. genetic.py - Contains genetic algorithm for training the AI
 3. classes - Contains classes used by the game logic
-a. AI.py - Basic AI algorithms used in the game
-b. ATP.py - Sprite of ATP plus holds information about ATP of player and virus
-c. base.py - Contains base classes
-d. bullet.py - Contains bullet logic and sprite
-e. DS.py	- Contains datastructes used
-f. member.py - Contains member class used by genetic, contains imformation
-	multipliers
-g. thing.py		- Contains heart sprite and logic
-h. tower.py 	- Contains tower base, sprites, information, and logic
-i. towerAI.py		- Contains AI for tower
-j. trivia.py	- Contains trivias and its sprites
-k. UI.py 	- Contains UI like popup
-l. virus.py	- Contains virus base, information, and sprite. Also includes virus groups
-m. virusAI.py - Contains AI for virus
+	1. AI.py - Basic AI algorithms used in the game
+	2. ATP.py - Sprite of ATP plus holds information about ATP of player and virus
+	3. base.py - Contains base classes
+	4. bullet.py - Contains bullet logic and sprite
+	5. DS.py	- Contains datastructes used
+	6 member.py - Contains member class used by genetic, contains imformation
+		multipliers
+	7. thing.py		- Contains heart sprite and logic
+	8. tower.py 	- Contains tower base, sprites, information, and logic
+	9. towerAI.py		- Contains AI for tower
+	10. trivia.py	- Contains trivias and its sprites
+	11. UI.py 	- Contains UI like popup
+	12. virus.py	- Contains virus base, information, and sprite. Also includes virus groups
+	13. virusAI.py - Contains AI for virus
 4. ai - Contains multipliers to be used by the game by default
 
 ## Running
