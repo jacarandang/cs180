@@ -156,10 +156,11 @@ class Evaluator:
 	def __init__(self, values = None):
 		self.values = values
 		if self.values == None:
-			with file('ai/data.net', 'rb') as f:
-				pop = pickle.load(f)
-				self.values = pop[0]
-				print self.values.value
+			self.values = Member()
+			# with file('ai/data.net', 'rb') as f:
+				# pop = pickle.load(f)
+				# self.values = pop[0]
+				# print self.values.value
 				
 	def eval(self, ntowers, nvirus, wave):
 		total = [0 for i in xrange(nvirus)]
