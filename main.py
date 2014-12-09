@@ -1,4 +1,4 @@
-import os, sys
+import os, sys, getopt
 import pygame
 from pygame.locals import *
 from classes.base import *
@@ -806,7 +806,16 @@ if __name__ == '__main__':
 	SCREEN = pygame.display.set_mode((800, 600))
 	#pygame.display.toggle_fullscreen()
 	
-
+	argv = sys.argv[1:]
+	print argv
+	try:
+		opts, args = getopt.getopt(argv,"hrav",["rrecord=", "aaction=", "vvirus:"])
+	except getopt.GetoptError:
+		print 'test.py -i <inputfile> -o <outputfile>'
+		sys.exit(2)
+	for opt, arg in opts:
+		print opt, arg
+		
 	mmenu = Mainmenu(SCREEN)
 	mmenu.start()
 	

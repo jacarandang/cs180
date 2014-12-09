@@ -89,7 +89,6 @@ class TowerPlayer:
 			break
 			
 		if not hasdone and self.game.status == "prep":
-			print "game"
 			self.game.waveg()
 		
 		for a in done:
