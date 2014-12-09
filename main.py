@@ -807,14 +807,28 @@ if __name__ == '__main__':
 	#pygame.display.toggle_fullscreen()
 	
 	argv = sys.argv[1:]
-	print argv
+	virus = None
+	recordfile = None
+	actionfile = None
 	try:
-		opts, args = getopt.getopt(argv,"hrav",["rrecord=", "aaction=", "vvirus:"])
+		opts, args = getopt.getopt(argv,"hrav:")
 	except getopt.GetoptError:
-		print 'test.py -i <inputfile> -o <outputfile>'
+		print 'main.py	-r [record file(defaults to actions)] -a [actions file(defaults to action)] [-v <population file>]'
 		sys.exit(2)
 	for opt, arg in opts:
-		print opt, arg
+		if opt == '-v':
+			with file(arg) as f:
+				pop = pickle.load(f)
+				virus = pop[0]
+		elif opt == '-r':
+			if arg == '': arg = 'actions'
+			recordfile = arg
+		elif opt == '-a':
+			if arg == '': arg = 'actions'
+			actionfile = arg
+	print virus, recordfile, actionfile
+	raw_input()
+		
 		
 	mmenu = Mainmenu(SCREEN)
 	mmenu.start()
