@@ -82,6 +82,10 @@ class Game:
 		self.go = False
 		
 		self.towerai = TowerPlayer(self.resource, self.T_list, self.tgroup, self.grid, self)
+		self.recorder = Recorder()
+		self.recording = False
+		self.upgrading = False
+		self.upgradeAction = None
 		
 	def reinitialize(self):
 		self.running = True
@@ -359,9 +363,8 @@ class Game:
 		waveb = Button(pygame.Surface((93,26)).convert(),(730,458),self.waveg, 'res/wave.PNG')
 		
 		self.gameoptions.add(pause,buy,waveb)
-		#self.towerai.getActions()
 		while(self.running and not self.thing.isDead()):
-			print self.testing
+			self.towerai.getActions()
 			self.clock.tick(60)
 			self.checkEvents()
 			if self.wave == 11 and self.testing == True:
@@ -376,6 +379,8 @@ class Game:
 					self.vgroup.append(self.vplayer.getNextGroup(self.wave))
 					self.go = False
 					self.wave += 1
+					
+					self.recorder.addAction(Action('go'))		#recorder Action
 			else:
 				if time() - self.timer >= self.wavetime or not self.hasVirus():	#or if no virus exist
 					self.timer = time()
@@ -440,6 +445,17 @@ class Game:
 							self.T_list.append(self.select_T)
 							self.tgroup.add(self.select_T) 
 							self.resource.currentATP -= self.select_T.cost
+							
+							if self.recording:
+								if not self.upgrading:
+									self.recorder.addAction(Action('buy', self.select_T.tower_type, boxContain))	#recorder actions
+								else:
+									self.upgradeAction.tower = self.select_T.tower_type
+									self.upgradeAction.pos = boxContain
+									self.recorder.addAction(self.upgradeAction)
+									self.upgrading = False
+									self.upgradeAction = None
+								
 							if self.select_T.tower_type == "Stem Cell":
 								mods = pygame.key.get_mods()
 								if mods & KMOD_LSHIFT:
@@ -473,11 +489,16 @@ class Game:
 							self.resource.currentATP += i.tower.cost
 							i.sell()
 							self.m_pos_down = -10, -10
+							
+							if self.recording: self.recorder.addAction(Action('sell', None, None, i.tower.tower_type, i.tower.occupy))		#recorder Action
 						if i.upgradeRect != None and i.upgradeRect.collidepoint(self.m_pos_down[0], self.m_pos_down[1]):
 							print 'upgrade'
 							if i.upgrade().cost <= self.resource.currentATP:
 								i.sell()
 								self.select_T = i.upgrade()
+								self.upgrading = True
+								
+								if self.recording: self.upgradeAction = Action('upgrade', None, None, i.tower.tower_type, i.tower.occupy)			#recorder action
 							else:
 								print 'Not enough ATP'
 							self.m_pos_down = -10, -10
@@ -554,6 +575,7 @@ class Game:
 	
 			pygame.display.update()
 			
+		if self.recording: self.recorder.save()
 		return self.wave, self.thing.life
   
 class Mainmenu:
