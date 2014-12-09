@@ -65,6 +65,16 @@ class TowerPlayer:
 				t_d = self.searchTower(action.tower_d_pos)
 				t_d.kill()
 				
+				for i in self.tlist:
+					present = False
+					for j in self.tgroup:
+						if j == i:
+							present = True
+					if present == False:
+						for k in i.occupy:
+							self.grid.set(k[0],k[1],0)
+						self.tlist.remove(i)
+				
 				for i in action.pos:
 					self.grid.set(i[0],i[1],1)
 					

@@ -84,7 +84,7 @@ class Game:
 		
 		self.towerai = TowerPlayer(self.resource, self.T_list, self.tgroup, self.grid, self)
 		self.recorder = Recorder()
-		self.recording = False
+		self.recording = True
 		self.upgrading = False
 		self.upgradeAction = None
 		
