@@ -364,7 +364,7 @@ class Game:
 		
 		self.gameoptions.add(pause,buy,waveb)
 		while(self.running and not self.thing.isDead()):
-			self.towerai.getActions()
+			if not self.recording: self.towerai.getActions()
 			self.clock.tick(60)
 			self.checkEvents()
 			if self.wave == 11 and self.testing == True:
