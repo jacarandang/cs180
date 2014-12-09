@@ -55,7 +55,7 @@ class Player():
 		return group
 		
 	def getNextGroup(self, wave):
-		group = VirusGroup()
+		group = VirusGroup(wave)
 		group.add()
 
 		p = []

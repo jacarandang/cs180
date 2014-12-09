@@ -3,6 +3,7 @@ from random import uniform
 import math
 import pickle
 from member import Member
+
 class VirusNode(Node):
 
 	def __init__(self, pos, board, parent = None, cost = 0):

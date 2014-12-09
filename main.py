@@ -10,6 +10,7 @@ from classes.thing import *
 from classes.ATP import *
 from classes.trivia import *
 from classes.member import Member
+import pickle
 #import classes
 
 class Game:
@@ -27,6 +28,10 @@ class Game:
 		self.imageRect = self.image.get_rect()
 
 		self.values = values
+		if self.values == None:
+			with file('ai/data.net') as f:
+				pop = pickle.load(f)
+				self.values = pop[0]
 		self.m_pos = (-10,-10)    #Mouse Coordinates
 		self.m_down = False	#Left Mouse Button Down
 		self.m_pos_down = (-10,-10)  #Mouse Down Coordinates
@@ -341,6 +346,8 @@ class Game:
 		else:
 			self.select_T = None	
 	
+	def placeTower(self, pos):
+		pass
 	
 	def start(self):
 		pause = Button(pygame.Surface((104,20)).convert(),(730,32),self.pause, 'res/pauseg.PNG')

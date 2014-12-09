@@ -133,11 +133,15 @@ class VirusSprite(VirusBase, pygame.sprite.Sprite):
 #A Virus Group which also serves as a Sprite Group		
 class VirusGroup(pygame.sprite.Group, VirusGroupBase):
 
-	def __init__(self, *viruses):
+	def __init__(self, wave = 0, *viruses):
 		self.hvirus = [i for i in viruses]
 		pygame.sprite.Group.__init__(self)
 		VirusGroupBase.__init__(self)
 		self.timer = time()
+		self.wave = wave
+		self.timenext = 0.25 - (self.wave/5)*0.05
+		if self.timenext < 0.10:
+			self.timenext = 0.10
 			
 	def add(self, *viruses):
 		for v in viruses:
@@ -148,7 +152,7 @@ class VirusGroup(pygame.sprite.Group, VirusGroupBase):
 		VirusGroupBase.add(self, *viruses)
 
 	def update(self):
-		if time() - self.timer >= 0.25:
+		if time() - self.timer >= self.timenext:
 			self.timer = time()
 			if not len(self.hvirus) == 0:
 				v = self.hvirus.pop()
