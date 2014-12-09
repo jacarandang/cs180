@@ -346,11 +346,11 @@ class Game:
 					self.status = "wave"
 					self.vgroup.append(self.vplayer.getNextGroup())
 					self.go = False
+					self.wave += 1
 			else:
 				if time() - self.timer >= self.wavetime or not self.hasVirus():	#or if no virus exist
 					self.timer = time()
 					self.status = "prep"
-					self.wave += 1
 					print "prep"
 					self.resource.addATP(self.wave)
 					self.resource.addVirusATP(self.wave)
@@ -652,7 +652,7 @@ class Mainmenu:
 		quit = Button(pygame.Surface((153,41)).convert(),(537,468),self.stop , 'res/quit.PNG')
 		self.mainoptions.add(start,help,credits,quit)
 		
-		self.bgm.play()
+		self.bgm.play(-1)
 		while(self.running):
 			self.checkEvents()
 			self.screen.blit(self.bg, (0, 0))
