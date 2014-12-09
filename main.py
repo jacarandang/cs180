@@ -428,7 +428,8 @@ class Game:
 						for i in boxContain:
 							gr.set(i[0], i[1], 1)
 							if not self.vplayer.hasValidPath(gr):
-								print "Blocking"
+								self.trivia.checks("Blocking")
+								#print "Blocking"
 								bl = True
 								break
 						if self.resource.currentATP - self.select_T.cost >= 0 and not bl:
@@ -450,9 +451,10 @@ class Game:
 							else:
 								self.select_T = None
 						else:
-							if not bl: print 'Not enough ATP'
+							if not bl: self.trivia.checks("Not enough ATP")#print 'Not enough ATP'
 					else:
-						print 'Overlap/Outside Error'
+						#print 'Overlap/Outside Error'
+						self.trivia.checks("Overlap/Outside Error")
 
 					self.m_down = False
 			else:

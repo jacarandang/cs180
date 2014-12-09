@@ -28,12 +28,35 @@ class trivia(pygame.sprite.Sprite):
 		self.rect = self.image.get_rect()
 		self.rect.topleft = (400-self.rect.centerx),553
 		self.time = time()
+		self.check = False
+		self.checkd = False
+	def checks(self, name):
+		self.name = name
+		self.check = True
 		
 	def update(self):
-		if time() - self.time >= 10:
+		if(self.check):
+			
+			self.displayText = self.name
+			self.image = self.basicFont.render(self.displayText, True, (189,0,0))
+			self.rect = self.image.get_rect()
+			self.rect.topleft = (400-self.rect.centerx),553
+			self.time = time()
+			self.check = False
+			self.checkd = True 
+		
+		elif(not self.checkd and time() - self.time >= 10):
 			self.displayText = random.choice(self.t)
 			self.image = self.basicFont.render(self.displayText, True, (189,0,0))
 			self.rect = self.image.get_rect()
 			self.rect.topleft = (400-self.rect.centerx),553
 			self.time = time()
+		
+		if(self.checkd  and time() - self.time >= 1):
+			self.displayText = random.choice(self.t)
+			self.image = self.basicFont.render(self.displayText, True, (189,0,0))
+			self.rect = self.image.get_rect()
+			self.rect.topleft = (400-self.rect.centerx),553
+			self.time = time()
+			self.checkd = False
 			
