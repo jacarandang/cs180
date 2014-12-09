@@ -1,3 +1,4 @@
+import math
 import pygame
 from pygame.locals import *
 
@@ -23,8 +24,8 @@ class ATP(pygame.sprite.Sprite):
 		self.currentATP += int((0.3*wave)**2)+15
 
 	def addVirusATP(self, wave):
-		#FUNCTION: (x*100 + x^3)
-		self.currentVirusATP += int(wave**3)+ wave*100
+		#FUNCTION: 100log(x)+100
+		self.currentVirusATP += int(100*math.log(wave))+100
 		print self.currentVirusATP
 
 	def update(self):
