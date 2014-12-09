@@ -157,7 +157,7 @@ class VirusGroup(pygame.sprite.Group, VirusGroupBase):
 class Fungi(VirusSprite):
 
 	def __init__(self, board, thing, res):
-		VirusSprite.__init__(self, board, thing, 20, 10, "fungi", 1, res)
+		VirusSprite.__init__(self, board, thing, 10, 10, "fungi", 1, res)
 		self.image = pygame.image.load('res/fungi.png').convert_alpha()
 		self.visibleImage = self.image
 		self.rect = self.image.get_rect()
