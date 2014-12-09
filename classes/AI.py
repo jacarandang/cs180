@@ -161,12 +161,14 @@ class Evaluator:
 				self.values = pop[0]
 				print self.values.value
 				
-	def eval(self, ntowers, nvirus):
+	def eval(self, ntowers, nvirus, wave):
 		total = [0 for i in xrange(nvirus)]
 		for i in xrange(nvirus):
 			for j in xrange(len(ntowers)):
 				total[i] += ntowers[j]*self.values.value[i*14 + j]
-		
+		for i in xrange(nvirus):
+			total[i] += wave * self.values.wave[i]
+			
 		total = map(sigmoid, total)
 		s = sum(total)*1.00
 		total = map(lambda x: x/s, total)

@@ -147,7 +147,7 @@ class Game:
 						
 			if event.type == KEYDOWN:
 				if event.key == K_ESCAPE:
-					self.running = False
+					self.pause()
 
 				if event.key == K_1:
 					print 'T_1'
@@ -357,7 +357,7 @@ class Game:
 					#WAVE
 					self.timer = time()
 					self.status = "wave"
-					self.vgroup.append(self.vplayer.getNextGroup())
+					self.vgroup.append(self.vplayer.getNextGroup(self.wave))
 					self.go = False
 					self.wave += 1
 			else:

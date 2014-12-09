@@ -54,7 +54,7 @@ class Player():
 		
 		return group
 		
-	def getNextGroup(self):
+	def getNextGroup(self, wave):
 		group = VirusGroup()
 		group.add()
 
@@ -83,7 +83,7 @@ class Player():
 					ntowers[i] += 1
 					break
 		
-		prop = self.e.eval(ntowers, 6)
+		prop = self.e.eval(ntowers, 6, wave)
 		prop_cost = 0
 		for i in xrange(6):
 			prop_cost += self.vcosts[i] * prop[i]
@@ -92,27 +92,27 @@ class Player():
 		
 		nhiv = int(num * prop[5])
 		print nhiv
-		for i in xrange(nhiv): group.add(HIV(self.board, self.thing, self.atp))
+		for i in xrange(nhiv): group.add(HIV(self.board, self.thing, self.atp, wave))
 		self.atp.currentVirusATP -= nhiv * self.vcosts[5]
 		
 		nebo = int(num * prop[4])
-		for i in xrange(nebo): group.add(Ebola(self.board, self.thing, self.atp))
+		for i in xrange(nebo): group.add(Ebola(self.board, self.thing, self.atp, wave))
 		self.atp.currentVirusATP -= nebo * self.vcosts[4]
 		
 		nvir = int(num * prop[3])
-		for i in xrange(nvir): group.add(Virus(self.board, self.thing, self.atp))
+		for i in xrange(nvir): group.add(Virus(self.board, self.thing, self.atp, wave))
 		self.atp.currentVirusATP -= nvir * self.vcosts[3]
 		
 		nbac = int(num * prop[2])
-		for i in xrange(nbac): group.add(Bacteria(self.board, self.thing, self.atp))
+		for i in xrange(nbac): group.add(Bacteria(self.board, self.thing, self.atp, wave))
 		self.atp.currentVirusATP -= nbac * self.vcosts[2]
 		
 		npar = int(num * prop[1])
-		for i in xrange(npar): group.add(Parasite(self.board, self.thing, self.atp))
+		for i in xrange(npar): group.add(Parasite(self.board, self.thing, self.atp, wave))
 		self.atp.currentVirusATP -= npar * self.vcosts[1]
 		
 		nfun = self.atp.currentVirusATP
-		for i in xrange(nfun): group.add(Fungi(self.board, self.thing, self.atp))
+		for i in xrange(nfun): group.add(Fungi(self.board, self.thing, self.atp, wave))
 		self.atp.currentVirusATP -= nfun * self.vcosts[0]
 		
 		group.setActions(p)
