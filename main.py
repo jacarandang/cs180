@@ -56,10 +56,10 @@ class Game:
 		self.trivia = trivia()
 		
 		self.wave = 0
-		self.wFont = pygame.font.SysFont(None, 30)
-		self.wSurf = self.wFont.render(str(self.wave), True, (255,255,255))
+		self.wFont = pygame.font.Font('res/DS-DIGI.TTF', 30)
+		self.wSurf = self.wFont.render(str(self.wave), True, (189,0,0))
 		self.wRect = self.wSurf.get_rect()
-		self.wRect.topleft = 675,450
+		self.wRect.topleft = (730-self.wRect.centerx),463
 
 		
 		self.vplayer = virusAI.Player(self.grid, self.thing, self.tgroup, self.values, self.resource)
@@ -101,10 +101,10 @@ class Game:
 
 		self.resource = ATP() #resource
 		self.wave = 0
-		self.wFont = pygame.font.SysFont(None, 30)
-		self.wSurf = self.wFont.render(str(self.wave), True, (255,255,255))
+		self.wFont = pygame.font.Font('res/DS-DIGI.TTF', 30)
+		self.wSurf = self.wFont.render(str(self.wave), True, (189,0,0))
 		self.wRect = self.wSurf.get_rect()
-		self.wRect.topleft = 675,450
+		self.wRect.topleft = (730-self.wRect.centerx),463
 
 		self.fgroup = pygame.sprite.Group()
 		self.fgroup.add(self.resource)
@@ -315,12 +315,23 @@ class Game:
 			
 	def stop(self):
 		self.running = False
-		
+	
+	def waveg(self):
+		self.go = True
+	
+	def spawnstem(self):
+		if self.select_T == None:
+			self.select_T = StemCell()
+		else:
+			self.select_T = None	
+	
+	
 	def start(self):
 		pause = Button(pygame.Surface((104,20)).convert(),(730,32),self.pause, 'res/pauseg.PNG')
-		buy = Button(pygame.Surface((69,20)).convert(),(730,70),self.stop, 'res/buyg.png')
+		buy = Button(pygame.Surface((69,20)).convert(),(730,70),self.spawnstem, 'res/buyg.png')
+		waveb = Button(pygame.Surface((93,26)).convert(),(730,458),self.waveg, 'res/wave.PNG')
 		
-		self.gameoptions.add(pause,buy)
+		self.gameoptions.add(pause,buy,waveb)
 		while(self.running and not self.thing.isDead()):
 			self.clock.tick(60)
 			self.checkEvents()
@@ -477,9 +488,6 @@ class Game:
 
 			self.tgroup.update()
 			self.tgroup.draw(self.screen)
-			
-			self.gameoptions.update()
-			self.gameoptions.draw(self.screen)
 
 			self.fgroup.update()
 			self.fgroup.draw(self.screen)
@@ -489,8 +497,13 @@ class Game:
 			self.pgroup.draw(self.screen)
 
 			#display wave
-			self.wSurf = self.wFont.render(str(self.wave), True, (255,255,255))
+			self.wSurf = self.wFont.render(str(self.wave), True, (189,0,0))
+			self.wRect = self.wSurf.get_rect()
+			self.wRect.topleft = (730-self.wRect.centerx),463
 			self.screen.blit(self.wSurf, self.wRect)
+			
+			self.gameoptions.update()
+			self.gameoptions.draw(self.screen)
 	
 			pygame.display.update()
 			

@@ -174,7 +174,8 @@ class Parasite(VirusSprite):
 	def __init__(self, board, thing, res):
 		VirusSprite.__init__(self, board, thing, 20, 2.5, "parasite", 5, res)
 		self.images = []
-		for i in xrange(1, 6):
+		for i in xrange(1, 9):
+			
 			self.images.append(pygame.image.load('res/parasite'+str(i)+'.png'))
 		self.image = self.images[0]
 		self.iidx = 0
@@ -187,12 +188,12 @@ class Parasite(VirusSprite):
 		if time() - self.animtime > 1/self.speed*1.00:
 			self.animtime = time()
 			self.iidx += 1
-			self.iidx %= 5
+			self.iidx %= 8
 			self.image = self.images[self.iidx]
 
 	def reappear(self):
 		self.images = []
-		for i in xrange(1, 6):
+		for i in xrange(1, 9):
 			self.images.append(pygame.image.load('res/parasite'+str(i)+'.png'))
 		self.image = self.images[0]
 		self.iidx = 0
@@ -226,7 +227,7 @@ class Ebola(VirusSprite):
 	def __init__(self, board, thing, res):
 		VirusSprite.__init__(self, board, thing, 30, 8, "ebola", 10, res)
 		self.images = []
-		for i in xrange(1, 6):
+		for i in xrange(1, 9):
 			self.images.append(pygame.image.load('res/ebola'+str(i)+'.png'))
 		self.image = self.images[0]
 		self.iidx = 0
@@ -240,12 +241,12 @@ class Ebola(VirusSprite):
 		if time() - self.animtime > 1/self.speed*1.00:
 			self.animtime = time()
 			self.iidx += 1
-			self.iidx %= 5
+			self.iidx %= 8
 			self.image = self.images[self.iidx]
 
 	def reappear(self):
 		self.images = []
-		for i in xrange(1, 6):
+		for i in xrange(1, 9):
 			self.images.append(pygame.image.load('res/ebola'+str(i)+'.png'))
 		self.image = self.images[0]
 		self.iidx = 0
