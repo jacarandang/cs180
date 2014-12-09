@@ -57,3 +57,13 @@ To train the ai (note: this excepts a file named actions in the base directory)
 ```
 python genetic.py
 ```
+
+## Training
+In training the AI, the genetic algorithm will generate the population composed of different members.
+A member is a set of multipliers to be used by the game to determine what proportion of virus is to be released
+based on the towers the defender has and the current wave. Each member is to be evaluated by applying 
+that set of multipliers to a game and getting the fitness of it. The fitness of a member is defined to be the damage
+done to the heart / wave it took to kill it or 15(it stops after 15 waves if its training). After that, two members are 
+randomly selected then the one with lower fitness is dropped while the fitter one is saved for crossover. This is done
+until only have of the population remains. The remaining members are randomly crossed-over with 1% chance
+of their offspring being mutated. Cycle repeats, the final population is then saved at ./ai/data.net
