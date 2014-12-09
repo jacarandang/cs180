@@ -65,7 +65,7 @@ class VirusSprite(VirusBase, pygame.sprite.Sprite):
 		self.atime = time()
 		self.initiated = True
 
-	def fibonacci(n):
+	def fib(self, n):
 		if n <= 1:
 			return 1
 		else:

@@ -58,7 +58,7 @@ class Genetic:
 
 dir = 'ai'
 g = Genetic(2)
-pop  = g.start(1)
+pop  = g.start(5)
 pop.sort(reverse = True)
 with file(os.path.join(dir, 'data.net'), "wb") as f:
 	pickle.dump(pop, f)
