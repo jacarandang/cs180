@@ -149,7 +149,7 @@ class PlasmaCell(Tower): #Implemented
 		diff = time() - self.time
 		if diff >= 1.00/self.shoot and virus.visible:
 			self.time = time()
-			bulletGroup.add(TagBullet(self.rect.center[0], self.rect.center[1], 1, 1, virus,10))
+			bulletGroup.add(TagBullet(self.rect.center[0], self.rect.center[1], 1, 1, virus,0.2))
 			bulletGroup.add(bullet(self.rect.center[0], self.rect.center[1], 1, self.damage, virus))
 
 
