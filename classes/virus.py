@@ -47,8 +47,11 @@ class VirusSprite(VirusBase, pygame.sprite.Sprite):
 		
 		self.initiated = False
 		self.wave = wave
-		self.life *= (self.wave/5+1)
 		self.cost = cost
+
+		
+		self.life *= (self.fib(self.wave/2+1))
+		
 	def init(self):
 		#Initiate the virus(display on screen)
 		self.x, self.y = 0, 0 
@@ -61,6 +64,12 @@ class VirusSprite(VirusBase, pygame.sprite.Sprite):
 		self.utime = time()
 		self.atime = time()
 		self.initiated = True
+
+	def fib(self, n):
+		a, b = 0, 1
+		while b < n:
+			a, b = b, a+b
+		return b
 		
 	def update(self):
 		if not self.initiated: return
