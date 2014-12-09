@@ -2,20 +2,24 @@ from random import uniform, random, randint, choice
 import pickle
 from main import Game
 import pygame
+import os
 pygame.init()
 class Member:
 
 	def __init__(self, values = None, wave = None):
 		self.value = values
-		if self.value is None: self.value = [uniform(-.5, .5) for i  in xrange(14*6)]
+		if self.value is None: self.value = [uniform(-1, 1) for i  in xrange(14*6)]
 		self.wave = wave
-		if self.wave is None: self.wave = uniform(-0.5, 0.5)
+		if self.wave is None: self.wave = [uniform(-1, 1) for i in xrange(6)]
 		self.fitness = 0
 	
 	def mutate(self):
 		for i in xrange(len(self.value)):
 			if random() > 0.5:
 				self.value[i] += uniform(-.1, .1)
+		for i in xrange(len(self.wave)):
+			if random() > 0.5:
+				self.wave[i] += uniform(-.1, .1)
 				
 	def evaluate(self):
 		scr = pygame.display.set_mode((800,600))
@@ -24,12 +28,12 @@ class Member:
 		if g.thing.life < 0:
 			g.thing.life = 0
 		self.fitness = (g.thing.full - g.thing.life)/g.wave
-		print self.fitness
-		raw_input()
+		raw_input("Fitness of " + str(self.fitness) + ": (Press enter to continue)")
 		return self.fitness
 		
 	def crossover(self, other):
 		vals = []
+		nwave = []
 		a_val = self.value
 		b_val = other.value
 		for i in xrange(len(a_val)):
@@ -37,9 +41,11 @@ class Member:
 				vals.append(a_val[i])
 			else:
 				vals.append(b_val[i])
-		wave = choice([self.wave, other.wave])
-		m = Member(vals, wave)
-		if random() <= 0.01:
+		for i in xrange(len(self.wave)):
+			if random() > 0.5: nwave.append(self.wave[i])
+			else: nwave.append(other.wave[i])
+		m = Member(vals, nwave)
+		if random() <= 0.05:
 			m.mutate()
 		return m
 		
@@ -51,10 +57,11 @@ class Member:
 
 class Genetic:
 
-	def __init__(self, population = None):
+	def __init__(self, space = 10, population = None):
 	
 		self.pop = population
-		if self.pop is None: self.pop = [Member() for i in xrange(10)]
+		self.space = space
+		if self.pop is None: self.pop = [Member() for i in xrange(space)]
 				
 	def mutation(self, member):
 		member.mutate()
@@ -79,7 +86,7 @@ class Genetic:
 				else:
 					breed.append(b)
 			n_pop = []			#new population
-			for i in xrange(10):
+			for i in xrange(self.space):
 				a = choice(breed)
 				b = choice(breed)
 				n_pop.append(a.crossover(b))
@@ -89,5 +96,9 @@ class Genetic:
 			m.evaluate()
 		return pop
 
-g = Genetic()
-pop  = g.start(10)
+dir = 'ai'
+g = Genetic(2)
+pop  = g.start(1)
+pop.sort(reverse = True)
+with file(os.path.join(dir, 'data.net'), "wb") as f:
+	pickle.dump(pop, f)

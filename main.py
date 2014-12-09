@@ -73,6 +73,16 @@ class Game:
 		
 		
 	def reinitialize(self):
+		self.running = True
+		self.clock = pygame.time.Clock()
+		
+		self.bg = pygame.Surface((800, 600)) #temporary BG
+		self.bg = self.bg.convert()
+		self.bg.fill((88, 0, 0))
+
+		self.image = pygame.image.load('res/bg.png').convert_alpha()
+		self.imageRect = self.image.get_rect()
+
 		self.m_pos = (-10,-10)    #Mouse Coordinates
 		self.m_down = False	#Left Mouse Button Down
 		self.m_pos_down = (-10,-10)  #Mouse Down Coordinates
@@ -86,7 +96,6 @@ class Game:
 		self.tgroup = pygame.sprite.Group()
 		
 		self.bgroup = pygame.sprite.Group()
-		self.vplayer = virusAI.Player(self.grid, self.thing, self.tgroup, self.values, self.resource)
 		self.gameoptions = pygame.sprite.Group()
 		self.pauseoptions = pygame.sprite.Group()
 		
@@ -96,11 +105,13 @@ class Game:
 		self.allsprite.add(self.thing)
 		
 		self.status = "prep"	#"prep" or "wave"
-		self.preptime = 10
+		self.preptime = 5
 		self.wavetime = 20
 		self.timer = time()
 
 		self.resource = ATP() #resource
+		self.trivia = trivia()
+		
 		self.wave = 0
 		self.currWave = -1
 		self.wFont = pygame.font.Font('res/DS-DIGI.TTF', 30)
@@ -108,9 +119,11 @@ class Game:
 		self.wRect = self.wSurf.get_rect()
 		self.wRect.topleft = (730-self.wRect.centerx),463
 
+		
+		self.vplayer = virusAI.Player(self.grid, self.thing, self.tgroup, self.values, self.resource)
 		self.fgroup = pygame.sprite.Group()
-		self.fgroup.add(self.resource)
-
+		self.fgroup.add(self.resource, self.trivia)
+		
 		self.pgroup = pygame.sprite.Group()
 
 		self.go = False
@@ -346,11 +359,11 @@ class Game:
 					self.status = "wave"
 					self.vgroup.append(self.vplayer.getNextGroup())
 					self.go = False
+					self.wave += 1
 			else:
 				if time() - self.timer >= self.wavetime or not self.hasVirus():	#or if no virus exist
 					self.timer = time()
 					self.status = "prep"
-					self.wave += 1
 					print "prep"
 					self.resource.addATP(self.wave)
 					self.resource.addVirusATP(self.wave)
@@ -475,6 +488,7 @@ class Game:
 							if j.tower_type == 'Neutrophil':
 								vlist.append(i)
 							else:
+								if not i.visible and j.tower_type != 'T-Cell': continue
 								j.Shoot(i,self.bgroup)
 								shoot = True
 								break
@@ -652,7 +666,7 @@ class Mainmenu:
 		quit = Button(pygame.Surface((153,41)).convert(),(537,468),self.stop , 'res/quit.PNG')
 		self.mainoptions.add(start,help,credits,quit)
 		
-		self.bgm.play()
+		self.bgm.play(-1)
 		while(self.running):
 			self.checkEvents()
 			self.screen.blit(self.bg, (0, 0))

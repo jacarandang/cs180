@@ -93,6 +93,7 @@ class VirusSprite(VirusBase, pygame.sprite.Sprite):
 			if time() - self.atime >= self.rod:
 				self.atime = time()
 				self.thing.damage(self.dmg)
+				self.resource.currentVirusATP += 1
 			return
 		diff = time() - self.time - self.timestunned
 		
