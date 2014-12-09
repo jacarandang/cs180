@@ -3,7 +3,6 @@ from pygame.locals import *
 from virus import *
 from AI import *
 from pickle import *
-
 class Player():
 
 	def __init__(self, board, thing, tower, values = None, atp = None):

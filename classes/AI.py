@@ -1,7 +1,8 @@
 from DS import *
 from random import uniform
 import math
-
+import pickle
+from member import Member
 class VirusNode(Node):
 
 	def __init__(self, pos, board, parent = None, cost = 0):
@@ -154,13 +155,17 @@ class Evaluator:
 
 	def __init__(self, values = None):
 		self.values = values
-		if self.values == None: self.values = [uniform(-0.5, 0.5) for i in xrange(14 * 6)]
-		
+		if self.values == None:
+			with file('ai/data.net', 'rb') as f:
+				pop = pickle.load(f)
+				self.values = pop[0]
+				print self.values.value
+				
 	def eval(self, ntowers, nvirus):
 		total = [0 for i in xrange(nvirus)]
 		for i in xrange(nvirus):
 			for j in xrange(len(ntowers)):
-				total[i] += ntowers[j]*self.values[i*14 + j]
+				total[i] += ntowers[j]*self.values.value[i*14 + j]
 		
 		total = map(sigmoid, total)
 		s = sum(total)*1.00
