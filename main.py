@@ -10,6 +10,7 @@ from classes.thing import *
 from classes.ATP import *
 from classes.trivia import *
 from classes.member import Member
+from classes.savestate import *
 import pickle
 #import classes
 
@@ -291,6 +292,22 @@ class Game:
 
 				if event.key == K_g:
 					self.go = True
+
+				if event.key == K_h:
+					with file('ssfile.ss', "wb") as f:
+						ss = SaveState()
+						ss.save(self.grid.board, self.T_list, self.wave, self.resource.currentATP, self.resource.currentVirusATP)
+						pickle.dump(ss, f)
+
+				if event.key == K_j:
+					with open('ssfile.ss', 'rb') as f:
+    						ss = pickle.load(f)
+						self.grid = ss.grid
+						for i in ss.tower_list:
+							self.T_list.append(i)
+						self.wave = wave
+						self.resource.currentATP = ss.atp
+						self.resource.currentVirusATP = ss.virus_atp
 					
 	def hasVirus(self):
 		v = False
