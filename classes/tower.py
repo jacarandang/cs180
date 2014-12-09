@@ -71,7 +71,7 @@ class Tower(pygame.sprite.Sprite):
 		if diff >= 1.00/self.shoot and virus.visible:
 			self.time = time()
 			bulletGroup.add(bullet(self.rect.center[0], self.rect.center[1], 1, self.damage, virus))
-
+			return True
 	def update(self):
 		pass
 
@@ -135,7 +135,7 @@ class BCell(Tower): #Implemented
 		diff = time() - self.time
 		if diff >= 1.00/self.shoot and virus.visible:
 			self.time = time()
-			bulletGroup.add(TagBullet(self.rect.center[0], self.rect.center[1], 1, self.damage, virus,10))
+			bulletGroup.add(TagBullet(self.rect.center[0], self.rect.center[1], 1, self.damage, virus,0.1))
 
 class PlasmaCell(Tower): #Implemented
 	#Improved B-Cell, has Damage	
@@ -149,7 +149,7 @@ class PlasmaCell(Tower): #Implemented
 		diff = time() - self.time
 		if diff >= 1.00/self.shoot and virus.visible:
 			self.time = time()
-			bulletGroup.add(TagBullet(self.rect.center[0], self.rect.center[1], 1, 1, virus,10))
+			bulletGroup.add(TagBullet(self.rect.center[0], self.rect.center[1], 1, 1, virus,0.2))
 			bulletGroup.add(bullet(self.rect.center[0], self.rect.center[1], 1, self.damage, virus))
 
 

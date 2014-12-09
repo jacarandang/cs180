@@ -6,24 +6,28 @@ from pickle import *
 
 class Player():
 
-	def __init__(self, board, thing, tower, values = None):
+	def __init__(self, board, thing, tower, values = None, atp = None):
 		self.board = board
 		self.thing = thing
 		self.tower = tower
 		self.values = values
 		self.e = Evaluator(values)
+		self.atp = atp
+		self.vcosts = [1, 5, 10, 7, 10, 20]
+		print self.atp.currentVirusATP
 		
 	def hasValidPath(self, board):
 		p = []
 		cost = 0
 		for i in xrange(board.h):
-			if board.get(i) == 0:
+			if board.get(0, i) == 0:
 				n = VirusNode((0, i), board)
 				p, cost = DFS(n)
 				if p!=[]:
-					break
+					print p[0]
+					return True
 					
-			return p != []
+		return False
 		
 	def force(self):
 		#v = Fungi(self.board, self.thing)
@@ -51,15 +55,6 @@ class Player():
 		return group
 		
 	def getNextGroup(self):
-		v2 = Parasite(self.board, self.thing)
-		v3 = Bacteria(self.board, self.thing)
-		v4 = Virus(self.board, self.thing)
-		v5 = Ebola(self.board, self.thing)
-		v6 = HIV(self.board, self.thing)
-		v7 = Fungi(self.board, self.thing)
-		v7.visible = False
-		v7.inviPast = True
-		v7.name = 'invisible'
 		group = VirusGroup()
 		group.add()
 
@@ -89,13 +84,34 @@ class Player():
 					break
 		
 		prop = self.e.eval(ntowers, 6)
-		print 10*prop[0], 10*prop[1], 10*prop[2], 10*prop[3], 10*prop[4], 10*prop[5]
-		for i in xrange(int(10*prop[0])): group.add(Fungi(self.board, self.thing))
-		for i in xrange(int(10*prop[1])): group.add(Parasite(self.board, self.thing))
-		for i in xrange(int(10*prop[2])): group.add(Bacteria(self.board, self.thing))
-		for i in xrange(int(10*prop[3])): group.add(Virus(self.board, self.thing))
-		for i in xrange(int(10*prop[4])): group.add(Ebola(self.board, self.thing))
-		for i in xrange(int(10*prop[5])): group.add(HIV(self.board, self.thing))
+		prop_cost = 0
+		for i in xrange(6):
+			prop_cost += self.vcosts[i] * prop[i]
+		num = int(self.atp.currentVirusATP/prop_cost)
+		
+		nhiv = int(num * prop[5])
+		for i in xrange(nhiv): group.add(HIV(self.board, self.thing, self.atp))
+		self.atp.currentVirusATP -= nhiv * self.vcosts[5]
+		
+		nebo = int(num * prop[4])
+		for i in xrange(nebo): group.add(Ebola(self.board, self.thing, self.atp))
+		self.atp.currentVirusATP -= nebo * self.vcosts[4]
+		
+		nvir = int(num * prop[3])
+		for i in xrange(nvir): group.add(Virus(self.board, self.thing, self.atp))
+		self.atp.currentVirusATP -= nvir * self.vcosts[3]
+		
+		nbac = int(num * prop[2])
+		for i in xrange(nbac): group.add(Bacteria(self.board, self.thing, self.atp))
+		self.atp.currentVirusATP -= nbac * self.vcosts[2]
+		
+		npar = int(num * prop[1])
+		for i in xrange(npar): group.add(Parasite(self.board, self.thing, self.atp))
+		self.atp.currentVirusATP -= npar * self.vcosts[1]
+		
+		nfun = self.atp.currentVirusATP
+		for i in xrange(nfun): group.add(Fungi(self.board, self.thing, self.atp))
+		self.atp.currentVirusATP -= nfun * self.vcosts[0]
 		
 		group.setActions(p)
 		

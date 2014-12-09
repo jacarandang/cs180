@@ -56,6 +56,7 @@ class Game:
 		self.trivia = trivia()
 		
 		self.wave = 0
+		self.currWave = -1
 		self.wFont = pygame.font.Font('res/DS-DIGI.TTF', 30)
 		self.wSurf = self.wFont.render(str(self.wave), True, (189,0,0))
 		self.wRect = self.wSurf.get_rect()
@@ -72,6 +73,16 @@ class Game:
 		
 		
 	def reinitialize(self):
+		self.running = True
+		self.clock = pygame.time.Clock()
+		
+		self.bg = pygame.Surface((800, 600)) #temporary BG
+		self.bg = self.bg.convert()
+		self.bg.fill((88, 0, 0))
+
+		self.image = pygame.image.load('res/bg.png').convert_alpha()
+		self.imageRect = self.image.get_rect()
+
 		self.m_pos = (-10,-10)    #Mouse Coordinates
 		self.m_down = False	#Left Mouse Button Down
 		self.m_pos_down = (-10,-10)  #Mouse Down Coordinates
@@ -85,7 +96,6 @@ class Game:
 		self.tgroup = pygame.sprite.Group()
 		
 		self.bgroup = pygame.sprite.Group()
-		self.vplayer = virusAI.Player(self.grid, self.thing, self.tgroup, self.values, self.resource)
 		self.gameoptions = pygame.sprite.Group()
 		self.pauseoptions = pygame.sprite.Group()
 		
@@ -95,20 +105,25 @@ class Game:
 		self.allsprite.add(self.thing)
 		
 		self.status = "prep"	#"prep" or "wave"
-		self.preptime = 10
+		self.preptime = 5
 		self.wavetime = 20
 		self.timer = time()
 
 		self.resource = ATP() #resource
+		self.trivia = trivia()
+		
 		self.wave = 0
+		self.currWave = -1
 		self.wFont = pygame.font.Font('res/DS-DIGI.TTF', 30)
 		self.wSurf = self.wFont.render(str(self.wave), True, (189,0,0))
 		self.wRect = self.wSurf.get_rect()
 		self.wRect.topleft = (730-self.wRect.centerx),463
 
+		
+		self.vplayer = virusAI.Player(self.grid, self.thing, self.tgroup, self.values, self.resource)
 		self.fgroup = pygame.sprite.Group()
-		self.fgroup.add(self.resource)
-
+		self.fgroup.add(self.resource, self.trivia)
+		
 		self.pgroup = pygame.sprite.Group()
 
 		self.go = False
@@ -273,10 +288,9 @@ class Game:
 	def hasVirus(self):
 		v = False
 		for g in self.vgroup:
-			if len(g) != 0:
+			if g.hasViruses():
 				v = True
 				break
-		
 		return v
 		
 	def foo(self):
@@ -335,6 +349,8 @@ class Game:
 		while(self.running and not self.thing.isDead()):
 			self.clock.tick(60)
 			self.checkEvents()
+
+			#print 'currWave:', self.currWave, 'wave:', self.wave, 'hasVirus:', self.hasVirus()
 			
 			if self.status == "prep":
 				if time() - self.timer >= self.preptime and self.go:
@@ -342,16 +358,15 @@ class Game:
 					self.timer = time()
 					self.status = "wave"
 					self.vgroup.append(self.vplayer.getNextGroup())
-					self.wave += 1
 					self.go = False
+					self.wave += 1
 			else:
 				if time() - self.timer >= self.wavetime or not self.hasVirus():	#or if no virus exist
 					self.timer = time()
 					self.status = "prep"
+					print "prep"
 					self.resource.addATP(self.wave)
 					self.resource.addVirusATP(self.wave)
-					print "prep"
-					
 			
 			#Draws all Towers in Grid
 			self.screen.blit(self.bg, (0, 0))
@@ -418,6 +433,31 @@ class Game:
 					self.m_down = False
 			else:
 				if self.m_down:
+
+					#Check if PopUp is being clicked
+					for i in self.pgroup:
+						if i.prevRect.collidepoint(self.m_pos_down[0], self.m_pos_down[1]):
+							print 'prev'
+							i.prev()
+							self.m_pos_down = -10, -10
+						if i.nextRect.collidepoint(self.m_pos_down[0], self.m_pos_down[1]):
+							print 'next'
+							i.next()
+							self.m_pos_down = -10, -10
+						if i.sellRect.collidepoint(self.m_pos_down[0], self.m_pos_down[1]):
+							print 'sell'							
+							self.resource.currentATP += i.tower.cost
+							i.sell()
+							self.m_pos_down = -10, -10
+						if i.upgradeRect != None and i.upgradeRect.collidepoint(self.m_pos_down[0], self.m_pos_down[1]):
+							print 'upgrade'
+							if i.upgrade().cost <= self.resource.currentATP:
+								i.sell()
+								self.select_T = i.upgrade()
+							else:
+								print 'Not enough ATP'
+							self.m_pos_down = -10, -10
+
 					#Check if Tower is being clicked
 					for i in self.T_list:
 						for j in i.occupy:
@@ -434,27 +474,7 @@ class Game:
 										self.pgroup.add(pop)								
 								break
 
-					#Check if PopUp is being clicked
-					for i in self.pgroup:
-						if i.prevRect.collidepoint(self.m_pos_down[0], self.m_pos_down[1]):
-							print 'prev'
-							i.prev()
-						if i.nextRect.collidepoint(self.m_pos_down[0], self.m_pos_down[1]):
-							print 'next'
-							i.next()
-						
-						if i.sellRect.collidepoint(self.m_pos_down[0], self.m_pos_down[1]):
-							print 'sell'							
-							self.resource.currentATP += i.tower.cost
-							i.sell()
-
-						if i.upgradeRect != None and i.upgradeRect.collidepoint(self.m_pos_down[0], self.m_pos_down[1]):
-							print 'upgrade'
-							if i.upgrade().cost <= self.resource.currentATP:
-								i.sell()
-								self.select_T = i.upgrade()
-							else:
-								print 'Not enough ATP'
+					
 	
 					self.m_down = False
 
@@ -468,6 +488,7 @@ class Game:
 							if j.tower_type == 'Neutrophil':
 								vlist.append(i)
 							else:
+								if not i.visible and j.tower_type != 'T-Cell': continue
 								j.Shoot(i,self.bgroup)
 								shoot = True
 								break
@@ -645,7 +666,7 @@ class Mainmenu:
 		quit = Button(pygame.Surface((153,41)).convert(),(537,468),self.stop , 'res/quit.PNG')
 		self.mainoptions.add(start,help,credits,quit)
 		
-		self.bgm.play()
+		self.bgm.play(-1)
 		while(self.running):
 			self.checkEvents()
 			self.screen.blit(self.bg, (0, 0))

@@ -88,8 +88,10 @@ class Player():
 		for i in xrange(6):
 			prop_cost += self.vcosts[i] * prop[i]
 		num = int(self.atp.currentVirusATP/prop_cost)
+		print num
 		
 		nhiv = int(num * prop[5])
+		print nhiv
 		for i in xrange(nhiv): group.add(HIV(self.board, self.thing, self.atp))
 		self.atp.currentVirusATP -= nhiv * self.vcosts[5]
 		

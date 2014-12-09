@@ -9,7 +9,7 @@ class ATP(pygame.sprite.Sprite):
 		self.currentATP = self.initATP
 
 		#Virus ATP
-		self.initVirusATP = 30
+		self.initVirusATP = 50
 		self.currentVirusATP = self.initVirusATP
 		
 		self.basicFont = pygame.font.Font('res/DS-DIGI.TTF', 30)
@@ -23,8 +23,8 @@ class ATP(pygame.sprite.Sprite):
 		self.currentATP += int((0.3*wave)**2)+15
 
 	def addVirusATP(self, wave):
-		#FUNCTION:
-		self.currentVirusATP += 30 + 5*wave
+		#FUNCTION: (x*100 + x^3)
+		self.currentVirusATP += int(wave**3)+ wave*100
 		print self.currentVirusATP
 
 	def update(self):
