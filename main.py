@@ -12,6 +12,7 @@ from classes.trivia import *
 from classes.member import Member
 from classes.savestate import *
 import pickle
+from classes.towerAI import *
 #import classes
 
 class Game:
@@ -28,11 +29,14 @@ class Game:
 		self.image = pygame.image.load('res/bg.png').convert_alpha()
 		self.imageRect = self.image.get_rect()
 
+		
 		self.values = values
+		self.testing = True
 		if self.values == None:
 			with file('ai/data.net') as f:
 				pop = pickle.load(f)
 				self.values = pop[0]
+			self.testing = False
 		self.m_pos = (-10,-10)    #Mouse Coordinates
 		self.m_down = False	#Left Mouse Button Down
 		self.m_pos_down = (-10,-10)  #Mouse Down Coordinates
@@ -77,8 +81,8 @@ class Game:
 		self.pgroup = pygame.sprite.Group()
 
 		self.go = False
-		self.testing = True
-		if self.values == None: self.testing = False
+		
+		self.towerai = TowerPlayer(self.resource, self.T_list, self.tgroup, self.grid, self)
 		
 	def reinitialize(self):
 		self.running = True
@@ -372,7 +376,9 @@ class Game:
 		waveb = Button(pygame.Surface((93,26)).convert(),(730,458),self.waveg, 'res/wave.PNG')
 		
 		self.gameoptions.add(pause,buy,waveb)
+		#self.towerai.getActions()
 		while(self.running and not self.thing.isDead()):
+			print self.testing
 			self.clock.tick(60)
 			self.checkEvents()
 			if self.wave == 11 and self.testing == True:
@@ -509,11 +515,8 @@ class Game:
 										self.pgroup.add(pop)								
 								break
 
-					
-	
 					self.m_down = False
-
-
+					
 			for j in self.T_list:
 				vlist = []
 				for z in self.vgroup:
