@@ -3,57 +3,8 @@ import pickle
 from main import Game
 import pygame
 import os
+from classes.member import Member
 pygame.init()
-class Member:
-
-	def __init__(self, values = None, wave = None):
-		self.value = values
-		if self.value is None: self.value = [uniform(-1, 1) for i  in xrange(14*6)]
-		self.wave = wave
-		if self.wave is None: self.wave = [uniform(-1, 1) for i in xrange(6)]
-		self.fitness = 0
-	
-	def mutate(self):
-		for i in xrange(len(self.value)):
-			if random() > 0.5:
-				self.value[i] += uniform(-.1, .1)
-		for i in xrange(len(self.wave)):
-			if random() > 0.5:
-				self.wave[i] += uniform(-.1, .1)
-				
-	def evaluate(self):
-		scr = pygame.display.set_mode((800,600))
-		g = Game(scr)
-		a = g.start()
-		if g.thing.life < 0:
-			g.thing.life = 0
-		self.fitness = (g.thing.full - g.thing.life)/g.wave
-		raw_input("Fitness of " + str(self.fitness) + ": (Press enter to continue)")
-		return self.fitness
-		
-	def crossover(self, other):
-		vals = []
-		nwave = []
-		a_val = self.value
-		b_val = other.value
-		for i in xrange(len(a_val)):
-			if random() > 0.5:
-				vals.append(a_val[i])
-			else:
-				vals.append(b_val[i])
-		for i in xrange(len(self.wave)):
-			if random() > 0.5: nwave.append(self.wave[i])
-			else: nwave.append(other.wave[i])
-		m = Member(vals, nwave)
-		if random() <= 0.05:
-			m.mutate()
-		return m
-		
-	def __cmp__(self, other):
-		return self.fitness - other.fitness
-		
-	def __repr__(self):
-		return str(self.fitness)
 
 class Genetic:
 
@@ -63,6 +14,16 @@ class Genetic:
 		self.space = space
 		if self.pop is None: self.pop = [Member() for i in xrange(space)]
 				
+	def evaluate(self, member):
+		scr = pygame.display.set_mode((800,600))
+		g = Game(scr, member)
+		a = g.start()
+		if g.thing.life < 0:
+			g.thing.life = 0
+		member.fitness = (g.thing.full - g.thing.life)/g.wave
+		raw_input("Fitness of " + str(member.fitness) + ": (Press enter to continue)")
+		return member.fitness			
+	
 	def mutation(self, member):
 		member.mutate()
 		
@@ -74,7 +35,7 @@ class Genetic:
 		pop = self.pop
 		for i in xrange(generations):
 			for m in pop:
-				m.evaluate()
+				self.evaluate(m)
 			breed = []			#parents for breeding
 			while not len(pop) == 0:
 				a = choice(pop)
@@ -93,7 +54,7 @@ class Genetic:
 			pop = n_pop
 			
 		for m in pop:
-			m.evaluate()
+			self.evaluate(m)
 		return pop
 
 dir = 'ai'
