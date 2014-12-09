@@ -3,6 +3,7 @@ from pygame.locals import *
 from virus import *
 from AI import *
 from pickle import *
+from random import shuffle
 class Player():
 
 	def __init__(self, board, thing, tower, values = None, atp = None):
@@ -115,7 +116,7 @@ class Player():
 		self.atp.currentVirusATP -= nfun * self.vcosts[0]
 		
 		group.setActions(p)
-		
+		shuffle(group.hvirus)
 		return group
 		
 	def getPath(self): 
