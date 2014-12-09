@@ -357,7 +357,7 @@ class Game:
 					#WAVE
 					self.timer = time()
 					self.status = "wave"
-					self.vgroup.append(self.vplayer.getNextGroup())
+					self.vgroup.append(self.vplayer.getNextGroup(self.wave))
 					self.go = False
 					self.wave += 1
 			else:
@@ -506,6 +506,11 @@ class Game:
 					for k in i.occupy:
 						self.grid.set(k[0],k[1],0)
 					self.T_list.remove(i)
+
+			for i in self.vgroup:
+				for j in i:
+					print j.life, 
+			print '\n'
 
 			self.tgroup.update()
 			self.tgroup.draw(self.screen)
