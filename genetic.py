@@ -57,8 +57,8 @@ class Genetic:
 		return pop
 
 dir = 'ai'
-g = Genetic(2)
-pop  = g.start(2)
+g = Genetic(1)
+pop  = g.start(1)
 pop.sort(reverse = True)
 print "Last population with fitness"
 print pop
