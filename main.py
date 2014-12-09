@@ -83,7 +83,7 @@ class Game:
 		
 		self.towerai = TowerPlayer(self.resource, self.T_list, self.tgroup, self.grid, self)
 		self.recorder = Recorder()
-		self.recording = True
+		self.recording = False
 		self.upgrading = False
 		self.upgradeAction = None
 		
@@ -364,7 +364,6 @@ class Game:
 		
 		self.gameoptions.add(pause,buy,waveb)
 		while(self.running and not self.thing.isDead()):
-			if not self.recording: self.towerai.getActions()
 			self.clock.tick(60)
 			self.checkEvents()
 			if self.wave == 11 and self.testing == True:
@@ -538,6 +537,8 @@ class Game:
 				if j.tower_type == 'Neutrophil':
 					j.Shoot(vlist, self.bgroup)
 
+			
+			if not self.recording: self.towerai.getActions()
 			#Removes Tower from T_List and sets occupy in Grid to 0
 			for i in self.T_list:
 				present = False

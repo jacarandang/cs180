@@ -36,7 +36,7 @@ class TowerPlayer:
 	def searchTower(self, pos):
 		for t in self.tlist:
 			if t.occupy == pos:
-				return t
+				return t 	
 				
 	def getActions(self):
 		done = []
@@ -45,28 +45,35 @@ class TowerPlayer:
 				t = self.getTower(action.tower)
 				print action.tower, t
 				if self.res.currentATP - t.cost <= 0: break
+				for i in action.pos:
+					self.grid.set(i[0],i[1],1)
 				t.setOccupy(action.pos)
 				self.tgroup.add(t)
 				self.tlist.append(t)
 				self.res.currentATP -= t.cost
+				done.append(action)
 			elif action.action == 'sell':
 				t = self.searchTower(action.tower_d_pos)
 				t.kill()
 				self.res.currentATP += t.cost
+				done.append(action)
 			elif action.action == 'upgrade':
 				t = self.getTower(action.tower)
-				print t
-				raw_input('Input')
 				if self.res.currentATP - t.cost <= 0: break
 				t_d = self.searchTower(action.tower_d_pos)
 				t_d.kill()
+				for i in action.pos:
+					self.grid.set(i[0],i[1],1)
+					
 				t.setOccupy(action.pos)
 				self.tgroup.add(t)
 				self.tlist.append(t)
 				self.res.currentATP -= t.cost
+				done.append(action)
 			elif action.action == 'go':
+				done.append(action)
 				break
-			done.append(action)
+				
 		for a in done:
 			self.actions.remove(a)
 
