@@ -825,23 +825,26 @@ if __name__ == '__main__':
 	recordfile = None
 	actionfile = None
 	try:
-		opts, args = getopt.getopt(argv,"hrav:")
+		opts, args = getopt.getopt(argv,"hr:a:v:")
 	except getopt.GetoptError:
-		print 'main.py	-r [record file(defaults to actions)] -a [actions file(defaults to action)] [-v <population file>]'
+		print 'main.py	-r [record file] -a [actions file] [-v <population file>]'
 		sys.exit(2)
 	for opt, arg in opts:
+		print opt, arg
 		if opt == '-v':
 			with file(arg) as f:
 				pop = pickle.load(f)
 				virus = pop[0]
 		elif opt == '-r':
+			print arg
 			if arg == '': arg = 'actions'
 			recordfile = arg
 		elif opt == '-a':
+			print arg
 			if arg == '': arg = 'actions'
 			actionfile = arg
 	print virus, recordfile, actionfile
-		
+	raw_input()
 	mmenu = Mainmenu(SCREEN, virus, recordfile, actionfile)
 	mmenu.start()
 	
