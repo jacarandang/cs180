@@ -58,7 +58,9 @@ class Genetic:
 
 dir = 'ai'
 g = Genetic(2)
-pop  = g.start(5)
+pop  = g.start(2)
 pop.sort(reverse = True)
+print "Last population with fitness"
+print pop
 with file(os.path.join(dir, 'data.net'), "wb") as f:
 	pickle.dump(pop, f)
