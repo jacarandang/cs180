@@ -40,6 +40,8 @@ class TowerPlayer:
 				
 	def getActions(self):
 		done = []
+		if len(self.actions) == 0 and self.game.status == "prep": self.game.waveg()
+		hasdone = False
 		for action in self.actions:
 			if action.action == 'buy':
 				t = self.getTower(action.tower)
@@ -52,13 +54,13 @@ class TowerPlayer:
 				self.tlist.append(t)
 				self.res.currentATP -= t.cost
 				done.append(action)
-				
+				hasdone = True
 			elif action.action == 'sell':
 				t = self.searchTower(action.tower_d_pos)
 				t.kill()
 				self.res.currentATP += t.cost
 				done.append(action)
-				
+				hasdone = True
 			elif action.action == 'upgrade':
 				t = self.getTower(action.tower)
 				if self.res.currentATP - t.cost <= 0: break
@@ -83,7 +85,13 @@ class TowerPlayer:
 				self.tlist.append(t)
 				self.res.currentATP -= t.cost
 				done.append(action)
+				hasdone = True
 			break
+			
+		if not hasdone and self.game.status == "prep":
+			print "game"
+			self.game.waveg()
+		
 		for a in done:
 			self.actions.remove(a)
 
