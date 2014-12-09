@@ -83,7 +83,7 @@ class Game:
 		
 		self.towerai = TowerPlayer(self.resource, self.T_list, self.tgroup, self.grid, self)
 		self.recorder = Recorder()
-		self.recording = True
+		self.recording = False
 		self.upgrading = False
 		self.upgradeAction = None
 		
@@ -484,19 +484,19 @@ class Game:
 							self.m_pos_down = -10, -10
 						if i.sellRect.collidepoint(self.m_pos_down[0], self.m_pos_down[1]):
 							print 'sell'							
+							if self.recording: self.recorder.addAction(Action('sell', None, None, i.tower.tower_type, i.tower.occupy))		#recorder Action
 							self.resource.currentATP += i.tower.cost
 							i.sell()
 							self.m_pos_down = -10, -10
 							
-							if self.recording: self.recorder.addAction(Action('sell', None, None, i.tower.tower_type, i.tower.occupy))		#recorder Action
 						if i.upgradeRect != None and i.upgradeRect.collidepoint(self.m_pos_down[0], self.m_pos_down[1]):
 							print 'upgrade'
 							if i.upgrade().cost <= self.resource.currentATP:
+								if self.recording: self.upgradeAction = Action('upgrade', None, None, i.tower.tower_type, i.tower.occupy)			#recorder action
 								i.sell()
 								self.select_T = i.upgrade()
 								self.upgrading = True
 								
-								if self.recording: self.upgradeAction = Action('upgrade', None, None, i.tower.tower_type, i.tower.occupy)			#recorder action
 							else:
 								print 'Not enough ATP'
 							self.m_pos_down = -10, -10

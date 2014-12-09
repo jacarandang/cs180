@@ -52,11 +52,13 @@ class TowerPlayer:
 				self.tlist.append(t)
 				self.res.currentATP -= t.cost
 				done.append(action)
+				
 			elif action.action == 'sell':
 				t = self.searchTower(action.tower_d_pos)
 				t.kill()
 				self.res.currentATP += t.cost
 				done.append(action)
+				
 			elif action.action == 'upgrade':
 				t = self.getTower(action.tower)
 				if self.res.currentATP - t.cost <= 0: break
@@ -71,7 +73,7 @@ class TowerPlayer:
 				self.tlist.append(t)
 				self.res.currentATP -= t.cost
 				done.append(action)
-				
+			break
 		for a in done:
 			self.actions.remove(a)
 
