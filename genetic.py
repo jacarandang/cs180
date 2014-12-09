@@ -57,10 +57,11 @@ class Member:
 
 class Genetic:
 
-	def __init__(self, population = None):
+	def __init__(self, space = 10, population = None):
 	
 		self.pop = population
-		if self.pop is None: self.pop = [Member() for i in xrange(10)]
+		self.space = space
+		if self.pop is None: self.pop = [Member() for i in xrange(space)]
 				
 	def mutation(self, member):
 		member.mutate()
@@ -85,7 +86,7 @@ class Genetic:
 				else:
 					breed.append(b)
 			n_pop = []			#new population
-			for i in xrange(10):
+			for i in xrange(self.space):
 				a = choice(breed)
 				b = choice(breed)
 				n_pop.append(a.crossover(b))
@@ -96,5 +97,7 @@ class Genetic:
 		return pop
 
 dir = 'ai'
-g = Genetic()
-pop  = g.start(10)
+g = Genetic(2)
+pop  = g.start(1)
+pop.sort(reverse = True)
+print pop
