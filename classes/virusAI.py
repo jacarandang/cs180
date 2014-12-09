@@ -14,7 +14,6 @@ class Player():
 		self.e = Evaluator(values)
 		self.atp = atp
 		self.vcosts = [1, 5, 10, 7, 10, 20]
-		print self.atp.currentVirusATP
 		
 	def hasValidPath(self, board):
 		p = []
@@ -24,7 +23,6 @@ class Player():
 				n = VirusNode((0, i), board)
 				p, cost = DFS(n)
 				if p!=[]:
-					print p[0]
 					return True
 					
 		return False
@@ -88,7 +86,6 @@ class Player():
 		for i in xrange(6):
 			prop_cost += self.vcosts[i] * prop[i]
 		num = int(self.atp.currentVirusATP/prop_cost)
-		print num
 		
 		nhiv = int(num * prop[5])
 
@@ -133,8 +130,5 @@ class Player():
 			d = t.damage * t.shoot
 			r = t.radius/30.00
 			mid = (t.occupy[-1][0] + t.occupy[0][0])/2, (t.occupy[-1][1] + t.occupy[0][1])/2
-			print mid, r
 			tl = int(mid[0] - r), int(mid[1] - r)
 			br = int(mid[0] + r), int(mid[1] + r)
-			print tl
-			print tl[0]+ 2*r, tl[1] + 2*r

@@ -46,7 +46,6 @@ class TowerPlayer:
 		for action in self.actions:
 			if action.action == 'buy':
 				t = self.getTower(action.tower)
-				print action.tower, t
 				if self.res.currentATP - t.cost <= 0: break
 				for i in action.pos:
 					self.grid.set(i[0],i[1],1)

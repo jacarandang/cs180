@@ -26,7 +26,6 @@ class ATP(pygame.sprite.Sprite):
 	def addVirusATP(self, wave):
 		#FUNCTION: 100log(x)+100
 		self.currentVirusATP += int(100*math.log(wave))+100
-		print self.currentVirusATP
 
 	def update(self):
 		self.displayText = str(self.currentATP)

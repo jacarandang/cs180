@@ -160,11 +160,9 @@ class Game:
 
 			if event.type == MOUSEMOTION:
 				self.m_pos = (event.pos[0], event.pos[1])
-				#print self.m_pos
 
 			if event.type == MOUSEBUTTONDOWN:
 				if event.button == 1:
-					print 'left mouse button'
 					self.m_down = True
 					self.m_pos_down = (event.pos[0], event.pos[1])
 					for b in self.gameoptions:
@@ -175,156 +173,155 @@ class Game:
 					self.pause()
 
 				if event.key == K_1:
-					print 'T_1'
 					if self.select_T == None:
 						self.select_T = Tower(1,1,30,1,'nml',6)
 					else:
 						self.select_T = None
 
-				if event.key == K_2:
-					print 'T_2'
-					if self.select_T == None:
-						self.select_T = Tower(2,2)
-					else:
-						self.select_T = None
+				# if event.key == K_2:
+					# print 'T_2'
+					# if self.select_T == None:
+						# self.select_T = Tower(2,2)
+					# else:
+						# self.select_T = None
 
-				if event.key == K_3:
-					print 'T_3'
-					if self.select_T == None:
-						self.select_T = Tower(1,3)
-					else:
-						self.select_T = None
+				# if event.key == K_3:
+					# print 'T_3'
+					# if self.select_T == None:
+						# self.select_T = Tower(1,3)
+					# else:
+						# self.select_T = None
 
-				if event.key == K_4:
-					print 'T_4'
-					if self.select_T == None:
-						self.select_T = Tower(2,3)
-					else:
-						self.select_T = None
+				# if event.key == K_4:
+					# print 'T_4'
+					# if self.select_T == None:
+						# self.select_T = Tower(2,3)
+					# else:
+						# self.select_T = None
 
-				if event.key == K_5:
-					print 'T_5'
-					if self.select_T == None:
-						self.select_T = Tower(3,3)
-					else:
-						self.select_T = None
+				# if event.key == K_5:
+					# print 'T_5'
+					# if self.select_T == None:
+						# self.select_T = Tower(3,3)
+					# else:
+						# self.select_T = None
 				
-				if event.key == K_6:
-					self.vgroup.append(self.vplayer.force())
+				# if event.key == K_6:
+					# self.vgroup.append(self.vplayer.force())
 
-				if event.key == K_7:
-					if self.select_T == None:
-						self.select_T = StemCell()
-					else:
-						self.select_T = None
+				# if event.key == K_7:
+					# if self.select_T == None:
+						# self.select_T = StemCell()
+					# else:
+						# self.select_T = None
 
-				if event.key == K_8:
-					if self.select_T== None:
-						self.select_T = Lymphocyte()
-					else:
-						self.select_T = None
+				# if event.key == K_8:
+					# if self.select_T== None:
+						# self.select_T = Lymphocyte()
+					# else:
+						# self.select_T = None
 				
-				if event.key == K_9:
-					if self.select_T == None:
-						self.select_T = Granulocyte()
-					else:
-						self.select_T = None
+				# if event.key == K_9:
+					# if self.select_T == None:
+						# self.select_T = Granulocyte()
+					# else:
+						# self.select_T = None
 
-				if event.key == K_0:
-					if self.select_T == None:
-						self.select_T = NaturalKillerCell()
-					else:
-						self.select_T = None
+				# if event.key == K_0:
+					# if self.select_T == None:
+						# self.select_T = NaturalKillerCell()
+					# else:
+						# self.select_T = None
 
-				if event.key == K_q:
-					if self.select_T == None:
-						self.select_T = TCell()
-					else:
-						self.select_T = None
+				# if event.key == K_q:
+					# if self.select_T == None:
+						# self.select_T = TCell()
+					# else:
+						# self.select_T = None
 
-				if event.key == K_w:
-					if self.select_T == None:
-						self.select_T = BCell()
-					else:
-						self.select_T = None
+				# if event.key == K_w:
+					# if self.select_T == None:
+						# self.select_T = BCell()
+					# else:
+						# self.select_T = None
 
-				if event.key == K_e:
-					if self.select_T == None:
-						self.select_T = PlasmaCell()
-					else:
-						self.select_T = None
+				# if event.key == K_e:
+					# if self.select_T == None:
+						# self.select_T = PlasmaCell()
+					# else:
+						# self.select_T = None
 
-				if event.key == K_r:
-					if self.select_T == None:
-						self.select_T = Granulocyte()
-					else:
-						self.select_T = None
+				# if event.key == K_r:
+					# if self.select_T == None:
+						# self.select_T = Granulocyte()
+					# else:
+						# self.select_T = None
 
-				if event.key == K_t:
-					if self.select_T == None:
-						self.select_T = Basophil()
-					else:
-						self.select_T = None
+				# if event.key == K_t:
+					# if self.select_T == None:
+						# self.select_T = Basophil()
+					# else:
+						# self.select_T = None
 
-				if event.key == K_y:
-					if self.select_T == None:
-						self.select_T = Neutrophil()
-					else:
-						self.select_T = None
+				# if event.key == K_y:
+					# if self.select_T == None:
+						# self.select_T = Neutrophil()
+					# else:
+						# self.select_T = None
 
-				if event.key == K_u:
-					if self.select_T == None:
-						self.select_T = Eosinophil()
-					else:
-						self.select_T = None
+				# if event.key == K_u:
+					# if self.select_T == None:
+						# self.select_T = Eosinophil()
+					# else:
+						# self.select_T = None
 
-				if event.key == K_i:
-					if self.select_T == None:
-						self.select_T = Monocyte()
-					else:
-						self.select_T = None
+				# if event.key == K_i:
+					# if self.select_T == None:
+						# self.select_T = Monocyte()
+					# else:
+						# self.select_T = None
 
-				if event.key == K_o:
-					if self.select_T == None:
-						self.select_T = Macrophage()
-					else:
-						self.select_T = None
+				# if event.key == K_o:
+					# if self.select_T == None:
+						# self.select_T = Macrophage()
+					# else:
+						# self.select_T = None
 
-				if event.key == K_p:
-					if self.select_T == None:
-						self.select_T = Megakaryocyte()
-					else:
-						self.select_T = None
+				# if event.key == K_p:
+					# if self.select_T == None:
+						# self.select_T = Megakaryocyte()
+					# else:
+						# self.select_T = None
 
-				if event.key == K_a:
-					if self.select_T == None:
-						self.select_T = Thrombocyte()
-					else:
-						self.select_T = None
+				# if event.key == K_a:
+					# if self.select_T == None:
+						# self.select_T = Thrombocyte()
+					# else:
+						# self.select_T = None
 					
-				if event.key == K_z:
-					for g in self.vgroup:
-						for v in g:
-							v.stun(1)
+				# if event.key == K_z:
+					# for g in self.vgroup:
+						# for v in g:
+							# v.stun(1)
 
-				if event.key == K_g:
-					self.go = True
+				# if event.key == K_g:
+					# self.go = True
 
-				if event.key == K_h:
-					with file('ssfile.ss', "wb") as f:
-						ss = SaveState()
-						ss.save(self.grid.board, self.T_list, self.wave, self.resource.currentATP, self.resource.currentVirusATP)
-						pickle.dump(ss, f)
+				# if event.key == K_h:
+					# with file('ssfile.ss', "wb") as f:
+						# ss = SaveState()
+						# ss.save(self.grid.board, self.T_list, self.wave, self.resource.currentATP, self.resource.currentVirusATP)
+						# pickle.dump(ss, f)
 
-				if event.key == K_j:
-					with open('ssfile.ss', 'rb') as f:
-    						ss = pickle.load(f)
-						self.grid = ss.grid
-						for i in ss.tower_list:
-							self.T_list.append(i)
-						self.wave = wave
-						self.resource.currentATP = ss.atp
-						self.resource.currentVirusATP = ss.virus_atp
+				# if event.key == K_j:
+					# with open('ssfile.ss', 'rb') as f:
+    						# ss = pickle.load(f)
+						# self.grid = ss.grid
+						# for i in ss.tower_list:
+							# self.T_list.append(i)
+						# self.wave = wave
+						# self.resource.currentATP = ss.atp
+						# self.resource.currentVirusATP = ss.virus_atp
 					
 	def hasVirus(self):
 		v = False
@@ -409,7 +406,6 @@ class Game:
 				if time() - self.timer >= self.wavetime or not self.hasVirus():	#or if no virus exist
 					self.timer = time()
 					self.status = "prep"
-					print "prep"
 					self.resource.addATP(self.wave)
 					self.resource.addVirusATP(self.wave)
 			
@@ -458,7 +454,6 @@ class Game:
 							gr.set(i[0], i[1], 1)
 							if not self.vplayer.hasValidPath(gr):
 								self.trivia.checks("Blocking")
-								#print "Blocking"
 								bl = True
 								break
 						if self.resource.currentATP - self.select_T.cost >= 0 and not bl:
@@ -484,7 +479,6 @@ class Game:
 							if self.select_T.tower_type == "Stem Cell":
 								mods = pygame.key.get_mods()
 								if mods & KMOD_LSHIFT:
-									print "Yes"
 									self.select_T = StemCell()
 								else:
 									self.select_T = None
@@ -493,7 +487,6 @@ class Game:
 						else:
 							if not bl: self.trivia.checks("Not enough ATP")#print 'Not enough ATP'
 					else:
-						#print 'Overlap/Outside Error'
 						self.trivia.checks("Overlap/Outside Error")
 
 					self.m_down = False
@@ -503,22 +496,18 @@ class Game:
 					#Check if PopUp is being clicked
 					for i in self.pgroup:
 						if i.prevRect.collidepoint(self.m_pos_down[0], self.m_pos_down[1]):
-							print 'prev'
 							i.prev()
 							self.m_pos_down = -10, -10
 						if i.nextRect.collidepoint(self.m_pos_down[0], self.m_pos_down[1]):
-							print 'next'
 							i.next()
 							self.m_pos_down = -10, -10
-						if i.sellRect.collidepoint(self.m_pos_down[0], self.m_pos_down[1]):
-							print 'sell'							
+						if i.sellRect.collidepoint(self.m_pos_down[0], self.m_pos_down[1]):				
 							if self.recording: self.recorder.addAction(Action('sell', None, None, i.tower.tower_type, i.tower.occupy))		#recorder Action
 							self.resource.currentATP += i.tower.cost
 							i.sell()
 							self.m_pos_down = -10, -10
 							
 						if i.upgradeRect != None and i.upgradeRect.collidepoint(self.m_pos_down[0], self.m_pos_down[1]):
-							print 'upgrade'
 							if i.upgrade().cost <= self.resource.currentATP:
 								if self.recording: self.upgradeAction = Action('upgrade', None, None, i.tower.tower_type, i.tower.occupy)			#recorder action
 								i.sell()
@@ -526,7 +515,7 @@ class Game:
 								self.upgrading = True
 								
 							else:
-								print 'Not enough ATP'
+								pass
 							self.m_pos_down = -10, -10
 
 					#Check if Tower is being clicked
@@ -576,11 +565,6 @@ class Game:
 					for k in i.occupy:
 						self.grid.set(k[0],k[1],0)
 					self.T_list.remove(i)
-
-			for i in self.vgroup:
-				for j in i:
-					print j.life, 
-			print '\n'
 
 			self.tgroup.update()
 			self.tgroup.draw(self.screen)
@@ -641,7 +625,6 @@ class Mainmenu:
 
 			if event.type == MOUSEBUTTONDOWN:
 				if event.button == 1:
-					print 'left mouse button'
 					self.m_down = True
 					self.m_pos_down = (event.pos[0], event.pos[1])
 					for b in self.mainoptions:
@@ -779,7 +762,6 @@ class Gameover:
 
 			if event.type == MOUSEBUTTONDOWN:
 				if event.button == 1:
-					print 'left mouse button'
 					self.m_down = True
 					self.m_pos_down = (event.pos[0], event.pos[1])
 					for b in self.overoptions:
@@ -830,20 +812,16 @@ if __name__ == '__main__':
 		print 'main.py	-r [record file] -a [actions file] [-v <population file>]'
 		sys.exit(2)
 	for opt, arg in opts:
-		print opt, arg
 		if opt == '-v':
 			with file(arg) as f:
 				pop = pickle.load(f)
 				virus = pop[0]
 		elif opt == '-r':
-			print arg
 			if arg == '': arg = 'actions'
 			recordfile = arg
 		elif opt == '-a':
-			print arg
 			if arg == '': arg = 'actions'
 			actionfile = arg
-	print virus, recordfile, actionfile
 	mmenu = Mainmenu(SCREEN, virus, recordfile, actionfile)
 	mmenu.start()
 	
