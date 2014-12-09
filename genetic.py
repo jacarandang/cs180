@@ -5,9 +5,11 @@ import pygame
 pygame.init()
 class Member:
 
-	def __init__(self, values = None):
+	def __init__(self, values = None, wave = None):
 		self.value = values
 		if self.value is None: self.value = [uniform(-.5, .5) for i  in xrange(14*6)]
+		self.wave = wave
+		if self.wave is None: self.wave = uniform(-0.5, 0.5)
 		self.fitness = 0
 	
 	def mutate(self):
@@ -26,6 +28,21 @@ class Member:
 		raw_input()
 		return self.fitness
 		
+	def crossover(self, other):
+		vals = []
+		a_val = self.value
+		b_val = other.value
+		for i in xrange(len(a_val)):
+			if random() > 0.5:
+				vals.append(a_val[i])
+			else:
+				vals.append(b_val[i])
+		wave = choice([self.wave, other.wave])
+		m = Member(vals, wave)
+		if random() <= 0.01:
+			m.mutate()
+		return m
+		
 	def __cmp__(self, other):
 		return self.fitness - other.fitness
 		
@@ -38,20 +55,6 @@ class Genetic:
 	
 		self.pop = population
 		if self.pop is None: self.pop = [Member() for i in xrange(10)]
-		
-	def crossover(self, a, b):
-		a_pop = a.value
-		b_pop = b.value
-		n_pop = []
-		for i in xrange(len(a_pop)):
-			if randint(0, 1) == 0:
-				n_pop.append(a_pop[i])
-			else:
-				n_pop.append(b_pop[i])
-		m = Member(n_pop)
-		if random() >= 0.05:
-			m.mutate()
-		return m
 				
 	def mutation(self, member):
 		member.mutate()
@@ -79,7 +82,7 @@ class Genetic:
 			for i in xrange(10):
 				a = choice(breed)
 				b = choice(breed)
-				n_pop.append(self.crossover(a, b))
+				n_pop.append(a.crossover(b))
 			pop = n_pop
 			
 		for m in pop:

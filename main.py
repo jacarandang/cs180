@@ -275,10 +275,9 @@ class Game:
 	def hasVirus(self):
 		v = False
 		for g in self.vgroup:
-			if len(g) != 0:
+			if g.hasViruses():
 				v = True
 				break
-		
 		return v
 		
 	def foo(self):
@@ -346,8 +345,6 @@ class Game:
 					self.timer = time()
 					self.status = "wave"
 					self.vgroup.append(self.vplayer.getNextGroup())
-					self.resource.addATP(self.wave)
-					self.resource.addVirusATP(self.wave)
 					self.go = False
 			else:
 				if time() - self.timer >= self.wavetime or not self.hasVirus():	#or if no virus exist
@@ -355,6 +352,8 @@ class Game:
 					self.status = "prep"
 					self.wave += 1
 					print "prep"
+					self.resource.addATP(self.wave)
+					self.resource.addVirusATP(self.wave)
 			
 			#Draws all Towers in Grid
 			self.screen.blit(self.bg, (0, 0))

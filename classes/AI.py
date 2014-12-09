@@ -1,5 +1,6 @@
 from DS import *
 from random import uniform
+import math
 
 class VirusNode(Node):
 
@@ -146,6 +147,9 @@ def UCS(node):
 	
 	return path
 
+def sigmoid(x):
+	return 1.00/(1+math.e**(-x))
+	
 class Evaluator:
 
 	def __init__(self, values = None):
@@ -158,20 +162,9 @@ class Evaluator:
 			for j in xrange(len(ntowers)):
 				total[i] += ntowers[j]*self.values[i*14 + j]
 		
-		mn = min(total)
-		if mn < 0:
-			for i in xrange(len(total)): total[i] += mn
-		
-		s = sum(total)
-		if s == 0:
-			for i in xrange(len(total)):
-				total[i] += uniform(0, 0.25)
-			mn = min(total)
-			if mn < 0:
-				for i in xrange(len(total)): total[i] += mn
-			s = sum(total)
-		for i in xrange(len(total)):
-			total[i] /= s
-			
+		total = map(sigmoid, total)
+		s = sum(total)*1.00
+		total = map(lambda x: x/s, total)
 		return total
+		
 		
