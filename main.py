@@ -273,10 +273,9 @@ class Game:
 	def hasVirus(self):
 		v = False
 		for g in self.vgroup:
-			if len(g) != 0:
+			if g.hasViruses():
 				v = True
 				break
-		
 		return v
 		
 	def foo(self):

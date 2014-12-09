@@ -154,6 +154,9 @@ class VirusGroup(pygame.sprite.Group, VirusGroupBase):
 				v.init()
 		pygame.sprite.Group.update(self)
 		
+	def hasViruses(self):
+		return len(self.hvirus) != 0 or len(pygame.sprite.Group.sprites(self)) != 0
+		
 class Fungi(VirusSprite):
 
 	def __init__(self, board, thing, res):
