@@ -70,7 +70,8 @@ class Game:
 		self.pgroup = pygame.sprite.Group()
 
 		self.go = False
-		
+		self.testing = True
+		if self.values == None: self.testing = False
 		
 	def reinitialize(self):
 		self.running = True
@@ -349,7 +350,8 @@ class Game:
 		while(self.running and not self.thing.isDead()):
 			self.clock.tick(60)
 			self.checkEvents()
-
+			if self.wave == 11 and self.testing == True:
+				self.running = False
 			#print 'currWave:', self.currWave, 'wave:', self.wave, 'hasVirus:', self.hasVirus()
 			
 			if self.status == "prep":
