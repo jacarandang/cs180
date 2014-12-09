@@ -379,7 +379,6 @@ class Game:
 					self.go = False
 					self.wave += 1
 					
-					self.recorder.addAction(Action('go'))		#recorder Action
 			else:
 				if time() - self.timer >= self.wavetime or not self.hasVirus():	#or if no virus exist
 					self.timer = time()

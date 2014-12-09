@@ -62,6 +62,7 @@ class TowerPlayer:
 				if self.res.currentATP - t.cost <= 0: break
 				t_d = self.searchTower(action.tower_d_pos)
 				t_d.kill()
+				
 				for i in action.pos:
 					self.grid.set(i[0],i[1],1)
 					
@@ -70,9 +71,6 @@ class TowerPlayer:
 				self.tlist.append(t)
 				self.res.currentATP -= t.cost
 				done.append(action)
-			elif action.action == 'go':
-				done.append(action)
-				break
 				
 		for a in done:
 			self.actions.remove(a)
