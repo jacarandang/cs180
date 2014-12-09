@@ -17,7 +17,7 @@ from classes.towerAI import *
 
 class Game:
 
-	def __init__(self, screen, values = None):
+	def __init__(self, screen, values = None, recordFile = None, actionsFile = None):
 		self.screen = screen
 		self.running = True
 		self.clock = pygame.time.Clock()
@@ -29,7 +29,6 @@ class Game:
 		self.image = pygame.image.load('res/bg.png').convert_alpha()
 		self.imageRect = self.image.get_rect()
 
-		
 		self.values = values
 		self.testing = True
 		if self.values == None:
@@ -37,6 +36,7 @@ class Game:
 				pop = pickle.load(f)
 				self.values = pop[0]
 			self.testing = False
+			
 		self.m_pos = (-10,-10)    #Mouse Coordinates
 		self.m_down = False	#Left Mouse Button Down
 		self.m_pos_down = (-10,-10)  #Mouse Down Coordinates
@@ -82,9 +82,18 @@ class Game:
 
 		self.go = False
 		
-		self.towerai = TowerPlayer(self.resource, self.T_list, self.tgroup, self.grid, self)
-		self.recorder = Recorder()
+		self.towerai = None
+		self.autoPlay = False
+		if actionsFile != None:
+			self.autoPlay = True
+			self.towerai = TowerPlayer(self.resource, self.T_list, self.tgroup, self.grid, self, actionsFile)
+		
+		self.recorder = None
 		self.recording = False
+		
+		if recordFile != None:
+			self.recorder = Recorder(recordFile)
+			self.recording = True
 		self.upgrading = False
 		self.upgradeAction = None
 		
@@ -556,7 +565,7 @@ class Game:
 					j.Shoot(vlist, self.bgroup)
 
 			
-			if not self.recording: self.towerai.getActions()
+			if self.autoPlay: self.towerai.getActions()
 			#Removes Tower from T_List and sets occupy in Grid to 0
 			for i in self.T_list:
 				present = False
@@ -599,7 +608,7 @@ class Game:
   
 class Mainmenu:
 
-	def __init__(self, screen):
+	def __init__(self, screen, values = None, record = None, actions = None):
 		self.screen = screen
 		self.running = True
 		self.bg = pygame.Surface((800, 600)) #temporary BG
@@ -616,6 +625,10 @@ class Mainmenu:
 		self.bgm = pygame.mixer.Sound('res//bgm.ogg')
 		self.creditoptions = pygame.sprite.Group()		
 		self.helpoptions = pygame.sprite.Group()		
+		
+		self.values = values
+		self.record = record
+		self.actions = actions
 		
 	def checkEvents(self):
 		for event in pygame.event.get():
@@ -645,7 +658,7 @@ class Mainmenu:
 		self.running = False
 	
 	def startgame(self):
-		game = Game(self.screen)
+		game = Game(self.screen, self.values, self.record, self.actions)
 		game.start() 
 		
 		if game.thing.isDead():
@@ -744,6 +757,7 @@ class Mainmenu:
 			self.mainoptions.draw(self.screen)
 			pygame.display.update()
 		self.bgm.stop()
+		
 class Gameover:
 
 	def __init__(self, screen):
@@ -827,10 +841,8 @@ if __name__ == '__main__':
 			if arg == '': arg = 'actions'
 			actionfile = arg
 	print virus, recordfile, actionfile
-	raw_input()
 		
-		
-	mmenu = Mainmenu(SCREEN)
+	mmenu = Mainmenu(SCREEN, virus, recordfile, actionfile)
 	mmenu.start()
 	
 

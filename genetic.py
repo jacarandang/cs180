@@ -16,12 +16,11 @@ class Genetic:
 				
 	def evaluate(self, member):
 		scr = pygame.display.set_mode((800,600))
-		g = Game(scr, member)
+		g = Game(scr, member, None, 'actions')
 		a = g.start()
 		if g.thing.life < 0:
 			g.thing.life = 0
 		member.fitness = (g.thing.full - g.thing.life)/g.wave
-		raw_input("Fitness of " + str(member.fitness) + ": (Press enter to continue)")
 		return member.fitness			
 	
 	def mutation(self, member):

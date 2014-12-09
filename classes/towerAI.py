@@ -14,10 +14,11 @@ class Action:
 		
 class TowerPlayer:
 
-	def __init__(self, res, tlist, tgroup, grid, game):
+	def __init__(self, res, tlist, tgroup, grid, game, actionFile = 'actions'):
 		self.towers = []
 		self.actions = []
-		with file('actions', 'rb') as f:
+		self.actionFile = actionFile
+		with file(self.actionFile, 'rb') as f:
 			self.actions = pickle.load(f)
 		
 		self.res = res
@@ -97,12 +98,13 @@ class TowerPlayer:
 			
 class Recorder:
 
-	def __init__(self):
+	def __init__(self, recordFile = 'actions'):
 		self.actions = []
+		self.recordFile = recordFile
 		
 	def addAction(self, action):
 		self.actions.append(action)
 		
 	def save(self):
-		with file('actions', 'wb') as f:
+		with file(self.recordFile, 'wb') as f:
 			pickle.dump(self.actions, f)
