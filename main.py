@@ -9,6 +9,7 @@ from classes.UI import *
 from classes.thing import *
 from classes.ATP import *
 from classes.trivia import *
+from classes.member import Member
 #import classes
 
 class Game:
@@ -70,7 +71,8 @@ class Game:
 		self.pgroup = pygame.sprite.Group()
 
 		self.go = False
-		
+		self.testing = True
+		if self.values == None: self.testing = False
 		
 	def reinitialize(self):
 		self.running = True
@@ -147,7 +149,7 @@ class Game:
 						
 			if event.type == KEYDOWN:
 				if event.key == K_ESCAPE:
-					self.running = False
+					self.pause()
 
 				if event.key == K_1:
 					print 'T_1'
@@ -349,7 +351,8 @@ class Game:
 		while(self.running and not self.thing.isDead()):
 			self.clock.tick(60)
 			self.checkEvents()
-
+			if self.wave == 11 and self.testing == True:
+				self.running = False
 			#print 'currWave:', self.currWave, 'wave:', self.wave, 'hasVirus:', self.hasVirus()
 			
 			if self.status == "prep":
@@ -357,7 +360,7 @@ class Game:
 					#WAVE
 					self.timer = time()
 					self.status = "wave"
-					self.vgroup.append(self.vplayer.getNextGroup())
+					self.vgroup.append(self.vplayer.getNextGroup(self.wave))
 					self.go = False
 					self.wave += 1
 			else:
@@ -424,7 +427,15 @@ class Game:
 							self.T_list.append(self.select_T)
 							self.tgroup.add(self.select_T) 
 							self.resource.currentATP -= self.select_T.cost
-							self.select_T = None
+							if self.select_T.tower_type == "Stem Cell":
+								mods = pygame.key.get_mods()
+								if mods & KMOD_LSHIFT:
+									print "Yes"
+									self.select_T = StemCell()
+								else:
+									self.select_T = None
+							else:
+								self.select_T = None
 						else:
 							if not bl: print 'Not enough ATP'
 					else:
@@ -506,6 +517,11 @@ class Game:
 					for k in i.occupy:
 						self.grid.set(k[0],k[1],0)
 					self.T_list.remove(i)
+
+			for i in self.vgroup:
+				for j in i:
+					print j.life, 
+			print '\n'
 
 			self.tgroup.update()
 			self.tgroup.draw(self.screen)
