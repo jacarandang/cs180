@@ -649,8 +649,8 @@ class Mainmenu:
 				g = Gameover(self.screen)
 				action = g.start()
 				if action == 'again':
-					game.reinitialize()
-					game.start()
+					game = Game(self.screen, self.values, self.record, self.actions)
+					game.start() 
 				else: break
 		pygame.event.get()
 	

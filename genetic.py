@@ -89,7 +89,7 @@ if __name__ == '__main__':
 		elif opt == '-o':
 			outputF = arg
 	
-	
+	dir = "ai"
 	members = []
 	if populations is not None:
 		for p in populations:
