@@ -57,6 +57,13 @@ To train the ai (note: this excepts a file named actions in the base directory)
 ```
 python genetic.py
 ```
+There are several command line argument that genetic accepts
+1. -h = Prints out the cli
+2. -p <# of population>= Sets the number of population the genetic will consider, when not specified, defaults to 5
+3. -g <# of generation>= Sets the number of generation the genetic will run, when not specified, defaults to 10
+4. -a <action files separeded by `,`> =  Sets the action files to be used, defaults to actions if not specified
+5. -n <data files separeded by `,`> = Sets the member to be used by genetic, if not specified, random members will be generated
+6. -o <output file>	= Where genetic will save the net files
 
 ## Training
 In training the AI, the genetic algorithm will generate the population composed of different members.
