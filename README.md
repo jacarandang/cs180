@@ -28,7 +28,7 @@ the player, by attacking its 'heart' at the end of the grid, reducing its life p
 	9. towerAI.py		- Contains AI for tower
 	10. trivia.py	- Contains trivias and its sprites
 	11. UI.py 	- Contains UI like popup
-	12. virus.py	- Contains virus base, information, and sprite. Also includes virus groups
+	12. virus.py	- Contains pathgen base, information, and sprite. Also includes pathogen groups
 	13. virusAI.py - Contains AI for virus
 4. ai - Contains multipliers to be used by the game by default
 
@@ -67,7 +67,7 @@ There are several command line argument that genetic accepts
 
 ## Training
 In training the AI, the genetic algorithm will generate the population composed of different members.
-A member is a set of multipliers to be used by the game to determine what proportion of virus is to be released
+A member is a set of multipliers to be used by the game to determine what proportion of pathogens is to be released
 based on the towers the defender has and the current wave. Each member is to be evaluated by applying 
 that set of multipliers to a game and getting the fitness of it. The fitness of a member is defined to be the damage
 done to the heart / wave it took to kill it or 15(it stops after 15 waves if its training). After that, two members are 

@@ -100,8 +100,6 @@ if __name__ == '__main__':
 	else:
 		members = None
 		
-	print pop, members, action, gen
-	raw_input()
 	g = Genetic(pop, members, action)
 	pop  = g.start(gen)
 	pop.sort(reverse = True)
